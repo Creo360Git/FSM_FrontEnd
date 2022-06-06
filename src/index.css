@@ -1,0 +1,34 @@
+.dx-scheduler-cell-sizes-horizontal {
+  width: 50px !important;
+}
+.dx-scheduler-cell-sizes-vertical {
+  height: 50px !important;
+}
+
+.reportMain {
+  overflow: auto !important;
+}
+
+.report {
+  height: 650px;
+}
+
+.reportTitle {
+  display: none;
+}
+
+@media print {
+  .reportMain {
+    overflow: visible !important;
+  }
+  .report {
+    height: auto;
+    margin-top: 50;
+  }
+
+  .reportTitle {
+    display: block;
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+}
