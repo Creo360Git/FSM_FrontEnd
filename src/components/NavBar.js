@@ -49,6 +49,7 @@ import RequestPageIcon from "@mui/icons-material/RequestPage";
 import { Link, useLocation } from "react-router-dom";
 import GlobalSearch from "./GlobalSearch";
 import MobileViewDrawer from "./MobileViewDrawer";
+import { useTranslation } from "react-i18next";
 
 const drawerWidth = 240;
 
@@ -171,6 +172,7 @@ const useStyles = makeStyles((theme) => ({
 function Navbar({ user, children }) {
   const classes = useStyles();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const matchLgDown = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -227,63 +229,63 @@ function Navbar({ user, children }) {
     {
       link: "/dashboard",
       name: "Dashboard",
-      displayName: "Dashboard",
+      displayName: t("menu.dashboard"),
       onClick: closeMobileDrawer,
       icon: <DashboardIcon />,
     },
     {
-      link: "/Schedule",
+      link: "/schedule",
       name: "Schedule",
-      displayName: "Schedule",
+      displayName: t("menu.schedule"),
       onClick: closeMobileDrawer,
       icon: <CalendarTodayIcon />,
     },
     {
       link: "/map",
       name: "Map",
-      displayName: "Map",
+      displayName: t("menu.map"),
       onClick: closeMobileDrawer,
       icon: <MapIcon />,
     },
     {
       link: "/clients",
       name: "Clients",
-      displayName: "Clients",
+      displayName: t("menu.clients"),
       onClick: closeMobileDrawer,
       icon: <PeopleIcon />,
     },
     {
       link: "/jobs",
       name: "Jobs",
-      displayName: "Jobs",
+      displayName: t("menu.jobs"),
       onClick: closeMobileDrawer,
       icon: <ConstructionIcon />,
     },
     {
       link: "/invoice",
       name: "Invoice",
-      displayName: "Invoice",
+      displayName: t("menu.invoice"),
       onClick: closeMobileDrawer,
       icon: <ArticleIcon />,
     },
     {
       link: "/reports",
       name: "Reports",
-      displayName: "Reports",
+      displayName: t("menu.reports"),
       onClick: closeMobileDrawer,
       icon: <AssessmentIcon />,
     },
     {
       link: "/request",
       name: "Request",
-      displayName: "Request",
+      displayName: t("menu.request"),
       onClick: closeMobileDrawer,
       icon: <FileDownloadIcon />,
     },
     {
       link: "/quotes",
       name: "Quotes",
-      displayName: "Quotes",
+      displayName: t("menu.quotes"),
       onClick: closeMobileDrawer,
       icon: <RequestPageIcon />,
     },

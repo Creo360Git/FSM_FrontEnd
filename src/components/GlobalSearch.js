@@ -8,7 +8,7 @@ import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
 // import { AuthContext } from "../auth/AuthProvider";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@mui/material/styles";
 
@@ -33,7 +33,7 @@ const GlobalSearch = () => {
     agreements: [],
   });
   const [selectedValue, setSelectedValue] = useState(null);
-  //   const { t } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (
@@ -228,8 +228,7 @@ const GlobalSearch = () => {
           {...params}
           variant="outlined"
           color="primary"
-          //   label={t("labels.searchForAnything")}
-          placeholder="Search For Anything"
+          placeholder={t("labels.searchForAnything")}
           size="small"
           style={{ width: "100%" }}
           InputProps={{

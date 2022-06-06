@@ -10,6 +10,7 @@ const warningMain = "rgba(253, 200, 69, 1)";
 const warningDark = "rgba(253, 200, 69, .7)";
 const danger = "#FF3D3D";
 const darkBackground = "#f2f2f2";
+const focusBackground = "#E9ECFF";
 
 // border
 const borderWidth = 2;
@@ -49,6 +50,7 @@ const theme = createTheme({
     background: {
       default: background,
       dark: darkBackground,
+      button: focusBackground,
     },
     spacing,
   },
@@ -63,14 +65,14 @@ const theme = createTheme({
       styleOverrides: {
         colorDefault: {
           color: black,
-          backgroundColor: "#E9ECFF",
+          backgroundColor: focusBackground,
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         input: {
-          backgroundColor: "#E9ECFF",
+          backgroundColor: focusBackground,
         },
       },
     },
@@ -98,7 +100,7 @@ const theme = createTheme({
           height: "2.5rem",
           color: "#000",
           borderRadius: "5px",
-          backgroundColor: "#E9ECFF",
+          backgroundColor: focusBackground,
         },
         input: {
           height: "1.56rem",
@@ -218,7 +220,7 @@ const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          backgroundColor: "#E9ECFF",
+          backgroundColor: focusBackground,
           borderRadius: "4px",
         },
         expandIcon: {
