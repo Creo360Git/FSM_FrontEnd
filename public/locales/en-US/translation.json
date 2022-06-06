@@ -1,0 +1,48 @@
+{
+    "menu": {
+      "dashboard": "Dashboard",
+      "schedule": "Schedule",
+      "map": "Map",
+      "clients": "Clients",
+      "jobs": "Jobs",
+      "invoice": "Invoice",
+      "reports": "Reports",
+      "request": "Request",
+      "quotes": "Quotes"
+    },
+    "summary": {
+     
+    },
+    "rateInfo": {
+    
+    },
+    "buttons": {
+    
+    },
+    "messages": {
+     
+    },
+    "admin": {
+    },
+    "headings": {
+    "dashboard":"Dashboard"
+    },
+    "tableHeadings": {
+    
+    },
+    "tabs": {
+      
+    },
+    "labels": {
+      "searchForAnything": "Search For Anything"
+    },
+    "adminToolTips": {
+      
+    },
+    "date": "{{value, datetime}}",
+    "datetime": "{{value, datetime}}",
+    "time": "{{value, datetime(hour: numeric; minute: numeric)}}",
+    "currency": "{{currency}}",
+    "intlCurrency": "{{value, currency}}"
+  }
+  
