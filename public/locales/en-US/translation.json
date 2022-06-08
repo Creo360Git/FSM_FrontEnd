@@ -17,7 +17,12 @@
     
     },
     "buttons": {
-    
+      "addClient": "Add Client",
+      "addQuote": "Add Quote",
+      "addInvoice": "Add Invoice",
+      "addJob": "Add Job",
+      "addRequest": "Add Request",
+      "addTrack": "Add Track"
     },
     "messages": {
      
@@ -25,7 +30,7 @@
     "admin": {
     },
     "headings": {
-    "dashboard":"Dashboard"
+    "dashboard": "Dashboard"
     },
     "tableHeadings": {
     
@@ -34,7 +39,12 @@
       
     },
     "labels": {
-      "searchForAnything": "Search For Anything"
+      "searchForAnything": "Search For Anything",
+      "revenue": "Revenue",
+      "todayJobs": "Today Jobs",
+      "cancelledJobs": "Cancelled Jobs",
+      "approvedJobs": "Approved Jobs",
+      "paidInvoice": "Paid Invoice"
     },
     "adminToolTips": {
       
