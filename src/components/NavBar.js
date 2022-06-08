@@ -46,7 +46,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, matchPath } from "react-router-dom";
 import GlobalSearch from "./GlobalSearch";
 import MobileViewDrawer from "./MobileViewDrawer";
 
@@ -181,6 +181,8 @@ function Navbar({ user, children }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [openAccount, setOpenAccount] = useState(false);
   const anchorRef = useRef(null);
+
+  const match = (path) => (path ? !!matchPath({ path, end: false }, location.pathname) : false);
 
   const handleAccountToggle = () => {
     setOpenAccount((prevOpen) => !prevOpen);
@@ -519,7 +521,7 @@ function Navbar({ user, children }) {
                   key={element.name}
                 >
                   <ListItem
-                    selected={selectedTab === element.name}
+                    selected={match((element.name).toLowerCase() )}
                     button
                     divider={index !== menuItems.length - 1}
                     onClick={() => {
@@ -537,7 +539,7 @@ function Navbar({ user, children }) {
                     <ListItemIcon
                       sx={{
                         color:
-                          selectedTab === element.name
+                          match((element.name).toLowerCase() )
                             ? theme.palette.primary.main
                             : theme.palette.primary.contrastText,
                         display: "flex",
@@ -550,7 +552,7 @@ function Navbar({ user, children }) {
                       <ListItemText
                         sx={{
                           color:
-                            selectedTab === element.name
+                            match((element.name).toLowerCase() )
                               ? theme.palette.primary.main
                               : theme.palette.primary.contrastText,
                           paddingLeft: theme.spacing(1),
