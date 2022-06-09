@@ -16,7 +16,9 @@ import {
 import { useTranslation } from "react-i18next";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Statistics from "../components/Dashboard/Statistics";
+import Visits from "../components/Dashboard/Visits";
 import Revenue from "../components/Dashboard/Revenue";
+import InfoCards from "../components/Dashboard/InfoCards";
 import PeopleIcon from "@mui/icons-material/People";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -71,7 +73,7 @@ const Dashboard = ({ locations, types }) => {
       }}
       {...props}
     />
-  ))(({ theme }) => ({
+  ))(() => ({
     "& .MuiPaper-root": {
       borderRadius: 2,
       boxShadow:
@@ -230,11 +232,15 @@ const Dashboard = ({ locations, types }) => {
 
       <Statistics />
 
+      <Visits />
+
       <Grid container spacing={3} style={{ marginTop: "1rem" }}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <Revenue />
         </Grid>
       </Grid>
+
+      <InfoCards />
     </main>
   );
 };

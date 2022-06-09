@@ -14,7 +14,7 @@ import {
 import ConstructionIcon from "@mui/icons-material/Construction";
 import PaymentIcon from "@mui/icons-material/Payment";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import CloseIcon from "@mui/icons-material/Close";
+import CancelIcon from "@mui/icons-material/Cancel";
 // import { AuthContext } from "../../auth/AuthProvider";
 // import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -148,7 +148,7 @@ const Statistics = ({ locationId }) => {
       {getStatCard(
         statistics?.cancelledJobs || 0,
         t("labels.cancelledJobs"),
-        <CloseIcon />
+        <CancelIcon />
       )}
       {getStatCard(
         statistics?.approvedJobs || 0,
