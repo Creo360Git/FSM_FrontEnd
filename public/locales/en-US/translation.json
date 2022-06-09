@@ -25,26 +25,39 @@
       "addTrack": "Add Track"
     },
     "messages": {
-     
+      "noRecordsFound": "No records found !"
     },
     "admin": {
     },
     "headings": {
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "revenue": "Revenue",
+    "quotation": "Quotation",
+    "upcomingJobs": "Upcoming Jobs",
+    "invoicePastDue": "Invoice Past Due"
     },
     "tableHeadings": {
-    
+      "visits": "Visits",
+      "vehicleNo": " Vehicle No.",
+      "notes": " Notes",
+      "actions": " Actions",
+      "status": "Status",
+      "name": "Name",
+      "date": "Date",
+      "priority": "Priority",
+      "assignee": "Assignee"
     },
     "tabs": {
       
     },
     "labels": {
       "searchForAnything": "Search For Anything",
-      "revenue": "Revenue",
       "todayJobs": "Today Jobs",
       "cancelledJobs": "Cancelled Jobs",
       "approvedJobs": "Approved Jobs",
-      "paidInvoice": "Paid Invoice"
+      "paidInvoice": "Paid Invoice",
+      "seeMore": "See More",
+      "rowsPerPage": "Rows per Page"
     },
     "adminToolTips": {
       

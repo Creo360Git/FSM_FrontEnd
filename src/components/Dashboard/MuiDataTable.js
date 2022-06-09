@@ -1,0 +1,301 @@
+import React, { useState, useEffect } from "react";
+import MUIDataTable from "mui-datatables";
+import {
+  Box,
+  Chip,
+  IconButton,
+  TablePagination,
+  Typography,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import Pagination from "@mui/material/Pagination";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import clsx from "clsx";
+import moment from "moment";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { formatDate, formatTime } from "../../services/datetime";
+import { formatText } from "../Controls/formatUtils";
+// import { useFeature } from "../../auth/permissions";
+import { Buffer } from "buffer";
+
+const useStyles = makeStyles((theme) => ({
+  actions: {
+    display: "none",
+  },
+  caption: {
+    display: "none",
+  },
+  input: {
+    marginLeft: -24,
+  },
+  tableCol: {
+    color: "rgba(0, 0, 0, 0.87)",
+    fontWeight: 525,
+    fontSize: "1rem",
+  },
+  tableIdCol: {
+    cursor: "pointer",
+    color: "rgb(3, 25, 129)",
+    fontWeight: 600,
+  },
+  tableDateCol: {
+    color: "red",
+  },
+}));
+
+const MuiDataTable = (props) => {
+  const {
+    headers,
+    data,
+    count,
+    rowsPerPage,
+    page,
+    setPage,
+    setRowsPerPage,
+    onPageChange,
+    onRowsPerPageChange,
+  } = props;
+
+  const classes = useStyles();
+
+  const history = useNavigate();
+
+  const { t } = useTranslation();
+
+  const isStandardUnit = false;
+
+  const [columns, setColumns] = useState([]);
+
+  useEffect(() => {
+    if (headers?.length > 0) {
+      let columnsData = [];
+
+      headers.forEach((column) => {
+        const columnObj = {
+          name: column.name,
+          label: column.label,
+          options: {
+            filter: column?.filter || false,
+            customHeadLabelRender: (columnMeta) => {
+              return (
+                <span>
+                  <Typography
+                    align={
+                      column?.headerLabelAlign
+                        ? column?.headerLabelAlign
+                        : "left"
+                    }
+                  >
+                    {columnMeta.label}
+                  </Typography>
+                </span>
+              );
+            },
+            customBodyRenderLite: (dataIndex) => {
+              return (
+                <span
+                  className={
+                    column?.fieldRenderType === "id"
+                      ? clsx(classes.tableCol, classes.tableIdCol)
+                      : column?.fieldRenderType === "expiryDate" &&
+                        moment(data[dataIndex]?.expiryDate).format(
+                          "YYYY-MM-DD"
+                        ) < moment().format("YYYY-MM-DD")
+                      ? clsx(classes.tableCol, classes.tableDateCol)
+                      : classes.tableCol
+                  }
+                  onClick={(e) => {
+                    if (column?.idOnClick) {
+                      const id = String(data[dataIndex]?.id);
+                      const bid = Buffer.from(id).toString("base64");
+
+                      history.push({
+                        pathname: `/${column?.idOnClick}/${bid}`,
+                        reservationId: data[dataIndex]?.id || 0,
+                        agreementId: data[dataIndex]?.id || 0,
+                      });
+                    }
+                  }}
+                  style={column?.fieldStyles ? { ...column?.fieldStyles } : {}}
+                >
+                  {["actionsExpiryDate", "actions"].includes(
+                    column?.fieldRenderType
+                  ) ? (
+                    <Box width="100%" display="flex" justifyContent="center">
+                      <IconButton
+                        color="secondary"
+                        size="small"
+                        onClick={
+                          column?.actionsOnClick
+                            ? (e) =>
+                                column?.actionsOnClick(
+                                  e,
+                                  column.fieldRenderType === "actionsExpiryDate"
+                                    ? data[dataIndex]
+                                    : data[dataIndex]?.id,
+                                  data[dataIndex]?.assignedTo
+                                )
+                            : () => {}
+                        }
+                      >
+                        <MoreHorizIcon />
+                      </IconButton>
+
+                      {column?.actionsChildren || ""}
+                    </Box>
+                  ) : ["expiryDate", "date", "datetime"].includes(
+                      column?.fieldRenderType
+                    ) ? (
+                    <>
+                      <div>
+                        {data[dataIndex]?.date
+                          ? formatDate(data[dataIndex]?.date) ||
+                            t("date", {
+                              value: Date.parse(data[dataIndex]?.date),
+                            })
+                          : "-"}
+                      </div>
+                      {column?.fieldRenderType === "datetime" && (
+                        <div>
+                          {data[dataIndex]?.date
+                            ? formatTime(
+                                Date.parse(data[dataIndex]?.date),
+                                isStandardUnit
+                              ) ||
+                              t("time", {
+                                value: Date.parse(data[dataIndex]?.date),
+                              })
+                            : "-"}
+                        </div>
+                      )}
+                    </>
+                  ) : column?.fieldRenderType === "chip" ? (
+                    <>
+                      {data[dataIndex]?.statusName ? (
+                        <Chip
+                          label={
+                            data[dataIndex]?.statusName &&
+                            formatText(data[dataIndex]?.statusName)
+                          }
+                          variant="outlined"
+                          style={{
+                            width: "100%",
+                            border: "none",
+                            backgroundColor:
+                              data[dataIndex]?.statusName === "New"
+                                ? "#66a103"
+                                : data[dataIndex]?.statusName === "Close"
+                                ? "red"
+                                : "orange",
+                            color: "#FFF",
+                          }}
+                        />
+                      ) : (
+                        "-"
+                      )}
+                    </>
+                  ) : (
+                    <>{eval(`data[dataIndex]?.${column.name}`) || "-"}</>
+                  )}
+                </span>
+              );
+            },
+          },
+        };
+
+        columnsData.push(columnObj);
+      });
+
+      setColumns(columnsData);
+    }
+  }, [headers]);
+
+  const options = {
+    viewColumns: false,
+    filter: false,
+    responsive: "standard",
+    download: false,
+    serverSide: true,
+    print: false,
+    count: count || 0,
+    rowsPerpage: rowsPerPage,
+    rowsPerPageOptions: [5, 10, 25],
+    selectableRowsHideCheckboxes: false,
+    selectableRows: "none",
+    selectableRowsHeader: false,
+    rowHover: false,
+    search: false,
+    pagination: false,
+    sort: false,
+    customFooter: () => {
+      return (
+        <div>
+          {count > 0 && (
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              bgcolor={"#FFF"}
+              style={{
+                borderBottomLeftRadius: "5px",
+                borderBottomRightRadius: "5px",
+              }}
+            >
+              <TablePagination
+                rowsPerPageOptions={[10, 20, 30]}
+                component="div"
+                count={count || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+                classes={{
+                  actions: classes.actions,
+                  caption: classes.caption,
+                  input: classes.input,
+                }}
+                style={{ padding: 0 }}
+                SelectProps={{
+                  native: true,
+                }}
+              />
+              <Pagination
+                count={Math.ceil((count || 0) / rowsPerPage)}
+                showFirstButton
+                showLastButton
+                onChange={onPageChange}
+                page={page + 1}
+              />
+            </Box>
+          )}
+        </div>
+      );
+    },
+    onChangeRowsPerPage: (numberOfRows) => {
+      setRowsPerPage(parseInt(numberOfRows));
+      setPage(0);
+    },
+    onChangePage: (currentPage) => {
+      setPage(currentPage);
+    },
+    // onTableChange: (action, tableState) => {
+    //   switch (action) {
+    //     default:
+    //       break;
+    //   }
+    // },
+  };
+
+  return (
+    <MUIDataTable
+      data={
+        data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
+      }
+      columns={columns}
+      options={options}
+    />
+  );
+};
+
+export default MuiDataTable;
