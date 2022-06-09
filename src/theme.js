@@ -28,7 +28,7 @@ const theme = createTheme({
       contrastText: "#fff",
     },
     secondary: {
-      light: "#4f8ce8",
+      light: "#80d4ff",
       main: "#457CCE",
       dark: "#31568f",
       contrastText: "#fff",
@@ -344,7 +344,7 @@ const theme = createTheme({
       styleOverrides: {
         fixedHeader: {
           color: "#fff",
-          backgroundColor: "#08134A",
+          backgroundColor: "#457CCE",
           "@media print": {
             color: "#000  !important",
           },

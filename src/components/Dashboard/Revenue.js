@@ -22,14 +22,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#5E6C84",
   },
   card: { height: "100%" },
-  question: {
-    width: "500px",
-    height: "500px",
-  },
-  questionContainer: {
-    width: "100%",
-    height: "100%",
-  },
 }));
 
 const Revenue = (props) => {
@@ -126,7 +118,7 @@ const Revenue = (props) => {
         <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
           <Grid item xs={12}>
             <Box display="flex" justifyContent="flex-start" alignItems="center">
-              <Typography variant="h3">{t("labels.revenue")}</Typography>
+              <Typography variant="h3">{t("headings.revenue")}</Typography>
             </Box>
           </Grid>
           {/* <Grid item xs={2}>
