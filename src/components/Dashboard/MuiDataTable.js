@@ -15,7 +15,7 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "../../services/datetime";
-import { formatText } from "./formatUtils";
+import { formatText } from "../Controls/formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
 
@@ -216,7 +216,7 @@ const MuiDataTable = (props) => {
   const options = {
     viewColumns: false,
     filter: false,
-    responsive: "stacked",
+    responsive: "vertical",
     download: isDownload || false,
     serverSide: true,
     print: isPrint || false,

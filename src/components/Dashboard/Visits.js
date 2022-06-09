@@ -15,7 +15,7 @@ import { styled } from "@mui/styles";
 // import { AuthContext } from "../../auth/AuthProvider";
 // import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import MuiDataTable from "../Controls/MuiDataTable";
+import MuiDataTable from "./MuiDataTable";
 
 const Visits = () => {
   const theme = useTheme();
