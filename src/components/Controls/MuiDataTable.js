@@ -15,7 +15,7 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "../../services/datetime";
-import { formatText } from "../Controls/formatUtils";
+import { formatText } from "./formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
 
