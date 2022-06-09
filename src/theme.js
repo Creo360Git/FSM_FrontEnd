@@ -344,7 +344,7 @@ const theme = createTheme({
       styleOverrides: {
         fixedHeader: {
           color: "#fff",
-          backgroundColor: "#08134A",
+          backgroundColor: "#457CCE",
           "@media print": {
             color: "#000  !important",
           },

@@ -55,6 +55,8 @@ const MuiDataTable = (props) => {
     setRowsPerPage,
     onPageChange,
     onRowsPerPageChange,
+    isDownload,
+    isPrint,
   } = props;
 
   const classes = useStyles();
@@ -214,13 +216,13 @@ const MuiDataTable = (props) => {
   const options = {
     viewColumns: false,
     filter: false,
-    responsive: "standard",
-    download: false,
+    responsive: "stacked",
+    download: isDownload || false,
     serverSide: true,
-    print: false,
+    print: isPrint || false,
     count: count || 0,
     rowsPerpage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 25],
+    rowsPerPageOptions: [10, 20, 30],
     selectableRowsHideCheckboxes: false,
     selectableRows: "none",
     selectableRowsHeader: false,
@@ -289,6 +291,19 @@ const MuiDataTable = (props) => {
 
   return (
     <MUIDataTable
+      title={
+        <Typography
+          variant="h2"
+          sx={{
+            fontSize: "1.2rem",
+            "@media (min-width:1536px)": {
+              fontSize: "1.4rem",
+            },
+          }}
+        >
+          {t("tableHeadings.visits")}
+        </Typography>
+      }
       data={
         data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
       }

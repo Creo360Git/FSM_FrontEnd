@@ -11,7 +11,6 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import EnhancedTable from "./EnhancedTable";
 import { styled } from "@mui/styles";
 // import { AuthContext } from "../../auth/AuthProvider";
 // import { useNavigate } from "react-router-dom";
@@ -337,28 +336,6 @@ const Visits = () => {
         marginTop: theme.spacing(3),
       }}
     >
-      <Grid
-        item
-        xs={12}
-        style={{
-          marginBottom: theme.spacing(2),
-        }}
-      >
-        <Box display="flex" justifyContent="flex-start" alignItems="center">
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: "1.2rem",
-              "@media (min-width:1536px)": {
-                fontSize: "1.4rem",
-              },
-            }}
-          >
-            {t("tableHeadings.visits")}
-          </Typography>
-        </Box>
-      </Grid>
-
       <Grid item xs={12}>
         {rows?.length > 0 ? (
           <MuiDataTable
@@ -371,6 +348,8 @@ const Visits = () => {
             setRowsPerPage={setRowsPerPage}
             onPageChange={handleChangePageWithoutPagination}
             onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+            isDownload={true}
+            isPrint={true}
           />
         ) : rows?.length === 0 ? (
           <Box width="100%" display="flex" justifyContent="center" p={2}>
@@ -385,20 +364,6 @@ const Visits = () => {
             </Typography>
           </Box>
         )}
-        {/* <EnhancedTable
-          rows={[]}
-          headCells={headCells}
-          showCb={false}
-          totalCount={0}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePageWithoutPagination={handleChangePageWithoutPagination}
-          handleChangeRowsPerPageWithoutPagination={
-            handleChangeRowsPerPageWithoutPagination
-          }
-          handleClickOpenMoreOption={handleClickOpenMoreOption.bind(this)}
-          MoreOptionsMenu={MoreOptionsMenu}
-        /> */}
       </Grid>
     </Grid>
   );
