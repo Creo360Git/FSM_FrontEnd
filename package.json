@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
-    "@hookform/resolvers": "^2.8.8",
+    "@hookform/resolvers": "^2.9.0",
     "@mui/icons-material": "^5.4.2",
     "@mui/material": "^5.4.3",
     "@mui/styles": "^5.4.2",
@@ -23,6 +23,7 @@
     "react": "^18.1.0",
     "react-cache-buster": "^0.1.6",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.31.3",
     "react-i18next": "^11.16.9",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",

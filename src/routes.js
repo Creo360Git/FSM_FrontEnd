@@ -7,6 +7,7 @@ import { Routes, Route } from "react-router-dom";
 // import { SilentRenew } from "./auth/SilentRenew";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Client = lazy(() => import('./pages/Client'))
 
 const Router = () => (
   <Routes>
@@ -16,6 +17,7 @@ const Router = () => (
       <Route exact={true} path="/silentrenew" component={SilentRenew} /> */}
 
     <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/clients" element={<Client />} />
 
     <Route path="/" element={<Dashboard />} />
 
