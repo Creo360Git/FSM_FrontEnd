@@ -138,8 +138,7 @@ const MuiDataTable = (props) => {
                                   e,
                                   column.fieldRenderType === "actionsExpiryDate"
                                     ? data[dataIndex]
-                                    : data[dataIndex]?.id,
-                                  data[dataIndex]?.assignedTo
+                                    : data[dataIndex]?.id
                                 )
                             : () => {}
                         }
