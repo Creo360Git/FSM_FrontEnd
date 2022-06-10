@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Client = lazy(() => import("./pages/Clients"));
+const Quote = lazy(() => import("./pages/Quote"));
 
 const Router = () => (
   <Routes>
@@ -18,6 +19,7 @@ const Router = () => (
 
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/clients" element={<Client />} />
+    <Route path="/quotes" element={<Quote />} />
 
     <Route path="/" element={<Dashboard />} />
 

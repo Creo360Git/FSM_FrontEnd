@@ -50,7 +50,10 @@ export default function MoreOptionsMenu(menuItems, anchorEl, setAnchorEl) {
       {menuItems.map((menuItem, i) => (
         <MenuItem
           key={i}
-          onClick={menuItem.onClick}
+          onClick={() => {
+            closeMenu();
+            menuItem?.onClick && menuItem?.onClick();
+          }}
           style={{
             color: menuItem.color,
           }}

@@ -2,16 +2,14 @@ import React, {
   useState,
   // useEffect, useContext
 } from "react";
-
-import { makeStyles, styled } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Box,
   Grid,
   Typography,
   IconButton,
-  Menu,
-  MenuItem,
   ListItemIcon,
+  useTheme,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -25,6 +23,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ArticleIcon from "@mui/icons-material/Article";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
+import MoreOptionsMenu from "../components/Controls/MoreOptionsMenu";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -57,34 +56,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = ({ locations, types }) => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const { t } = useTranslation();
-
-  const StyledMenu = styled((props) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
-      {...props}
-    />
-  ))(() => ({
-    "& .MuiPaper-root": {
-      borderRadius: 2,
-      boxShadow:
-        "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
-
-      "&:hover": {
-        boxShadow:
-          "0px 3px 1px -1px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
-      },
-    },
-  }));
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -92,9 +66,92 @@ const Dashboard = ({ locations, types }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const closeMenu = () => {
-    setAnchorEl(null);
-  };
+  const menuItems = [
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <PeopleIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addClient")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <RequestPageIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addQuote")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <ArticleIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addInvoice")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <ConstructionIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addJob")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <FileDownloadIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addRequest")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+    {
+      label: (
+        <>
+          <ListItemIcon>
+            <LocationSearchingIcon fontSize="small" color="primary" />
+          </ListItemIcon>
+          <Typography color="primary" variant="h4">
+            {t("buttons.addTrack")}
+          </Typography>
+        </>
+      ),
+      //   onClick: handleClickOpen,
+      color: theme.palette.primary.main,
+    },
+  ];
 
   return (
     <main className={classes.content}>
@@ -122,109 +179,7 @@ const Dashboard = ({ locations, types }) => {
                 <MoreHorizIcon />
               </IconButton>
 
-              <StyledMenu
-                id="long-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={closeMenu}
-                PaperProps={{
-                  style: {
-                    minWidth: "10rem",
-                  },
-                }}
-                style={{ borderRadius: 20 }}
-              >
-                <MenuItem
-                  key={"newClient"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <PeopleIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addClient")}
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem
-                  key={"newQuote"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <RequestPageIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addQuote")}
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem
-                  key={"newInvoice"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <ArticleIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addInvoice")}
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem
-                  key={"newJob"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <ConstructionIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addJob")}
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem
-                  key={"newRequest"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <FileDownloadIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addRequest")}
-                  </Typography>
-                </MenuItem>
-
-                <MenuItem
-                  key={"newTrack"}
-                  onClick={() => {
-                    closeMenu();
-                    // openCreateCopy();
-                  }}
-                >
-                  <ListItemIcon>
-                    <LocationSearchingIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <Typography color="primary" variant="h4">
-                    {t("buttons.addTrack")}
-                  </Typography>
-                </MenuItem>
-              </StyledMenu>
+              {MoreOptionsMenu(menuItems, anchorEl, setAnchorEl)}
             </Grid>
           </Box>
         </Grid>
