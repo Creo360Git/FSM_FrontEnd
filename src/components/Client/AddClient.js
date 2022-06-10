@@ -160,7 +160,7 @@ const AddClient = ({open, setOpen}) => {
                         Client Details
                     </Typography>
                     <Grid container spacing={1}>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 label= 'First Name'
                                 fullWidth
@@ -172,7 +172,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors.FirstName?.message}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 label= 'Last Name'
                                 fullWidth
@@ -184,7 +184,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors.LastName?.message}
                             />
                         </Grid>
-                        <Grid item md={12} xs={12}>
+                        <Grid item xs={12}>
                             <TextField
                                 label= 'Company Name'
                                 fullWidth
@@ -219,7 +219,7 @@ const AddClient = ({open, setOpen}) => {
                         {fields.map((val, index) => {
                             return (
                                 <> 
-                                    <Grid item md={4} xs={4} sx={{mb: 1}}>
+                                    <Grid item sx={{mb: 1}} xs={4}>
                                         <TextField
                                             // label= 'Type'
                                             fullWidth
@@ -237,7 +237,7 @@ const AddClient = ({open, setOpen}) => {
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    <Grid item md={index == 0 ? 8 : 7} xs={9}>
+                                    <Grid item xs={index == 0 ? 8 : 7} >
                                         <TextField
                                             label= 'Phone number'
                                             fullWidth
@@ -251,7 +251,7 @@ const AddClient = ({open, setOpen}) => {
                                     </Grid>
                                     {
                                         index != 0 &&
-                                        <Grid item md={1} xs={2}>
+                                        <Grid item xs={1}>
                                             <IconButton aria-label="delete" onClick={() => remove(index)} sx={{color: theme.palette.common.danger}}>
                                                 <DeleteIcon />
                                             </IconButton>
@@ -275,7 +275,7 @@ const AddClient = ({open, setOpen}) => {
                         {emailFields.map((val, index) => {
                             return (
                                 <> 
-                                    <Grid item md={4} xs={4} sx={{mb: 1}}>
+                                    <Grid item  xs={4} sx={{mb: 1}} >
                                         <TextField
                                             // label= 'Type'
                                             fullWidth
@@ -293,7 +293,7 @@ const AddClient = ({open, setOpen}) => {
                                             ))}
                                         </TextField>
                                     </Grid>
-                                    <Grid item md={index == 0 ? 8 : 7} xs={9}>
+                                    <Grid item xs={index == 0 ? 8 : 7}  >
                                         <TextField
                                             label= 'Email'
                                             fullWidth
@@ -307,7 +307,7 @@ const AddClient = ({open, setOpen}) => {
                                     </Grid>
                                     {
                                         index != 0 &&
-                                        <Grid item md={1} xs={2}>
+                                        <Grid item xs={1}>
                                             <IconButton aria-label="delete" onClick={() => emailRemove(index)} sx={{color: theme.palette.common.danger}}>
                                                 <DeleteIcon />
                                             </IconButton>
@@ -333,7 +333,7 @@ const AddClient = ({open, setOpen}) => {
                             Property Details
                     </Typography>
                     <Grid container spacing={1}>
-                        <Grid item md={12} xs={12}>
+                        <Grid item md={12} xs={12} sm={6}>
                             <TextField
                                 label= 'Street 1'
                                 fullWidth
@@ -345,7 +345,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors?.Address?.AddressLine1?.message}
                             />
                         </Grid>
-                        <Grid item md={12} xs={12}>
+                        <Grid item md={12} xs={12} sm={6}>
                             <TextField
                                 label= 'Street 2'
                                 fullWidth
@@ -357,7 +357,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors.Address?.AddressLine2?.message}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 label= 'City'
                                 fullWidth
@@ -369,7 +369,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors?.Address?.City?.message}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 label= 'State'
                                 fullWidth
@@ -381,7 +381,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors?.Address?.State?.message}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 label= 'ZIP value'
                                 fullWidth
@@ -393,7 +393,7 @@ const AddClient = ({open, setOpen}) => {
                                 helperText={errors?.Address?.ZipCode?.message}
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 select
                                 fullWidth
@@ -433,7 +433,7 @@ const AddClient = ({open, setOpen}) => {
                             Billing Address
                         </Typography>
                         <Grid container spacing={1}>
-                            <Grid item md={12} xs={12}>
+                            <Grid item md={12} xs={12} sm={6}>
                                 <TextField
                                     label= 'Street 1'
                                     fullWidth
@@ -445,7 +445,7 @@ const AddClient = ({open, setOpen}) => {
                                     helperText={errors?.BillingAddress?.AddressLine1?.message}
                                 />
                             </Grid>
-                            <Grid item md={12} xs={12}>
+                            <Grid item md={12} xs={12} sm={6}>
                                 <TextField
                                     label= 'Street 2'
                                     fullWidth
@@ -457,7 +457,7 @@ const AddClient = ({open, setOpen}) => {
                                     helperText={errors.BillingAddress?.AddressLine2?.message}
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     label= 'City'
                                     fullWidth
@@ -469,7 +469,7 @@ const AddClient = ({open, setOpen}) => {
                                     helperText={errors?.BillingAddress?.City?.message}
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     label= 'State'
                                     fullWidth
@@ -481,7 +481,7 @@ const AddClient = ({open, setOpen}) => {
                                     helperText={errors?.BillingAddress?.State?.message}
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     label= 'ZIP value'
                                     fullWidth
@@ -493,7 +493,7 @@ const AddClient = ({open, setOpen}) => {
                                     helperText={errors?.BillingAddress?.ZipCode?.message}
                                 />
                             </Grid>
-                            <Grid item md={6} xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     select
                                     fullWidth
@@ -521,7 +521,7 @@ const AddClient = ({open, setOpen}) => {
                     </Typography>
                     <Stack direction="row">
                         <Grid container spacing={1}>
-                            <Grid item md={10} xs={12}>
+                            <Grid item md={10} xs={10} sm={10}>
                                 <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                     Appointment reminders
                                 </Typography>
@@ -529,14 +529,14 @@ const AddClient = ({open, setOpen}) => {
                                     Remind the client of an upcoming visit or assessment.
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} xs={12}>
+                            <Grid item md={2} xs={2} sm={2}>
                                 <Switch 
                                     {...register("Notification.Appointment")}
                                     defaultChecked={defaultValues.Notification.Appointment}
                                     sx={{color:theme.palette.secondary.dark}}
                                 />
                             </Grid>
-                            <Grid item md={10} xs={12}>
+                            <Grid item md={10} xs={10} sm={10}>
                                 <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                     Invoice follow-up
                                 </Typography>
@@ -544,14 +544,14 @@ const AddClient = ({open, setOpen}) => {
                                     Follow up on an overdue invoice.
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} xs={12}>
+                            <Grid item md={2} xs={2} sm={2}>
                                 <Switch 
                                     {...register("Notification.Invoice")}
                                     defaultChecked={defaultValues.Notification.Invoice}
                                     sx={{color:theme.palette.secondary.dark}}
                                 />
                             </Grid>
-                            <Grid item md={10} xs={12}>
+                            <Grid item md={10} xs={10} sm={10}>
                                 <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                     Quote follow-up
                                 </Typography>
@@ -559,14 +559,14 @@ const AddClient = ({open, setOpen}) => {
                                     Follow up on an outstanding quote.
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} xs={12}>
+                            <Grid item md={2} xs={2} sm={2}>
                                 <Switch 
                                     {...register("Notification.Quote")}
                                     defaultChecked={defaultValues.Notification.Quote}
                                     sx={{color:theme.palette.secondary.dark}}
                                 />
                             </Grid>
-                            <Grid item md={10} xs={12}>
+                            <Grid item md={10} xs={10} sm={10}>
                                 <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                     Job follow-up
                                 </Typography>
@@ -574,7 +574,7 @@ const AddClient = ({open, setOpen}) => {
                                     Follow up when you open or close the job.
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} xs={12}>
+                            <Grid item md={2} xs={2} sm={2}>
                                 <Switch 
                                     {...register("Notification.Job")}
                                     defaultChecked={defaultValues.Notification.Job}
