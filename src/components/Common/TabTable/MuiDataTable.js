@@ -6,12 +6,9 @@ import {
   IconButton,
   TablePagination,
   Typography,
-  Pagination,
-  TableFooter,
-  TableRow,
-  TableCell,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import Pagination from "@mui/material/Pagination";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import clsx from "clsx";
 import moment from "moment";
@@ -58,6 +55,7 @@ const MuiDataTable = (props) => {
     setRowsPerPage,
     onPageChange,
     onRowsPerPageChange,
+    title,
     isDownload,
     isPrint,
   } = props;
@@ -225,7 +223,7 @@ const MuiDataTable = (props) => {
     print: isPrint || false,
     count: count || 0,
     rowsPerpage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [10, 20, 30],
     selectableRowsHideCheckboxes: false,
     selectableRows: "none",
     selectableRowsHeader: false,
@@ -235,34 +233,36 @@ const MuiDataTable = (props) => {
     sort: false,
     customFooter: () => {
       return (
-        <TableFooter>
-          <TableRow
-            style={{
-              borderBottomLeftRadius: "5px",
-              borderBottomRightRadius: "5px",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
-              count={count || 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onPageChange}
-              onRowsPerPageChange={onRowsPerPageChange}
-              classes={{
-                actions: classes.actions,
-                caption: classes.caption,
-                input: classes.input,
+        <div>
+          {count > 0 && (
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              bgcolor={"#FFF"}
+              style={{
+                borderBottomLeftRadius: "5px",
+                borderBottomRightRadius: "5px",
               }}
-              style={{ padding: 6 }}
-              SelectProps={{
-                native: true,
-              }}
-            />
-
-            <TableCell>
+            >
+              <TablePagination
+                rowsPerPageOptions={[10, 20, 30]}
+                component="div"
+                count={count || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={onPageChange}
+                onRowsPerPageChange={onRowsPerPageChange}
+                classes={{
+                  actions: classes.actions,
+                  caption: classes.caption,
+                  input: classes.input,
+                }}
+                style={{ padding: 0 }}
+                SelectProps={{
+                  native: true,
+                }}
+              />
               <Pagination
                 count={Math.ceil((count || 0) / rowsPerPage)}
                 showFirstButton
@@ -270,9 +270,9 @@ const MuiDataTable = (props) => {
                 onChange={onPageChange}
                 page={page + 1}
               />
-            </TableCell>
-          </TableRow>
-        </TableFooter>
+            </Box>
+          )}
+        </div>
       );
     },
     onChangeRowsPerPage: (numberOfRows) => {
@@ -302,7 +302,7 @@ const MuiDataTable = (props) => {
             },
           }}
         >
-          {t("tableHeadings.visits")}
+          {title}
         </Typography>
       }
       data={
