@@ -10,6 +10,7 @@ import {
   TableFooter,
   TableRow,
   TableCell,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -17,8 +18,8 @@ import clsx from "clsx";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { formatDate, formatTime } from "../../services/datetime";
-import { formatText } from "../Controls/formatUtils";
+import { formatDate, formatTime } from "../../../services/datetime";
+import { formatText } from "../../Controls/formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
 
@@ -232,6 +233,19 @@ const MuiDataTable = (props) => {
     search: false,
     pagination: false,
     sort: false,
+    textLabels: {
+      body: {
+        noMatch: !data ? (
+          <Typography variant="h2" color="primary" align="center">
+            <CircularProgress color="secondary" disableShrink size={30} />
+          </Typography>
+        ) : (
+          <Typography variant="h3" color="primary" align="center">
+            {t("messages.noRecordsFound")}
+          </Typography>
+        ),
+      },
+    },
     customFooter: () => {
       return (
         <TableFooter>
@@ -281,12 +295,6 @@ const MuiDataTable = (props) => {
     onChangePage: (currentPage) => {
       setPage(currentPage);
     },
-    // onTableChange: (action, tableState) => {
-    //   switch (action) {
-    //     default:
-    //       break;
-    //   }
-    // },
   };
 
   return (

@@ -249,33 +249,19 @@ const Visits = () => {
       }}
     >
       <Grid item xs={12}>
-        {rows?.length > 0 ? (
-          <MuiDataTable
-            headers={headCells}
-            data={rows}
-            count={rows?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-            onPageChange={handleChangePageWithoutPagination}
-            onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
-            isDownload={true}
-            isPrint={true}
-          />
-        ) : rows?.length === 0 ? (
-          <Box width="100%" display="flex" justifyContent="center" p={2}>
-            <Typography variant="h2" color="primary" align="center">
-              {t("messages.noRecordsFound")}
-            </Typography>
-          </Box>
-        ) : (
-          <Box width="100%" display="flex" justifyContent="center" p={2}>
-            <Typography variant="h2" color="primary" align="center">
-              <CircularProgress color="secondary" disableShrink size={30} />
-            </Typography>
-          </Box>
-        )}
+        <MuiDataTable
+          headers={headCells}
+          data={rows}
+          count={rows?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          setPage={setPage}
+          setRowsPerPage={setRowsPerPage}
+          onPageChange={handleChangePageWithoutPagination}
+          onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+          isDownload={true}
+          isPrint={true}
+        />
       </Grid>
     </Grid>
   );
