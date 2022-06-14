@@ -18,8 +18,8 @@ import clsx from "clsx";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { formatDate, formatTime } from "../../services/datetime";
-import { formatText } from "../Controls/formatUtils";
+import { formatDate, formatTime } from "../../../services/datetime";
+import { formatText } from "../../Controls/formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
 
@@ -225,7 +225,7 @@ const MuiDataTable = (props) => {
     print: isPrint || false,
     count: count || 0,
     rowsPerpage: rowsPerPage,
-    rowsPerPageOptions: [5, 10, 20],
+    rowsPerPageOptions: [10, 20, 30],
     selectableRowsHideCheckboxes: false,
     selectableRows: "none",
     selectableRowsHeader: false,
@@ -258,7 +258,7 @@ const MuiDataTable = (props) => {
             }}
           >
             <TablePagination
-              rowsPerPageOptions={[5, 10, 20]}
+              rowsPerPageOptions={[10, 20, 30]}
               count={count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -299,19 +299,6 @@ const MuiDataTable = (props) => {
 
   return (
     <MUIDataTable
-      title={
-        <Typography
-          variant="h2"
-          sx={{
-            fontSize: "1.2rem",
-            "@media (min-width:1536px)": {
-              fontSize: "1.4rem",
-            },
-          }}
-        >
-          {t("tableHeadings.visits")}
-        </Typography>
-      }
       data={
         data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
       }

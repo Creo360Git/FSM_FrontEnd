@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, Container } from "@mui/material";
 import DataTable from "../components/Common/DataTable";
-import AddNewButton from "../components/Common/Button";
+import AddNewButton from "../components/Controls/AddNewButton";
 import DashboardLayout from "../components/Common/Layouts/DashboardLayout";
 import AddClient from "../components/Client/AddClient";
 

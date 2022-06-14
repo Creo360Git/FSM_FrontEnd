@@ -34,7 +34,8 @@
     "revenue": "Revenue",
     "quotation": "Quotation",
     "upcomingJobs": "Upcoming Jobs",
-    "invoicePastDue": "Invoice Past Due"
+    "invoicePastDue": "Invoice Past Due",
+    "quotes": "Quotes"
     },
     "tableHeadings": {
       "visits": "Visits",
