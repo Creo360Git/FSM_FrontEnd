@@ -3,18 +3,12 @@ import React, {
   // useEffect, useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
-import {
-  Box,
-  Grid,
-  Typography,
-  IconButton,
-  useTheme,
-  CircularProgress,
-} from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import MoreOptionsMenu from "../components/Controls/MoreOptionsMenu";
+import AddNewButton from "../components/Controls/AddNewButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -275,33 +269,28 @@ const Quote = ({ locations, types }) => {
   //   },
   // ];
 
+  const [openQuote, setOpenQuote] = useState(false);
+
+  const handleOpen = () => {
+    setOpenQuote(true);
+  };
+
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container spacing={3}>
-        <Grid item md={5} xs={10}>
+        <Grid item md={5} xs={7}>
           <Typography variant="h2" align="left" gutterBottom>
             {t("headings.quotes")}
           </Typography>
         </Grid>
 
-        <Grid item md={7} xs={2}>
-          <Box display="flex" justifyContent="flex-end" alignItems="center">
-            <Grid
-              item
-              className={`${classes.buttonGridItem} ${classes.buttonShadow}`}
-            >
-              <IconButton
-                color="primary"
-                className={`${classes.buttonSmall}`}
-                // onClick={(e) => {
-                //   openMenu(e);
-                // }}
-              >
-                <MoreHorizIcon />
-              </IconButton>
-            </Grid>
-          </Box>
+        <Grid item md={7} xs={5}>
+          <AddNewButton
+            title={t("buttons.newQuote")}
+            handleClick={handleOpen}
+            icon={<AddCircleIcon />}
+          />
         </Grid>
       </Grid>
 
