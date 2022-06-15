@@ -317,7 +317,8 @@ const MuiDataTable = (props) => {
       {toolBar?.length > 0 && <CustomToolbar toolBar={toolBar} />}
       <MUIDataTable
         data={
-          data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
+          data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) ||
+          []
         }
         columns={columns}
         options={options}
