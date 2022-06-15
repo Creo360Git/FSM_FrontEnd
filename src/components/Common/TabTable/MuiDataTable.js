@@ -22,6 +22,7 @@ import { formatDate, formatTime } from "../../../services/datetime";
 import { formatText } from "../../Controls/formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
+import CustomToolbar from "./CustomToolbar";
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -61,6 +62,7 @@ const MuiDataTable = (props) => {
     onRowsPerPageChange,
     isDownload,
     isPrint,
+    toolBar,
   } = props;
 
   const classes = useStyles();
@@ -298,13 +300,17 @@ const MuiDataTable = (props) => {
   };
 
   return (
-    <MUIDataTable
-      data={
-        data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
-      }
-      columns={columns}
-      options={options}
-    />
+    <>
+      <CustomToolbar toolBar={toolBar} />
+      <MUIDataTable
+        data={
+          data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) ||
+          []
+        }
+        columns={columns}
+        options={options}
+      />
+    </>
   );
 };
 
