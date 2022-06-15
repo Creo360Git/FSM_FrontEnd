@@ -3,18 +3,12 @@ import React, {
   // useEffect, useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
-import {
-  Box,
-  Grid,
-  Typography,
-  IconButton,
-  useTheme,
-  CircularProgress,
-} from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import MoreOptionsMenu from "../components/Controls/MoreOptionsMenu";
+import AddNewButton from "../components/Controls/AddNewButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -51,18 +45,6 @@ const Quote = ({ locations, types }) => {
   const theme = useTheme();
 
   const { t } = useTranslation();
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleChangePageWithoutPagination = (event, newPage) => {
-    setPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPageWithoutPagination = (event) => {
-    setRowsPerPage(parseInt(+event.target.value, 10));
-    setPage(0);
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [idValue, setIdValue] = useState(null);
@@ -130,178 +112,137 @@ const Quote = ({ locations, types }) => {
     },
   ];
 
-  const rows = [];
+  // const rows = [];
 
-  // const rows = [
-  //   {
-  //     id: 1287,
-  //     number: null,
-  //     idStr: "1287",
-  //     name: "afvbhdfbvhgg",
-  //     priority: 1,
-  //     type: 0,
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     locationId: 0,
-  //     locationName: null,
-  //     vehicleNumber: null,
-  //     licenseNumber: null,
-  //     customerName: null,
-  //     phone: null,
-  //     email: null,
-  //     date: "2021-10-14T01:05:00",
-  //     dateStr: null,
-  //     notes: null,
-  //     isCompleted: false,
-  //     status: 1,
-  //     statusName: "New",
-  //     assignedTo: null,
-  //     assignee: "employee rentall",
-  //     days: 0,
-  //     multiplelocation: null,
-  //     userId: 0,
-  //     clientId: 0,
-  //     referenceId: 0,
-  //     referenceNumber: "null",
-  //     referenceType: 0,
-  //     priorityStr: "Medium",
-  //   },
-  //   {
-  //     id: 1307,
-  //     number: null,
-  //     idStr: "1307",
-  //     name: "sdffd",
-  //     priority: 1,
-  //     type: 0,
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     locationId: 0,
-  //     locationName: null,
-  //     vehicleNumber: null,
-  //     licenseNumber: null,
-  //     customerName: null,
-  //     phone: null,
-  //     email: null,
-  //     date: "2021-11-10T19:40:00",
-  //     dateStr: null,
-  //     notes: null,
-  //     isCompleted: false,
-  //     status: 1,
-  //     statusName: "New",
-  //     assignedTo: null,
-  //     assignee: "niruba sabesh",
-  //     days: 0,
-  //     multiplelocation: null,
-  //     userId: 0,
-  //     clientId: 0,
-  //     referenceId: 0,
-  //     referenceNumber: null,
-  //     referenceType: 0,
-  //     priorityStr: "Medium",
-  //   },
-  //   {
-  //     id: 1324,
-  //     number: null,
-  //     idStr: "1324",
-  //     name: "fdfdfd vehicle 3",
-  //     priority: 0,
-  //     type: 0,
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     locationId: 0,
-  //     locationName: null,
-  //     vehicleNumber: null,
-  //     licenseNumber: null,
-  //     customerName: null,
-  //     phone: null,
-  //     email: null,
-  //     date: "2021-11-23T07:21:00",
-  //     dateStr: null,
-  //     notes: null,
-  //     isCompleted: false,
-  //     status: 2,
-  //     statusName: "InProgress",
-  //     assignedTo: null,
-  //     assignee: "niruba sabesh",
-  //     days: 0,
-  //     multiplelocation: null,
-  //     userId: 0,
-  //     clientId: 0,
-  //     referenceId: 0,
-  //     referenceNumber: null,
-  //     referenceType: 0,
-  //     priorityStr: "High",
-  //   },
-  //   {
-  //     id: 1325,
-  //     number: null,
-  //     idStr: "1325",
-  //     name: "ddsdffd",
-  //     priority: 1,
-  //     type: 0,
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     locationId: 0,
-  //     locationName: null,
-  //     vehicleNumber: null,
-  //     licenseNumber: null,
-  //     customerName: null,
-  //     phone: null,
-  //     email: null,
-  //     date: "2021-11-23T09:00:00",
-  //     dateStr: null,
-  //     notes: "ddsd",
-  //     isCompleted: false,
-  //     status: 1,
-  //     statusName: "New",
-  //     assignedTo: null,
-  //     assignee: "niruba sabesh",
-  //     days: 0,
-  //     multiplelocation: null,
-  //     userId: 0,
-  //     clientId: 0,
-  //     referenceId: 84683,
-  //     referenceNumber: "2",
-  //     referenceType: 3,
-  //     priorityStr: "Medium",
-  //   },
-  // ];
+  const rows = [
+    {
+      id: 1287,
+      number: null,
+      idStr: "1287",
+      name: "afvbhdfbvhgg",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-10-14T01:05:00",
+      dateStr: null,
+      notes: null,
+      status: 1,
+      statusName: "New",
+      assignee: "employeer",
+      priorityStr: "Medium",
+    },
+    {
+      id: 1307,
+      number: null,
+      idStr: "1307",
+      name: "sdffd",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-10T19:40:00",
+      dateStr: null,
+      notes: null,
+      statusName: "New",
+      assignedTo: null,
+      assignee: "ADS",
+      priorityStr: "Medium",
+    },
+    {
+      id: 1324,
+      number: null,
+      idStr: "1324",
+      name: "fdfdfd vehicle 3",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T07:21:00",
+      notes: null,
+      status: 2,
+      statusName: "InProgress",
+      assignee: "FBI",
+      priorityStr: "High",
+    },
+    {
+      id: 1325,
+      number: null,
+      idStr: "1325",
+      name: "ddsdffd",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T09:00:00",
+      notes: "ddsd",
+      status: 1,
+      statusName: "New",
+      assignee: "CID",
+      priorityStr: "Medium",
+    },
+  ];
+
+  const [openQuote, setOpenQuote] = useState(false);
+
+  const handleOpen = () => {
+    setOpenQuote(true);
+  };
+
+  const filterOptions = [
+    { label: "All", value: "All" },
+    { label: "Leads and Active", value: "Leads and Active" },
+    { label: "Leads", value: "Leads" },
+    { label: "Active", value: "Active" },
+    { label: "Archived", value: "Archived" },
+  ];
+
+  const sortByOptions = [
+    { label: "First Name", value: "first" },
+    { label: "Last Name", value: "Last" },
+    { label: "Recent Active", value: "recent" },
+  ];
+
+  const toolBar = [
+    {
+      field: "Parameter",
+      type: "search",
+      placeholder: "Search clients",
+    },
+    {
+      field: "SortBy",
+      type: "select",
+      placeholder: "Sort",
+      options: sortByOptions,
+    },
+    {
+      field: "Filter",
+      type: "select",
+      placeholder: "Filter",
+      options: filterOptions,
+    },
+  ];
 
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container spacing={3}>
-        <Grid item md={5} xs={10}>
+        <Grid item md={5} xs={7}>
           <Typography variant="h2" align="left" gutterBottom>
             {t("headings.quotes")}
           </Typography>
         </Grid>
 
-        <Grid item md={7} xs={2}>
-          <Box display="flex" justifyContent="flex-end" alignItems="center">
-            <Grid
-              item
-              className={`${classes.buttonGridItem} ${classes.buttonShadow}`}
-            >
-              <IconButton
-                color="primary"
-                className={`${classes.buttonSmall}`}
-                // onClick={(e) => {
-                //   openMenu(e);
-                // }}
-              >
-                <MoreHorizIcon />
-              </IconButton>
-            </Grid>
-          </Box>
+        <Grid item md={7} xs={5}>
+          <AddNewButton
+            title={t("buttons.newQuote")}
+            handleClick={handleOpen}
+            icon={<AddCircleIcon />}
+          />
         </Grid>
       </Grid>
 
@@ -316,15 +257,16 @@ const Quote = ({ locations, types }) => {
           <MuiDataTable
             headers={headCells}
             data={rows}
-            count={rows?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-            onPageChange={handleChangePageWithoutPagination}
-            onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+            // count={rows?.length || 0}
+            // rowsPerPage={rowsPerPage}
+            // page={page}
+            // setPage={setPage}
+            // setRowsPerPage={setRowsPerPage}
+            // onPageChange={handleChangePageWithoutPagination}
+            // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
             isDownload={false}
             isPrint={false}
+            toolBar={toolBar}
           />
         </Grid>
       </Grid>
