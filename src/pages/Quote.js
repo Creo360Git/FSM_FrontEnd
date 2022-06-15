@@ -46,18 +46,6 @@ const Quote = ({ locations, types }) => {
 
   const { t } = useTranslation();
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePageWithoutPagination = (event, newPage) => {
-    setPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPageWithoutPagination = (event) => {
-    setRowsPerPage(parseInt(+event.target.value, 10));
-    setPage(0);
-  };
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [idValue, setIdValue] = useState(null);
 
@@ -124,80 +112,82 @@ const Quote = ({ locations, types }) => {
     },
   ];
 
-  const rows = [];
+  // const rows = [];
 
-  // const rows = [
-  //   {
-  //     id: 1287,
-  //     number: null,
-  //     idStr: "1287",
-  //     name: "afvbhdfbvhgg",
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     vehicleNumber: null,
-  //     date: "2021-10-14T01:05:00",
-  //     dateStr: null,
-  //     notes: null,
-  //     status: 1,
-  //     statusName: "New",
-  //     assignee: "employeer",
-  //     priorityStr: "Medium",
-  //   },
-  //   {
-  //     id: 1307,
-  //     number: null,
-  //     idStr: "1307",
-  //     name: "sdffd",
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     vehicleNumber: null,
-  //     date: "2021-11-10T19:40:00",
-  //     dateStr: null,
-  //     notes: null,
-  //     statusName: "New",
-  //     assignedTo: null,
-  //     assignee: "ADS",
-  //     priorityStr: "Medium",
-  //   },
-  //   {
-  //     id: 1324,
-  //     number: null,
-  //     idStr: "1324",
-  //     name: "fdfdfd vehicle 3",
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     vehicleNumber: null,
-  //     date: "2021-11-23T07:21:00",
-  //     notes: null,
-  //     status: 2,
-  //     statusName: "InProgress",
-  //     assignee: "FBI",
-  //     priorityStr: "High",
-  //   },
-  //   {
-  //     id: 1325,
-  //     number: null,
-  //     idStr: "1325",
-  //     name: "ddsdffd",
-  //     startDate: null,
-  //     startDateStr: null,
-  //     endDate: null,
-  //     endDateStr: null,
-  //     vehicleNumber: null,
-  //     date: "2021-11-23T09:00:00",
-  //     notes: "ddsd",
-  //     status: 1,
-  //     statusName: "New",
-  //     assignee: "CID",
-  //     priorityStr: "Medium",
-  //   },
-  // ];
+  const rows = [
+    {
+      id: 1287,
+      number: null,
+      idStr: "1287",
+      name: "afvbhdfbvhgg",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-10-14T01:05:00",
+      dateStr: null,
+      notes: null,
+      status: 1,
+      statusName: "New",
+      assignee: "employeer",
+      priorityStr: "Medium",
+    },
+    {
+      id: 1307,
+      number: null,
+      idStr: "1307",
+      name: "sdffd",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-10T19:40:00",
+      dateStr: null,
+      notes: null,
+      statusName: "New",
+      assignedTo: null,
+      assignee: "ADS",
+      priorityStr: "Medium",
+    },
+    {
+      id: 1324,
+      number: null,
+      idStr: "1324",
+      name: "fdfdfd vehicle 3",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T07:21:00",
+      notes: null,
+      status: 2,
+      statusName: "InProgress",
+      assignee: "FBI",
+      priorityStr: "High",
+    },
+    {
+      id: 1325,
+      number: null,
+      idStr: "1325",
+      name: "ddsdffd",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T09:00:00",
+      notes: "ddsd",
+      status: 1,
+      statusName: "New",
+      assignee: "CID",
+      priorityStr: "Medium",
+    },
+  ];
+
+
 
   const [openQuote, setOpenQuote] = useState(false);
 
@@ -269,13 +259,13 @@ const Quote = ({ locations, types }) => {
           <MuiDataTable
             headers={headCells}
             data={rows}
-            count={rows?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-            onPageChange={handleChangePageWithoutPagination}
-            onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+            // count={rows?.length || 0}
+            // rowsPerPage={rowsPerPage}
+            // page={page}
+            // setPage={setPage}
+            // setRowsPerPage={setRowsPerPage}
+            // onPageChange={handleChangePageWithoutPagination}
+            // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
             isDownload={false}
             isPrint={false}
             toolBar={toolBar}

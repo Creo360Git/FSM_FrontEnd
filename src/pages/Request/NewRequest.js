@@ -1,13 +1,309 @@
 import React, { useState } from "react";
-import { Typography, Container } from "@mui/material";
+import { 
+    Typography, 
+    Container, 
+    Grid, 
+    Stack, 
+    TextField ,
+    FormControlLabel,
+    Checkbox,
+    FormGroup,
+    ButtonGroup,
+    Button
+} from "@mui/material";
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useTheme } from "@emotion/react";
 
 const NewRequest = () => {
+    const theme = useTheme()
+    const defaultValues = {
 
+    }
+
+    const validationSchema = yup.object().shape({
+
+    })
+
+    const { register, formState: { errors }, handleSubmit, getValues, setValue, reset, control, watch } = useForm({
+        defaultValues,
+        mode: 'onBlur',
+        reValidateMode: 'onBlur',
+        resolver: yupResolver(validationSchema)
+    });
+
+    const onSubmit = (values) => {
+        reset()
+        console.log(values)
+    }
     return (
         <DashboardLayout heading="new Request">
             <Container>
-                
+                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                    <Grid container spacing={2}alignItems="center" justify="center">
+                        <Grid xs={12} item >
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Client Name
+                                <Fab size="small" color="primary" aria-label="add" sx={{ml: 2}}>
+                                    <AddIcon />
+                                </Fab>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Request Title
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label= 'Request Title'
+                                fullWidth
+                                type="text"
+                                variant="outlined"
+                                size="small"
+                                {...register("title")}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Service Details
+                            </Typography>
+                            <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>
+                                Please provide as much details as you can 
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label= 'Type here...'
+                                fullWidth
+                                rows={4}
+                                multiline={true}
+                                variant="outlined"
+                                size="small"
+                                {...register("title")}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Schedule an appointment
+                            </Typography>
+                            <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>
+                                If available, which day works best for you ?
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                type='date'
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                {...register("title")}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>
+                                What are your preferred arrival times ? (optional)
+                            </Typography>
+                            <FormGroup sx={{ml: 2}} row={false}>
+                                <FormControlLabel
+                                    sx={{height: '25px'}}
+                                    control={
+                                        <Checkbox 
+                                            {...register("IsPrimaryName")}
+                                            defaultChecked={defaultValues.IsPrimaryName}
+                                            sx={{color:theme.palette.secondary.dark}}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Anytime</Typography>}
+                                />
+                                <FormControlLabel
+                                    sx={{height: '25px'}}
+                                    control={
+                                        <Checkbox 
+                                            {...register("IsPrimaryName")}
+                                            defaultChecked={defaultValues.IsPrimaryName}
+                                            sx={{color:theme.palette.secondary.dark}}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Morning</Typography>}
+                                />
+                                <FormControlLabel
+                                    sx={{height: '25px'}}
+                                    control={
+                                        <Checkbox 
+                                            {...register("IsPrimaryName")}
+                                            defaultChecked={defaultValues.IsPrimaryName}
+                                            sx={{color:theme.palette.secondary.dark}}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Afternon</Typography>}
+                                />
+                                <FormControlLabel
+                                    sx={{height: '25px'}}
+                                    control={
+                                        <Checkbox 
+                                            {...register("IsPrimaryName")}
+                                            defaultChecked={defaultValues.IsPrimaryName}
+                                            sx={{color:theme.palette.secondary.dark}}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Evening</Typography>}
+                                />
+                            </FormGroup>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Assessment
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                type='text'
+                                fullWidth
+                                label='Instruction'
+                                variant="outlined"
+                                size="small"
+                                {...register("title")}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid xs={12} item>
+                            <FormControlLabel
+                                sx={{ml: 1}}
+                                control={
+                                    <Checkbox 
+                                        {...register("IsPrimaryName")}
+                                        defaultChecked={defaultValues.IsPrimaryName}
+                                        sx={{color:theme.palette.secondary.dark}}
+                                    />
+                                }
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
+                            />
+                        </Grid>
+                        {/* <Stack 
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="flex-end"
+                            spacing={4}
+                            sx={{ml: 2}}
+                        > */}
+                        {/* <Grid container spacing={0} sx={{flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" }}}> */}
+                            {/* <Grid item md={6} xs={6}> */}
+                                <FormControlLabel
+                                    labelPlacement="top"
+                                    control={
+                                        <TextField
+                                            type='date'
+                                            fullWidth
+                                            variant="outlined"
+                                            size="small"
+                                            {...register("title")}
+                                            error={!!errors.title}
+                                            helperText={errors.title?.message}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>Start Date</Typography>}
+                                />
+                            {/* </Grid>
+                            <Grid item md={6} xs={6}> */}
+                                <FormControlLabel
+                                    labelPlacement="top"
+                                    sx={{mr: {md: 18}}}
+                                    control={
+                                        <TextField
+                                            type='date'
+                                            fullWidth
+                                            variant="outlined"
+                                            size="small"
+                                            {...register("title")}
+                                            error={!!errors.title}
+                                            helperText={errors.title?.message}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>End Date</Typography>}
+                                />
+                            {/* </Grid> */}
+                        {/* </Grid> */}
+                        {/* <Grid container spacing={0} sx={{flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" } }}> */}
+                            {/* <Grid item md={6} xs={6}> */}
+                                <FormControlLabel
+                                    labelPlacement="top"
+                                    control={
+                                        <TextField
+                                            type='time'
+                                            fullWidth
+                                            variant="outlined"
+                                            size="small"
+                                            {...register("title")}
+                                            error={!!errors.title}
+                                            helperText={errors.title?.message}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>Start Time</Typography>}
+                                />
+                            {/* </Grid>
+                            <Grid item md={6} xs={6}> */}
+                                <FormControlLabel
+                                    labelPlacement="top"
+                                    control={
+                                        <TextField
+                                            type='time'
+                                            fullWidth
+                                            variant="outlined"
+                                            size="small"
+                                            {...register("title")}
+                                            error={!!errors.title}
+                                            helperText={errors.title?.message}
+                                        />
+                                    }
+                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>End Time</Typography>}
+                                />
+                            {/* </Grid> */}
+                        {/* </Grid> */}
+                        {/* </Stack> */}
+                        <Grid item xs={12}>
+                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                Notes & Attachments
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                type='text'
+                                fullWidth
+                                label='Note details'
+                                multiline
+                                rows={4}
+                                variant="outlined"
+                                size="small"
+                                {...register("title")}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid xs={12} item>
+                            <Stack direction='row' alignItems='flex-end' justifyContent="space-between" spacing={2}>
+                                <ButtonGroup size="large" aria-label="large button group">
+                                    <Button key="one" sx={{textTransform: 'uppercase'}}>Cancel</Button>
+                                </ButtonGroup>
+                                <ButtonGroup size="large" aria-label="large button group"> 
+                                    <Button key="two" sx={{textTransform: 'uppercase'}}>Save Request</Button>
+                                    <Button variant='contained' key="three" sx={{textTransform: 'uppercase'}}>Save And ...</Button>
+                                </ButtonGroup>
+                            </Stack>
+                        </Grid>
+                    </Grid>
+                </form>
             </Container>
         </DashboardLayout>
     );
