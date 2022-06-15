@@ -4,6 +4,7 @@ import DataTable from "../components/Common/DataTable";
 import AddNewButton from "../components/Controls/AddNewButton";
 import DashboardLayout from "../components/Common/Layouts/DashboardLayout";
 import AddClient from "../components/Client/AddClient";
+import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 
 function createData(CustomerName, Address, Phone, Email, carbs) {
   return {
@@ -120,11 +121,16 @@ const columns = [
 
   return (
     <DashboardLayout heading="Clients">
-      {open && <AddClient open={open} setOpen={setOpen} />}
-      <Container>
-        <AddNewButton title="Add new client" handleClick={handleOpen} />
-        <DataTable columns={columns} rows={rows} setRows={setRows} toolBar={toolBar} options={{selectableRows: false, sort: false}} />
-      </Container>
+    	{open && <AddClient open={open} setOpen={setOpen} />}
+		<Container>
+			<AddNewButton title="Add new client" handleClick={handleOpen} />
+			<MuiDataTable 
+				headers={columns} 
+				data={rows} 
+				setData={setRows} 
+				toolBar={toolBar} 
+			/>
+		</Container>
     </DashboardLayout>
   );
 };

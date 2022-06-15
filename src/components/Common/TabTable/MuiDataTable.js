@@ -22,6 +22,7 @@ import { formatDate, formatTime } from "../../../services/datetime";
 import { formatText } from "../../Controls/formatUtils";
 // import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
+import CustomToolbar from "./CustomToolbar";
 
 const useStyles = makeStyles((theme) => ({
   actions: {
@@ -52,11 +53,9 @@ const MuiDataTable = (props) => {
   const {
     headers,
     data,
+    setData,
+    toolBar =[],
     count,
-    rowsPerPage,
-    page,
-    setPage,
-    setRowsPerPage,
     onPageChange,
     onRowsPerPageChange,
     isDownload,
@@ -78,6 +77,7 @@ const MuiDataTable = (props) => {
       let columnsData = [];
 
       headers.forEach((column) => {
+        if(!column.options){
         const columnObj = {
           name: column.name,
           label: column.label,
@@ -210,11 +210,27 @@ const MuiDataTable = (props) => {
         };
 
         columnsData.push(columnObj);
+        }
+        else{
+          columnsData.push(column);
+        }
       });
 
       setColumns(columnsData);
     }
   }, [headers]);
+
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const options = {
     viewColumns: false,
@@ -223,7 +239,7 @@ const MuiDataTable = (props) => {
     download: isDownload || false,
     serverSide: true,
     print: isPrint || false,
-    count: count || 0,
+    count: data.length || 0,
     rowsPerpage: rowsPerPage,
     rowsPerPageOptions: [10, 20, 30],
     selectableRowsHideCheckboxes: false,
@@ -259,11 +275,11 @@ const MuiDataTable = (props) => {
           >
             <TablePagination
               rowsPerPageOptions={[10, 20, 30]}
-              count={count || 0}
+              count={data.length}
               rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={onPageChange}
-              onRowsPerPageChange={onRowsPerPageChange}
+              page={page-1}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
               classes={{
                 actions: classes.actions,
                 caption: classes.caption,
@@ -277,11 +293,11 @@ const MuiDataTable = (props) => {
 
             <TableCell>
               <Pagination
-                count={Math.ceil((count || 0) / rowsPerPage)}
+                count={Math.ceil((data?.length) / rowsPerPage)}
                 showFirstButton
                 showLastButton
-                onChange={onPageChange}
-                page={page + 1}
+                onChange={handleChangePage}
+                page={page}
               />
             </TableCell>
           </TableRow>
@@ -298,13 +314,16 @@ const MuiDataTable = (props) => {
   };
 
   return (
-    <MUIDataTable
-      data={
-        data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
-      }
-      columns={columns}
-      options={options}
-    />
+    <>
+      {toolBar.length > 0 && <CustomToolbar toolBar={toolBar} setRows={setData} rows={data} />}
+      <MUIDataTable
+        data={
+          data.slice((page-1) * rowsPerPage, (page-1) * rowsPerPage + rowsPerPage)
+        }
+        columns={headers}
+        options={options}
+      />
+    </>
   );
 };
 

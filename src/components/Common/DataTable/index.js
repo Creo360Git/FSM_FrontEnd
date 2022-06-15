@@ -3,7 +3,7 @@ import { TableRow, TableCell, Typography, TableHead, Box } from "@mui/material"
 import useTheme from "@mui/styles/useTheme"
 
 import { createTheme, ThemeProvider } from "@mui/material"
-import CustomToolbar from './CustomToolbar'
+import CustomToolbar from '../TabTable/CustomToolbar'
 
 
 const DataTables = ( props ) => {

@@ -28,6 +28,7 @@ const CustomToolbar = (props) => {
     return (
         <Toolbar
             sx={{
+                mb: 2,
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 },
                 bgcolor: (theme) =>
