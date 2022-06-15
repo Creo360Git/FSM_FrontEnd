@@ -53,14 +53,10 @@ const MuiDataTable = (props) => {
   const {
     headers,
     data,
-    setData,
-    toolBar =[],
-    rowsPerPageOptions=[10,20,30],
-    // count,
-    // onPageChange,
-    // onRowsPerPageChange,
+    rowsPerPageOptions = [10, 20, 30],
     isDownload,
-    isPrint
+    isPrint,
+    toolBar,
   } = props;
 
   const classes = useStyles();
@@ -78,141 +74,143 @@ const MuiDataTable = (props) => {
       let columnsData = [];
 
       headers.forEach((column) => {
-        if(!column.options){
-        const columnObj = {
-          name: column.name,
-          label: column.label,
-          options: {
-            filter: column?.filter || false,
-            customHeadLabelRender: (columnMeta) => {
-              return (
-                <span>
-                  <Typography
-                    align={
-                      column?.headerLabelAlign
-                        ? column?.headerLabelAlign
-                        : "left"
+        if (!column?.options) {
+          const columnObj = {
+            name: column.name,
+            label: column.label,
+            options: {
+              filter: column?.filter || false,
+              customHeadLabelRender: (columnMeta) => {
+                return (
+                  <span>
+                    <Typography
+                      align={
+                        column?.headerLabelAlign
+                          ? column?.headerLabelAlign
+                          : "left"
+                      }
+                    >
+                      {columnMeta.label}
+                    </Typography>
+                  </span>
+                );
+              },
+              customBodyRenderLite: (dataIndex) => {
+                return (
+                  <span
+                    className={
+                      column?.fieldRenderType === "id"
+                        ? clsx(classes.tableCol, classes.tableIdCol)
+                        : column?.fieldRenderType === "expiryDate" &&
+                          moment(data[dataIndex]?.expiryDate).format(
+                            "YYYY-MM-DD"
+                          ) < moment().format("YYYY-MM-DD")
+                        ? clsx(classes.tableCol, classes.tableDateCol)
+                        : classes.tableCol
+                    }
+                    onClick={(e) => {
+                      if (column?.idOnClick) {
+                        const id = String(data[dataIndex]?.id);
+                        const bid = Buffer.from(id).toString("base64");
+
+                        history.push({
+                          pathname: `/${column?.idOnClick}/${bid}`,
+                          reservationId: data[dataIndex]?.id || 0,
+                          agreementId: data[dataIndex]?.id || 0,
+                        });
+                      }
+                    }}
+                    style={
+                      column?.fieldStyles ? { ...column?.fieldStyles } : {}
                     }
                   >
-                    {columnMeta.label}
-                  </Typography>
-                </span>
-              );
-            },
-            customBodyRenderLite: (dataIndex) => {
-              return (
-                <span
-                  className={
-                    column?.fieldRenderType === "id"
-                      ? clsx(classes.tableCol, classes.tableIdCol)
-                      : column?.fieldRenderType === "expiryDate" &&
-                        moment(data[dataIndex]?.expiryDate).format(
-                          "YYYY-MM-DD"
-                        ) < moment().format("YYYY-MM-DD")
-                      ? clsx(classes.tableCol, classes.tableDateCol)
-                      : classes.tableCol
-                  }
-                  onClick={(e) => {
-                    if (column?.idOnClick) {
-                      const id = String(data[dataIndex]?.id);
-                      const bid = Buffer.from(id).toString("base64");
-
-                      history.push({
-                        pathname: `/${column?.idOnClick}/${bid}`,
-                        reservationId: data[dataIndex]?.id || 0,
-                        agreementId: data[dataIndex]?.id || 0,
-                      });
-                    }
-                  }}
-                  style={column?.fieldStyles ? { ...column?.fieldStyles } : {}}
-                >
-                  {["actionsExpiryDate", "actions"].includes(
-                    column?.fieldRenderType
-                  ) ? (
-                    <Box width="100%" display="flex" justifyContent="center">
-                      <IconButton
-                        color="secondary"
-                        size="small"
-                        onClick={
-                          column?.actionsOnClick
-                            ? (e) =>
-                                column?.actionsOnClick(
-                                  e,
-                                  column.fieldRenderType === "actionsExpiryDate"
-                                    ? data[dataIndex]
-                                    : data[dataIndex]?.id
-                                )
-                            : () => {}
-                        }
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-
-                      {column?.actionsChildren || ""}
-                    </Box>
-                  ) : ["expiryDate", "date", "datetime"].includes(
+                    {["actionsExpiryDate", "actions"].includes(
                       column?.fieldRenderType
                     ) ? (
-                    <>
-                      <div>
-                        {data[dataIndex]?.date
-                          ? formatDate(data[dataIndex]?.date) ||
-                            t("date", {
-                              value: Date.parse(data[dataIndex]?.date),
-                            })
-                          : "-"}
-                      </div>
-                      {column?.fieldRenderType === "datetime" && (
+                      <Box width="100%" display="flex" justifyContent="center">
+                        <IconButton
+                          color="secondary"
+                          size="small"
+                          onClick={
+                            column?.actionsOnClick
+                              ? (e) =>
+                                  column?.actionsOnClick(
+                                    e,
+                                    column.fieldRenderType ===
+                                      "actionsExpiryDate"
+                                      ? data[dataIndex]
+                                      : data[dataIndex]?.id
+                                  )
+                              : () => {}
+                          }
+                        >
+                          <MoreHorizIcon />
+                        </IconButton>
+
+                        {column?.actionsChildren || ""}
+                      </Box>
+                    ) : ["expiryDate", "date", "datetime"].includes(
+                        column?.fieldRenderType
+                      ) ? (
+                      <>
                         <div>
                           {data[dataIndex]?.date
-                            ? formatTime(
-                                Date.parse(data[dataIndex]?.date),
-                                isStandardUnit
-                              ) ||
-                              t("time", {
+                            ? formatDate(data[dataIndex]?.date) ||
+                              t("date", {
                                 value: Date.parse(data[dataIndex]?.date),
                               })
                             : "-"}
                         </div>
-                      )}
-                    </>
-                  ) : column?.fieldRenderType === "chip" ? (
-                    <>
-                      {data[dataIndex]?.statusName ? (
-                        <Chip
-                          label={
-                            data[dataIndex]?.statusName &&
-                            formatText(data[dataIndex]?.statusName)
-                          }
-                          variant="outlined"
-                          style={{
-                            width: "100%",
-                            border: "none",
-                            backgroundColor:
-                              data[dataIndex]?.statusName === "New"
-                                ? "#66a103"
-                                : data[dataIndex]?.statusName === "Close"
-                                ? "red"
-                                : "orange",
-                            color: "#FFF",
-                          }}
-                        />
-                      ) : (
-                        "-"
-                      )}
-                    </>
-                  ) : (
-                    <>{eval(`data[dataIndex]?.${column.name}`) || "-"}</>
-                  )}
-                </span>
-              );
+                        {column?.fieldRenderType === "datetime" && (
+                          <div>
+                            {data[dataIndex]?.date
+                              ? formatTime(
+                                  Date.parse(data[dataIndex]?.date),
+                                  isStandardUnit
+                                ) ||
+                                t("time", {
+                                  value: Date.parse(data[dataIndex]?.date),
+                                })
+                              : "-"}
+                          </div>
+                        )}
+                      </>
+                    ) : column?.fieldRenderType === "chip" ? (
+                      <>
+                        {data[dataIndex]?.statusName ? (
+                          <Chip
+                            label={
+                              data[dataIndex]?.statusName &&
+                              formatText(data[dataIndex]?.statusName)
+                            }
+                            variant="outlined"
+                            style={{
+                              width: "100%",
+                              border: "none",
+                              backgroundColor:
+                                data[dataIndex]?.statusName === "New"
+                                  ? "#66a103"
+                                  : data[dataIndex]?.statusName === "Close"
+                                  ? "red"
+                                  : "orange",
+                              color: "#FFF",
+                            }}
+                          />
+                        ) : (
+                          "-"
+                        )}
+                      </>
+                    ) : (
+                      <>{eval(`data[dataIndex]?.${column.name}`) || "-"}</>
+                    )}
+                  </span>
+                );
+              },
             },
-          },
-        };
+          };
 
-        columnsData.push(columnObj);
-        }
-        else{
+          columnsData.push(columnObj);
+        } else {
           columnsData.push(column);
         }
       });
@@ -221,15 +219,16 @@ const MuiDataTable = (props) => {
     }
   }, [headers]);
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    setPage(newPage - 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value));
+    setRowsPerPage(parseInt(+event.target.value, 10));
+    setPage(0);
   };
 
   const options = {
@@ -239,7 +238,7 @@ const MuiDataTable = (props) => {
     download: isDownload || false,
     serverSide: true,
     print: isPrint || false,
-    count: data.length || 0,
+    count: data?.length || 0,
     rowsPerpage: rowsPerPage,
     rowsPerPageOptions: rowsPerPageOptions,
     selectableRowsHideCheckboxes: false,
@@ -275,9 +274,9 @@ const MuiDataTable = (props) => {
           >
             <TablePagination
               rowsPerPageOptions={rowsPerPageOptions}
-              count={data.length}
+              count={data?.length || 0}
               rowsPerPage={rowsPerPage}
-              page={page-1}
+              page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               classes={{
@@ -293,11 +292,11 @@ const MuiDataTable = (props) => {
 
             <TableCell>
               <Pagination
-                count={Math.ceil((data?.length) / rowsPerPage)}
+                count={Math.ceil((data?.length || 0) / rowsPerPage)}
                 showFirstButton
                 showLastButton
                 onChange={handleChangePage}
-                page={page}
+                page={page + 1}
               />
             </TableCell>
           </TableRow>
@@ -315,12 +314,12 @@ const MuiDataTable = (props) => {
 
   return (
     <>
-      {toolBar.length > 0 && <CustomToolbar toolBar={toolBar} setRows={setData} rows={data} />}
+      {toolBar?.length > 0 && <CustomToolbar toolBar={toolBar} />}
       <MUIDataTable
         data={
-          data.slice((page-1) * rowsPerPage, (page-1) * rowsPerPage + rowsPerPage)
+          data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
         }
-        columns={headers}
+        columns={columns}
         options={options}
       />
     </>
