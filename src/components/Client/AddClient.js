@@ -149,7 +149,7 @@ const AddClient = ({open, setOpen}) => {
             onClose={handleClose}
             open={open}
             scroll="body"
-            maxWidth="md"
+            maxWidth="sm"
         >
             <DialogTitle variant='h3' onClose={handleClose} sx={{textTransform:'uppercase', fontWeight: theme.typography.fontWeightBold, backgroundColor: '#f4f4f4'}}>
                 New Client
