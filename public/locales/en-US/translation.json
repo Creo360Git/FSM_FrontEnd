@@ -22,7 +22,8 @@
       "addInvoice": "Add Invoice",
       "addJob": "Add Job",
       "addRequest": "Add Request",
-      "addTrack": "Add Track"
+      "addTrack": "Add Track",
+      "newQuote": "New Quote"
     },
     "messages": {
       "noRecordsFound": "No records found !"
