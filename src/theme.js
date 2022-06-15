@@ -184,7 +184,7 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           width: "100%",
-          maxWidth: 430,
+          // maxWidth: 430,
           marginLeft: spacing,
           marginRight: spacing,
         },

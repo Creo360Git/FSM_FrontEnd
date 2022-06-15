@@ -6,11 +6,10 @@ import {
     TextField,
     alpha
 } from "@mui/material";
-import PropTypes from 'prop-types';
 
 
-const TableToolbar = (props) => {
-    const {toolBar} = props
+const CustomToolbar = (props) => {
+    const {toolBar, setRows, rows} = props
     const [values, setValues] = useState({})
     useEffect(()=>{
         const obj = toolBar.reduce((accumulator, value) => {
@@ -42,7 +41,7 @@ const TableToolbar = (props) => {
                             <Grid 
                                 item 
                                 lg={12/toolBar.length} 
-                                md={6} xs={12} 
+                                xs={toolBar.length > 3 ? 4 : 12/toolBar.length } 
                                 sx={{mt: {lg: 2, md: 1, xs: 1}, mb: {lg: 2, md: 1, xs: 1}}} 
                                 key={index}
                             >
@@ -69,5 +68,5 @@ const TableToolbar = (props) => {
         </Toolbar>
     );
 };
-export default TableToolbar
+export default CustomToolbar
 
