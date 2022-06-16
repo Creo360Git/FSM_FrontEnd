@@ -18,7 +18,7 @@ const AddNewButton = (props) => {
         variant="contained"
         component={Link}
         to={redirectPath}
-        // sx={{backgroundColor: theme.palette.primary.light}}
+        sx={{ textDecoration: "none" }}
         onClick={handleClick}
         startIcon={icon}
         {...rest}

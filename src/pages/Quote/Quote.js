@@ -5,9 +5,9 @@ import React, {
 import { makeStyles } from "@mui/styles";
 import { Grid, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
-import MoreOptionsMenu from "../components/Controls/MoreOptionsMenu";
-import AddNewButton from "../components/Controls/AddNewButton";
+import MuiDataTable from "../../components/Common/TabTable/MuiDataTable";
+import MoreOptionsMenu from "../../components/Controls/MoreOptionsMenu";
+import AddNewButton from "../../components/Controls/AddNewButton";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 const useStyles = makeStyles((theme) => ({
@@ -514,10 +514,8 @@ const Quote = ({ locations, types }) => {
     },
   ]);
 
-  const [openQuote, setOpenQuote] = useState(false);
-
   const handleOpen = () => {
-    setOpenQuote(true);
+    setIdValue(0);
   };
 
   const filterOptions = [
@@ -567,7 +565,7 @@ const Quote = ({ locations, types }) => {
         <Grid item md={7} xs={5}>
           <AddNewButton
             title={t("buttons.newQuote")}
-            handleClick={handleOpen}
+            redirectPath={"/quotes/newQuotes"}
             icon={<AddCircleIcon />}
           />
         </Grid>
