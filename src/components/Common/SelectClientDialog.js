@@ -32,7 +32,7 @@ const SelectClientDialog = ({show, setShow, setClient, theme, title ='request'})
     }
     return(
         <>
-            {open && <AddClient open={open} setOpen={setOpen} />}
+            {open && <AddClient open={open} setOpen={setOpen} setClientValue={setClient} />}
             <Dialog
                 onClose={handleClose}
                 open={show}
