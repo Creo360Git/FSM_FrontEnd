@@ -60,6 +60,83 @@ const Request = () => {
       Email: "f",
       Requested: "34",
     },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "34",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "9",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "10",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "11",
+    },
+    {
+      CustomerName: "e",
+      Title: " f",
+      Phone: "4534",
+      Email: "f",
+      Requested: "12",
+    },
   ]);
 
   const columns = [
@@ -109,14 +186,15 @@ const Request = () => {
       <AddNewButton title="Add new request" redirectPath={"/request/new"} />
       <MuiDataTable
         headers={columns}
-        data={rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
-        count={rows?.length || 0}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        setPage={setPage}
-        setRowsPerPage={setRowsPerPage}
-        onPageChange={handleChangePageWithoutPagination}
-        onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+        data={rows}
+        setData={setRows}
+        // count={rows?.length || 0}
+        // rowsPerPage={rowsPerPage}
+        // page={page}
+        // setPage={setPage}
+        // setRowsPerPage={setRowsPerPage}
+        // onPageChange={handleChangePageWithoutPagination}
+        // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
         isDownload={false}
         isPrint={false}
         toolBar={toolBar}

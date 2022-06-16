@@ -53,16 +53,17 @@ const MuiDataTable = (props) => {
   const {
     headers,
     data,
-    count,
-    rowsPerPage,
-    page,
-    setPage,
-    setRowsPerPage,
-    onPageChange,
-    onRowsPerPageChange,
+    // count,
+    // rowsPerPage,
+    // page,
+    // setPage,
+    // setRowsPerPage,
+    // onPageChange,
+    // onRowsPerPageChange,
     isDownload,
     isPrint,
     toolBar,
+    setData
   } = props;
 
   const classes = useStyles();
@@ -73,7 +74,20 @@ const MuiDataTable = (props) => {
 
   const isStandardUnit = false;
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage - 1);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(+event.target.value, 10));
+    setPage(0);
+  };
+
   const [columns, setColumns] = useState([]);
+  const [rows, setRows] = useState(data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
+  useEffect(()=>{setRows(data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))},[page, rowsPerPage,data])
 
   useEffect(() => {
     if (headers?.length > 0) {
@@ -108,7 +122,7 @@ const MuiDataTable = (props) => {
                       column?.fieldRenderType === "id"
                         ? clsx(classes.tableCol, classes.tableIdCol)
                         : column?.fieldRenderType === "expiryDate" &&
-                          moment(data[dataIndex]?.expiryDate).format(
+                          moment(rows[dataIndex]?.expiryDate).format(
                             "YYYY-MM-DD"
                           ) < moment().format("YYYY-MM-DD")
                         ? clsx(classes.tableCol, classes.tableDateCol)
@@ -116,13 +130,13 @@ const MuiDataTable = (props) => {
                     }
                     onClick={(e) => {
                       if (column?.idOnClick) {
-                        const id = String(data[dataIndex]?.id);
+                        const id = String(rows[dataIndex]?.id);
                         const bid = Buffer.from(id).toString("base64");
 
                         history.push({
                           pathname: `/${column?.idOnClick}/${bid}`,
-                          reservationId: data[dataIndex]?.id || 0,
-                          agreementId: data[dataIndex]?.id || 0,
+                          reservationId: rows[dataIndex]?.id || 0,
+                          agreementId: rows[dataIndex]?.id || 0,
                         });
                       }
                     }}
@@ -144,8 +158,8 @@ const MuiDataTable = (props) => {
                                     e,
                                     column.fieldRenderType ===
                                       "actionsExpiryDate"
-                                      ? data[dataIndex]
-                                      : data[dataIndex]?.id
+                                      ? rows[dataIndex]
+                                      : rows[dataIndex]?.id
                                   )
                               : () => {}
                           }
@@ -160,22 +174,22 @@ const MuiDataTable = (props) => {
                       ) ? (
                       <>
                         <div>
-                          {data[dataIndex]?.date
-                            ? formatDate(data[dataIndex]?.date) ||
+                          {rows[dataIndex]?.date
+                            ? formatDate(rows[dataIndex]?.date) ||
                               t("date", {
-                                value: Date.parse(data[dataIndex]?.date),
+                                value: Date.parse(rows[dataIndex]?.date),
                               })
                             : "-"}
                         </div>
                         {column?.fieldRenderType === "datetime" && (
                           <div>
-                            {data[dataIndex]?.date
+                            {rows[dataIndex]?.date
                               ? formatTime(
-                                  Date.parse(data[dataIndex]?.date),
+                                  Date.parse(rows[dataIndex]?.date),
                                   isStandardUnit
                                 ) ||
                                 t("time", {
-                                  value: Date.parse(data[dataIndex]?.date),
+                                  value: Date.parse(rows[dataIndex]?.date),
                                 })
                               : "-"}
                           </div>
@@ -183,20 +197,20 @@ const MuiDataTable = (props) => {
                       </>
                     ) : column?.fieldRenderType === "chip" ? (
                       <>
-                        {data[dataIndex]?.statusName ? (
+                        {rows[dataIndex]?.statusName ? (
                           <Chip
                             label={
-                              data[dataIndex]?.statusName &&
-                              formatText(data[dataIndex]?.statusName)
+                              rows[dataIndex]?.statusName &&
+                              formatText(rows[dataIndex]?.statusName)
                             }
                             variant="outlined"
                             style={{
                               width: "100%",
                               border: "none",
                               backgroundColor:
-                                data[dataIndex]?.statusName === "New"
+                                rows[dataIndex]?.statusName === "New"
                                   ? "#66a103"
-                                  : data[dataIndex]?.statusName === "Close"
+                                  : rows[dataIndex]?.statusName === "Close"
                                   ? "red"
                                   : "orange",
                               color: "#FFF",
@@ -207,7 +221,7 @@ const MuiDataTable = (props) => {
                         )}
                       </>
                     ) : (
-                      <>{eval(`data[dataIndex]?.${column.name}`) || "-"}</>
+                      <>{eval(`rows[dataIndex]?.${column.name}`) || "-"}</>
                     )}
                   </span>
                 );
@@ -223,8 +237,10 @@ const MuiDataTable = (props) => {
 
       setColumns(columnsData);
     }
-  }, [headers]);
+  }, [headers, rows]);
 
+
+  let count = data.length
   const options = {
     viewColumns: false,
     filter: false,
@@ -271,8 +287,8 @@ const MuiDataTable = (props) => {
               count={count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
-              onPageChange={onPageChange}
-              onRowsPerPageChange={onRowsPerPageChange}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
               classes={{
                 actions: classes.actions,
                 caption: classes.caption,
@@ -289,7 +305,7 @@ const MuiDataTable = (props) => {
                 count={Math.ceil((count || 0) / rowsPerPage)}
                 showFirstButton
                 showLastButton
-                onChange={onPageChange}
+                onChange={handleChangePage}
                 page={page + 1}
               />
             </TableCell>
@@ -308,8 +324,8 @@ const MuiDataTable = (props) => {
 
   return (
     <>
-      {toolBar?.length > 0 && <CustomToolbar toolBar={toolBar} />}
-      <MUIDataTable data={data || []} columns={columns} options={options} />
+      {toolBar?.length > 0 && <CustomToolbar toolBar={toolBar} rows={data} setRows={setRows} />}
+      <MUIDataTable data={rows || []} columns={columns} options={options} />
     </>
   );
 };
