@@ -9,7 +9,8 @@ import {
     Checkbox,
     FormGroup,
     ButtonGroup,
-    Button
+    Button,
+    useMediaQuery
 } from "@mui/material";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -18,11 +19,17 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useTheme } from "@emotion/react";
+import SelectClientDialog from "../../components/Request/SelectClientDialog";
 
 const NewRequest = () => {
     const theme = useTheme()
-    const defaultValues = {
+    const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
+    const [show, setShow]= useState(false)
+    const [client, setClient] = useState()
+    const handleOpen = () => setShow(true)
+    const defaultValues = {
+        scheduleLater: false
     }
 
     const validationSchema = yup.object().shape({
@@ -40,19 +47,51 @@ const NewRequest = () => {
         reset()
         console.log(values)
     }
+    const scheduleLaterCheckbox = watch("scheduleLater");
     return (
         <DashboardLayout heading="new Request">
+            <SelectClientDialog show={show} setShow={setShow} theme={theme} setClient={setClient} />
             <Container>
                 <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                    <Grid container spacing={2}alignItems="center" justify="center">
-                        <Grid xs={12} item >
-                            <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                Client Name
-                                <Fab size="small" color="primary" aria-label="add" sx={{ml: 2}}>
-                                    <AddIcon />
-                                </Fab>
-                            </Typography>
-                        </Grid>
+                    <Grid container spacing={2} alignItems="center" justify="center">
+                        {
+                            !!client ? 
+                            <>
+                                <Grid item xs={12}>
+                                    <Typography variant='h3' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                        {client?.name}
+                                    </Typography>
+                                </Grid>
+                                <Grid md={3} sm={5} xs={6} item>
+                                    <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                        Property adress
+                                    </Typography>
+                                    <Grid container item >
+                                        <Grid item xs={12}><Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>135/B  Garden State Ave , Mississauga,Ontario,L4T 0A5, </Typography></Grid> 
+                                    </Grid>
+                                </Grid>
+                                
+                                <Grid xs='auto' item>
+                                    <Typography variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                        Contact details
+                                    </Typography>
+                                    <Grid container item >
+                                        <Grid item xs={12}><Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>0777898734</Typography></Grid>
+                                        <Grid item xs={12}><Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular}}>snd89@gmail.com</Typography></Grid> 
+                                    </Grid>
+                                </Grid>
+                                
+                            </>
+                            :
+                            <Grid xs={12} item >
+                                <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                    Client Name
+                                    <Fab size="small" color="primary" aria-label="add" sx={{ml: 2}} onClick={handleOpen}>
+                                        <AddIcon />
+                                    </Fab>
+                                </Typography>
+                            </Grid>
+                        }
                         <Grid item xs={12}>
                             <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                 Request Title
@@ -171,6 +210,8 @@ const NewRequest = () => {
                                 type='text'
                                 fullWidth
                                 label='Instruction'
+                                multiline
+                                rows={4}
                                 variant="outlined"
                                 size="small"
                                 {...register("title")}
@@ -183,95 +224,80 @@ const NewRequest = () => {
                                 sx={{ml: 1}}
                                 control={
                                     <Checkbox 
-                                        {...register("IsPrimaryName")}
-                                        defaultChecked={defaultValues.IsPrimaryName}
+                                        {...register("scheduleLater")}
+                                        defaultChecked={defaultValues.scheduleLater}
                                         sx={{color:theme.palette.secondary.dark}}
                                     />
                                 }
                                 label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
                             />
                         </Grid>
-                        {/* <Stack 
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="flex-end"
-                            spacing={4}
-                            sx={{ml: 2}}
-                        > */}
-                        {/* <Grid container spacing={0} sx={{flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" }}}> */}
-                            {/* <Grid item md={6} xs={6}> */}
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='date'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
-                                        />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>Start Date</Typography>}
-                                />
-                            {/* </Grid>
-                            <Grid item md={6} xs={6}> */}
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    sx={{mr: {md: 18}}}
-                                    control={
-                                        <TextField
-                                            type='date'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
-                                        />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>End Date</Typography>}
-                                />
-                            {/* </Grid> */}
-                        {/* </Grid> */}
-                        {/* <Grid container spacing={0} sx={{flex: { xs: "100%", sm: "calc(50% - 20px)", md: "calc(33% - 20px)" } }}> */}
-                            {/* <Grid item md={6} xs={6}> */}
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='time'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
-                                        />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>Start Time</Typography>}
-                                />
-                            {/* </Grid>
-                            <Grid item md={6} xs={6}> */}
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='time'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
-                                        />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>End Time</Typography>}
-                                />
-                            {/* </Grid> */}
-                        {/* </Grid> */}
-                        {/* </Stack> */}
+                        { !scheduleLaterCheckbox && 
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                labelPlacement="top"
+                                control={
+                                    <TextField
+                                        type='date'
+                                        fullWidth
+                                        variant="outlined"
+                                        size="small"
+                                        {...register("title")}
+                                        error={!!errors.title}
+                                        helperText={errors.title?.message}
+                                    />
+                                }
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>Start Date</Typography>}
+                            />
+                           
+                            <FormControlLabel
+                                labelPlacement="top"
+                                control={
+                                    <TextField
+                                        type='date'
+                                        fullWidth
+                                        variant="outlined"
+                                        size="small"
+                                        {...register("title")}
+                                        error={!!errors.title}
+                                        helperText={errors.title?.message}
+                                    />
+                                }
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>End Date</Typography>}
+                            />
+                            <FormControlLabel
+                                labelPlacement="top"
+                                control={
+                                    <TextField
+                                        type='time'
+                                        fullWidth
+                                        variant="outlined"
+                                        size="small"
+                                        {...register("title")}
+                                        error={!!errors.title}
+                                        helperText={errors.title?.message}
+                                    />
+                                }
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>Start Time</Typography>}
+                            />
+                            
+                            <FormControlLabel
+                                labelPlacement="top"
+                                control={
+                                    <TextField
+                                        type='time'
+                                        fullWidth
+                                        variant="outlined"
+                                        size="small"
+                                        {...register("title")}
+                                        error={!!errors.title}
+                                        helperText={errors.title?.message}
+                                    />
+                                }
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>End Time</Typography>}
+                            />
+                        </Grid>
+                        }
                         <Grid item xs={12}>
                             <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
                                 Notes & Attachments
@@ -291,17 +317,28 @@ const NewRequest = () => {
                                 helperText={errors.title?.message}
                             />
                         </Grid>
-                        <Grid xs={12} item>
-                            <Stack direction='row' alignItems='flex-end' justifyContent="space-between" spacing={2}>
-                                <ButtonGroup size="large" aria-label="large button group">
-                                    <Button key="one" sx={{textTransform: 'uppercase'}}>Cancel</Button>
-                                </ButtonGroup>
-                                <ButtonGroup size="large" aria-label="large button group"> 
-                                    <Button key="two" sx={{textTransform: 'uppercase'}}>Save Request</Button>
-                                    <Button variant='contained' key="three" sx={{textTransform: 'uppercase'}}>Save And ...</Button>
-                                </ButtonGroup>
-                            </Stack>
-                        </Grid>
+                        {
+                            isDownSm ? 
+                            <Grid xs={12} item>
+                                <Stack direction={{md:'row', xs:'column'}} alignItems={{md:'flex-end', xs:'stretch'}} justifyContent={{md:"space-between", xs:'flex-start'}} spacing={2}>
+                                    <Button variant='contained' key="three" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save And ...</Button>
+                                    <Button variant='outlined' key="two" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save Request</Button>
+                                    <Button variant='outlined' key="one" sx={{textTransform: 'uppercase', height: {xs:'42.5px'},width:'100%', overflow: 'hidden', display: "block"}}>Cancel</Button>
+                                </Stack>
+                            </Grid>
+                            :
+                            <Grid xs={12} item>
+                                <Stack direction='row' alignItems='flex-end' justifyContent="space-between" spacing={2}>
+                                    <ButtonGroup size="large" aria-label="large button group">
+                                        <Button key="one" sx={{textTransform: 'uppercase', height: {xs:'42.5px'},width:'100%', overflow: 'hidden', display: "block"}}>Cancel</Button>
+                                    </ButtonGroup>
+                                    <ButtonGroup size="large" aria-label="large button group"> 
+                                        <Button variant='outlined' key="two" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save Request</Button>
+                                        <Button variant='contained' key="three" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save And ...</Button>
+                                    </ButtonGroup>
+                                </Stack>
+                            </Grid>
+                        }
                     </Grid>
                 </form>
             </Container>
