@@ -54,32 +54,18 @@ const Clients = () => {
 
   const [rows, setRows] = useState([
     {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
+      CustomerName: 'e1',
+      Address:" f",
+      Phone: '245345',
+      Email: 'f',
+      carbs: 'g'
     },
     {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
+      CustomerName: 'e2',
+      Address:" f",
+      Phone: '657678',
+      Email: 'f',
+      carbs: 'g'
     },
     {
       CustomerName: "e",
@@ -117,41 +103,57 @@ const Clients = () => {
       carbs: "g",
     },
     {
-      CustomerName: "e10",
+      CustomerName: "e",
       Address: " f",
       Phone: "657678",
       Email: "f",
       carbs: "g",
     },
     {
-      CustomerName: "e11",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
+
+      CustomerName: 'e9',
+      Address:" f",
+      Phone: '245345',
+      Email: 'f',
+      carbs: 'g'
     },
     {
-      CustomerName: "e12",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
+      CustomerName: 'e10',
+      Address:" f",
+      Phone: '657678',
+      Email: 'f',
+      carbs: 'g'
     },
     {
-      CustomerName: "e13",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
+      CustomerName: 'e11',
+      Address:" f",
+      Phone: '245345',
+      Email: 'f',
+      carbs: 'g'
     },
     {
-      CustomerName: "e14",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "gre",
+      CustomerName: 'e12',
+      Address:" f",
+      Phone: '657678',
+      Email: 'f',
+      carbs: 'g'
     },
-  ]);
+    {
+      CustomerName: 'e13',
+      Address:" f",
+      Phone: '245345',
+      Email: 'f',
+      carbs: 'g'
+    },
+    {
+      CustomerName: 'e14',
+      Address:" f",
+      Phone: '657678',
+      Email: 'f',
+      carbs: 'g'
+    }
+  ])
+  
 
   const columns = [
     {

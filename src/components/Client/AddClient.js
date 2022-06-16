@@ -23,7 +23,7 @@ import { useTheme } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-const AddClient = ({open, setOpen}) => {
+const AddClient = ({open, setOpen, setClientValue}) => {
     const theme = useTheme()
     const [type, setType] = useState([
         {TypeId: 1, Module: 'phone', Type: 'main'},
@@ -136,11 +136,13 @@ const AddClient = ({open, setOpen}) => {
     const { fields: emailFields, append: emailAppend, remove: emailRemove } = useFieldArray({control, name: 'EmailList'});
 
     const onSubmit = (values) => {
-        const data = {...values, CustomerName: values.FirstName+ ' ' + values.LastName}
+        const data = {...values, CustomerName: values.FirstName+ ' ' + values.LastName, name:  values.FirstName+ ' ' + values.LastName}
         delete(data['FirstName'])
         delete(data['LastName'])
-        reset()
-        console.log(data)
+        handleClose()
+        if(typeof setClientValue === 'function') {
+            setClientValue(data)
+        }
     }
     const checkboxForBilling = watch("IsBillingAddress");
 
