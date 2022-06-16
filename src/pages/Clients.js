@@ -40,17 +40,17 @@ const toolBar = [
 ];
 
 const Clients = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleChangePageWithoutPagination = (event, newPage) => {
-    setPage(newPage - 1);
-  };
+  // const handleChangePageWithoutPagination = (event, newPage) => {
+  //   setPage(newPage - 1);
+  // };
 
-  const handleChangeRowsPerPageWithoutPagination = (event) => {
-    setRowsPerPage(parseInt(+event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPageWithoutPagination = (event) => {
+  //   setRowsPerPage(parseInt(+event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const [rows, setRows] = useState([
     {
@@ -147,10 +147,10 @@ const Clients = () => {
     },
     {
       CustomerName: 'e14',
-      Address:" f",
+      Address:" f14",
       Phone: '657678',
       Email: 'f',
-      carbs: 'g'
+      carbs: 'g14'
     }
   ])
   
@@ -192,7 +192,7 @@ const Clients = () => {
     },
     {
       name: "carbs",
-      label: "status",
+      label: "status"
     },
   ];
 
@@ -208,14 +208,16 @@ const Clients = () => {
       <AddNewButton title="Add new client" handleClick={handleOpen} />
       <MuiDataTable
         headers={columns}
-        data={rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
-        count={rows?.length || 0}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        setPage={setPage}
-        setRowsPerPage={setRowsPerPage}
-        onPageChange={handleChangePageWithoutPagination}
-        onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+        // data={rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+        data={rows}
+        setData={setRows}
+        // count={rows?.length || 0}
+        // rowsPerPage={rowsPerPage}
+        // page={page}
+        // setPage={setPage}
+        // setRowsPerPage={setRowsPerPage}
+        // onPageChange={handleChangePageWithoutPagination}
+        // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
         isDownload={false}
         isPrint={false}
         toolBar={toolBar}

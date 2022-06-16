@@ -583,17 +583,15 @@ const Quote = ({ locations, types }) => {
         <Grid item xs={12}>
           <MuiDataTable
             headers={headCells}
-            data={quotes?.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            )}
-            count={quotes?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-            onPageChange={handleChangePageWithoutPagination}
-            onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+            data={quotes}
+            setData={setQuotes}
+            // count={quotes?.length || 0}
+            // rowsPerPage={rowsPerPage}
+            // page={page}
+            // setPage={setPage}
+            // setRowsPerPage={setRowsPerPage}
+            // onPageChange={handleChangePageWithoutPagination}
+            // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
             isDownload={false}
             isPrint={false}
             toolBar={toolBar}
