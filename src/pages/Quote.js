@@ -187,6 +187,8 @@ const Quote = ({ locations, types }) => {
     },
   ];
 
+
+
   const [openQuote, setOpenQuote] = useState(false);
 
   const handleOpen = () => {

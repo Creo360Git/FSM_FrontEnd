@@ -60,7 +60,7 @@ const MuiDataTable = (props) => {
     // onPageChange,
     // onRowsPerPageChange,
     isDownload,
-    isPrint,
+    isPrint
   } = props;
 
   const classes = useStyles();

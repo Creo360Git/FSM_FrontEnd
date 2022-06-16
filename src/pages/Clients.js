@@ -5,7 +5,6 @@ import DashboardLayout from "../components/Common/Layouts/DashboardLayout";
 import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 
-
 const filterOptions = [
   { label: "All", value: "All" },
   { label: "Leads and Active", value: "Leads and Active" },
@@ -144,45 +143,47 @@ const Clients = () => {
     }
   ])
   
-const columns = [
-  {
-    name: "CustomerName",
-    label: "lead",
-    options:{
-      customBodyRender:(value, tableMeta) => {
-      return (
-        <div key={tableMeta.rowIndex}>
-            <Typography sx={{color: 'black'}}>{"#" + (tableMeta.rowIndex + 1).toString()}</Typography>
-            {value}
-        </div>
-      );
-      }
-    },
-  },
-  {
-    name: "Address",
-    label: "address",
-  },
-  {
-    name: "Phone",
-    label: "contact details",
-    options: {
-      customBodyRender: (value, tableMeta, updateValue) => {
+
+
+  const columns = [
+    {
+      name: "CustomerName",
+      label: "lead",
+      options:{
+        customBodyRender:(value, tableMeta) => {
         return (
-          <div>
-            {rows[tableMeta.rowIndex].Email} <br/>
-            {value}
+          <div key={tableMeta.rowIndex}>
+              <Typography sx={{color: 'black'}}>{"#" + (tableMeta.rowIndex + 1).toString()}</Typography>
+              {value}
           </div>
         );
+        }
+      },
+    },
+    {
+      name: "Address",
+      label: "address",
+    },
+    {
+      name: "Phone",
+      label: "contact details",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <div>
+              {rows[tableMeta.rowIndex].Email} <br/>
+              {value}
+            </div>
+          );
+        }
       }
-    }
-  },
-  {
-    name: "carbs",
-    label: "status",
-  },
-];
-  
+    },
+    {
+      name: "carbs",
+      label: "status",
+    },
+  ];
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
