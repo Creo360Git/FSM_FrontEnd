@@ -98,7 +98,7 @@ const Visits = () => {
     },
   ];
 
-  const rows = [
+  const [rows, setRows] = useState([
     {
       id: 1287,
       number: null,
@@ -267,13 +267,13 @@ const Visits = () => {
       endDateStr: null,
       vehicleNumber: null,
       date: "2021-11-23T09:00:00",
-      notes: "qwa",
+      notes: "qgga",
       status: 1,
-      statusName: "New",
-      assignee: "GFR",
-      priorityStr: "Medium",
+      statusName: "Newt",
+      assignee: "GR",
+      priorityStr: "Mediumet",
     },
-  ];
+  ]);
 
   return (
     <Grid
@@ -285,7 +285,10 @@ const Visits = () => {
       <Grid item xs={12}>
         <MuiDataTable
           headers={headCells}
-          data={rows}
+          data={rows?.slice(
+            page * rowsPerPage,
+            page * rowsPerPage + rowsPerPage
+          )}
           count={rows?.length || 0}
           rowsPerPage={rowsPerPage}
           page={page}
