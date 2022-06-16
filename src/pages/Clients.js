@@ -40,9 +40,19 @@ const toolBar = [
 ];
 
 const Clients = () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const handleChangePageWithoutPagination = (event, newPage) => {
+    setPage(newPage - 1);
+  };
 
-  const [rows, setRows]= useState([
+  const handleChangeRowsPerPageWithoutPagination = (event) => {
+    setRowsPerPage(parseInt(+event.target.value, 10));
+    setPage(0);
+  };
+
+  const [rows, setRows] = useState([
     {
       CustomerName: 'e1',
       Address:" f",
@@ -58,48 +68,49 @@ const Clients = () => {
       carbs: 'g'
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "245345",
+      Email: "f",
+      carbs: "g",
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "657678",
+      Email: "f",
+      carbs: "g",
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "245345",
+      Email: "f",
+      carbs: "g",
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "657678",
+      Email: "f",
+      carbs: "g",
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "245345",
+      Email: "f",
+      carbs: "g",
     },
     {
-      CustomerName: 'e',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
+      CustomerName: "e",
+      Address: " f",
+      Phone: "657678",
+      Email: "f",
+      carbs: "g",
     },
     {
+
       CustomerName: 'e9',
       Address:" f",
       Phone: '245345',
@@ -144,20 +155,21 @@ const Clients = () => {
   ])
   
 
-
   const columns = [
     {
       name: "CustomerName",
       label: "lead",
-      options:{
-        customBodyRender:(value, tableMeta) => {
-        return (
-          <div key={tableMeta.rowIndex}>
-              <Typography sx={{color: 'black'}}>{"#" + (tableMeta.rowIndex + 1).toString()}</Typography>
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          return (
+            <div key={tableMeta.rowIndex}>
+              <Typography sx={{ color: "black" }}>
+                {"#" + (tableMeta.rowIndex + 1).toString()}
+              </Typography>
               {value}
-          </div>
-        );
-        }
+            </div>
+          );
+        },
       },
     },
     {
@@ -171,12 +183,12 @@ const Clients = () => {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>
-              {rows[tableMeta.rowIndex].Email} <br/>
+              {rows[tableMeta.rowIndex].Email} <br />
               {value}
             </div>
           );
-        }
-      }
+        },
+      },
     },
     {
       name: "carbs",
@@ -191,16 +203,24 @@ const Clients = () => {
 
   return (
     <DashboardLayout heading="Clients">
-    	{open && <AddClient open={open} setOpen={setOpen} />}
-		{/* <Container> */}
-			<AddNewButton title="Add new client" handleClick={handleOpen} />
-			<MuiDataTable 
-				headers={columns} 
-				data={rows} 
-				setData={setRows} 
-				toolBar={toolBar} 
-			/>
-		{/* </Container> */}
+      {open && <AddClient open={open} setOpen={setOpen} />}
+      {/* <Container> */}
+      <AddNewButton title="Add new client" handleClick={handleOpen} />
+      <MuiDataTable
+        headers={columns}
+        data={rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+        count={rows?.length || 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
+        onPageChange={handleChangePageWithoutPagination}
+        onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+        isDownload={false}
+        isPrint={false}
+        toolBar={toolBar}
+      />
+      {/* </Container> */}
     </DashboardLayout>
   );
 };

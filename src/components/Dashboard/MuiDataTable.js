@@ -312,9 +312,7 @@ const MuiDataTable = (props) => {
           {t("tableHeadings.visits")}
         </Typography>
       }
-      data={
-        data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
-      }
+      data={data || []}
       columns={columns}
       options={options}
     />
