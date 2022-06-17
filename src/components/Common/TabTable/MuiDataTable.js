@@ -49,7 +49,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MuiDataTable = (props) => {
-  const { headers, data, isDownload, isPrint, toolBar, setData } = props;
+  const {
+    headers,
+    data,
+    rowsPerPageOptions = [10, 20, 30],
+    isDownload,
+    isPrint,
+    toolBar,
+    setData,
+  } = props;
 
   const classes = useStyles();
 
@@ -61,7 +69,7 @@ const MuiDataTable = (props) => {
 
   const [page, setPage] = useState(0);
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage - 1);
@@ -243,7 +251,7 @@ const MuiDataTable = (props) => {
     print: isPrint || false,
     count: count || 0,
     rowsPerpage: rowsPerPage,
-    rowsPerPageOptions: [10, 20, 30],
+    rowsPerPageOptions: rowsPerPageOptions,
     selectableRowsHideCheckboxes: false,
     selectableRows: "none",
     selectableRowsHeader: false,
@@ -277,7 +285,7 @@ const MuiDataTable = (props) => {
             }}
           >
             <TablePagination
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={rowsPerPageOptions}
               count={count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
