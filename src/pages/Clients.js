@@ -203,26 +203,18 @@ const Clients = () => {
 
   return (
     <DashboardLayout heading="Clients">
-      {open && <AddClient open={open} setOpen={setOpen} />}
-      {/* <Container> */}
-      <AddNewButton title="Add new client" handleClick={handleOpen} />
-      <MuiDataTable
-        headers={columns}
-        // data={rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
-        data={rows}
-        setData={setRows}
-        // count={rows?.length || 0}
-        // rowsPerPage={rowsPerPage}
-        // page={page}
-        // setPage={setPage}
-        // setRowsPerPage={setRowsPerPage}
-        // onPageChange={handleChangePageWithoutPagination}
-        // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
-        isDownload={false}
-        isPrint={false}
-        toolBar={toolBar}
-      />
-      {/* </Container> */}
+        {open && <AddClient open={open} setOpen={setOpen} />}
+        {/* <Container> */}
+        <AddNewButton title="Add new client" handleClick={handleOpen} />
+        <MuiDataTable
+            headers={columns}
+            data={rows}
+            setData={setRows}
+            isDownload={false}
+            isPrint={false}
+            toolBar={toolBar}
+        />
+        {/* </Container> */}
     </DashboardLayout>
   );
 };

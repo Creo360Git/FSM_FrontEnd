@@ -11,6 +11,7 @@ const Client = lazy(() => import("./pages/Clients"));
 const Quote = lazy(() => import("./pages/Quote"));
 const Request = lazy(() => import("./pages/Request/Request"));
 const NewRequest = lazy(() => import("./pages/Request/NewRequest"));
+const Schedule = lazy(() => import("./pages/Schedule"));
 
 const Router = () => (
   <Routes>
@@ -24,6 +25,7 @@ const Router = () => (
     <Route path="/quotes" element={<Quote />} />
     <Route path="/request" element={<Request />} />
     <Route path="/request/new" element={<NewRequest />} />
+    <Route path="/schedule" element={<Schedule/>} />
 
     <Route path="/" element={<Dashboard />} />
 
