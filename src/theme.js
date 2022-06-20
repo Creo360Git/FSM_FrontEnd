@@ -184,7 +184,7 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           width: "100%",
-          maxWidth: 430,
+          // maxWidth: 430,
           marginLeft: spacing,
           marginRight: spacing,
         },
@@ -204,11 +204,16 @@ const theme = createTheme({
     MuiDropzoneArea: {
       styleOverrides: {
         root: {
-          color: "#808080",
+          color: "#050d33",
           border: `2px solid ${borderColor}`,
         },
         icon: {
           color: "#050d33",
+          fontSize: "3rem !important",
+        },
+        text: {
+          padding: "3rem",
+          fontSize: "1.1rem !important",
         },
       },
     },
@@ -344,6 +349,7 @@ const theme = createTheme({
       styleOverrides: {
         fixedHeader: {
           color: "#fff",
+          textTransform: "uppercase",
           backgroundColor: "#457CCE",
           "@media print": {
             color: "#000  !important",

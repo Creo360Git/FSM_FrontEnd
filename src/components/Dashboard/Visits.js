@@ -2,19 +2,11 @@ import React, {
   useState,
   // useContext, useEffect,
 } from "react";
-import {
-  Grid,
-  useTheme,
-  Menu,
-  MenuItem,
-  Box,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
-import { styled } from "@mui/styles";
+import { Grid, useTheme } from "@mui/material";
 // import { AuthContext } from "../../auth/AuthProvider";
 // import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import MoreOptionsMenu from "../Controls/MoreOptionsMenu";
 import MuiDataTable from "./MuiDataTable";
 
 const Visits = () => {
@@ -44,76 +36,16 @@ const Visits = () => {
 
   const menuItems = [
     {
-      label: "update",
+      label: "Update",
       //   onClick: handleClickOpen,
       color: theme.palette.primary.main,
     },
     {
-      label: "delete",
+      label: "Delete",
       //   onClick: handleClickOpenDeleteConfirm,
       color: "#FF0000",
     },
   ];
-
-  const StyledMenu = styled((props) => (
-    <Menu
-      elevation={0}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "center",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
-      {...props}
-    />
-  ))(() => ({
-    "& .MuiPaper-root": {
-      borderRadius: 2,
-      boxShadow:
-        "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
-
-      "&:hover": {
-        boxShadow:
-          "0px 3px 1px -1px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
-      },
-    },
-  }));
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-  };
-
-  // const MoreOptionsMenu = () => {
-  //   return (
-  //     <StyledMenu
-  //       id="long-menu"
-  //       anchorEl={anchorEl}
-  //       keepMounted
-  //       open={Boolean(anchorEl)}
-  //       onClose={closeMenu}
-  //       PaperProps={{
-  //         style: {
-  //           minWidth: "10rem",
-  //         },
-  //       }}
-  //       style={{ borderRadius: 20 }}
-  //     >
-  //       {menuItems.map((menuItem, i) => (
-  //         <MenuItem
-  //           key={i}
-  //           // onClick={menuItem.onClick}
-  //           style={{
-  //             color: menuItem.color,
-  //           }}
-  //         >
-  //           {menuItem.label}
-  //         </MenuItem>
-  //       ))}
-  //     </StyledMenu>
-  //   );
-  // };
 
   const headCells = [
     {
@@ -156,37 +88,11 @@ const Visits = () => {
       actionsOnClick: (event, id) => {
         handleClickOpenMoreOption(event, id);
       },
-      actionsChildren: (
-        <StyledMenu
-          id="long-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={closeMenu}
-          PaperProps={{
-            style: {
-              minWidth: "10rem",
-            },
-          }}
-          style={{ borderRadius: 20 }}
-        >
-          {menuItems.map((menuItem, i) => (
-            <MenuItem
-              key={i}
-              // onClick={menuItem.onClick}
-              style={{
-                color: menuItem.color,
-              }}
-            >
-              {menuItem.label}
-            </MenuItem>
-          ))}
-        </StyledMenu>
-      ),
+      actionsChildren: MoreOptionsMenu(menuItems, anchorEl, setAnchorEl),
     },
   ];
 
-  const rows = [
+  const [rows, setRows] = useState([
     {
       id: 1287,
       number: null,
@@ -327,7 +233,41 @@ const Visits = () => {
       referenceType: 3,
       priorityStr: "Medium",
     },
-  ];
+    {
+      id: 1326,
+      number: null,
+      idStr: "1326",
+      name: "GRE",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T09:00:00",
+      notes: "QWA",
+      status: 1,
+      statusName: "New",
+      assignee: "EWQ",
+      priorityStr: "Medium",
+    },
+    {
+      id: 1327,
+      number: null,
+      idStr: "1327",
+      name: "AMY",
+      startDate: null,
+      startDateStr: null,
+      endDate: null,
+      endDateStr: null,
+      vehicleNumber: null,
+      date: "2021-11-23T09:00:00",
+      notes: "qgga",
+      status: 1,
+      statusName: "Newt",
+      assignee: "GR",
+      priorityStr: "Mediumet",
+    },
+  ]);
 
   return (
     <Grid
@@ -337,33 +277,22 @@ const Visits = () => {
       }}
     >
       <Grid item xs={12}>
-        {rows?.length > 0 ? (
-          <MuiDataTable
-            headers={headCells}
-            data={rows}
-            count={rows?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
-            onPageChange={handleChangePageWithoutPagination}
-            onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
-            isDownload={true}
-            isPrint={true}
-          />
-        ) : rows?.length === 0 ? (
-          <Box width="100%" display="flex" justifyContent="center" p={2}>
-            <Typography variant="h2" color="primary" align="center">
-              {t("messages.noRecordsFound")}
-            </Typography>
-          </Box>
-        ) : (
-          <Box width="100%" display="flex" justifyContent="center" p={2}>
-            <Typography variant="h2" color="primary" align="center">
-              <CircularProgress color="secondary" disableShrink size={30} />
-            </Typography>
-          </Box>
-        )}
+        <MuiDataTable
+          headers={headCells}
+          data={rows?.slice(
+            page * rowsPerPage,
+            page * rowsPerPage + rowsPerPage
+          )}
+          count={rows?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          setPage={setPage}
+          setRowsPerPage={setRowsPerPage}
+          onPageChange={handleChangePageWithoutPagination}
+          onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
+          isDownload={true}
+          isPrint={true}
+        />
       </Grid>
     </Grid>
   );

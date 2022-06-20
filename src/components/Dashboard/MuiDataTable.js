@@ -6,9 +6,13 @@ import {
   IconButton,
   TablePagination,
   Typography,
+  Pagination,
+  TableFooter,
+  TableRow,
+  TableCell,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import Pagination from "@mui/material/Pagination";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import clsx from "clsx";
 import moment from "moment";
@@ -135,8 +139,7 @@ const MuiDataTable = (props) => {
                                   e,
                                   column.fieldRenderType === "actionsExpiryDate"
                                     ? data[dataIndex]
-                                    : data[dataIndex]?.id,
-                                  data[dataIndex]?.assignedTo
+                                    : data[dataIndex]?.id
                                 )
                             : () => {}
                         }
@@ -216,13 +219,13 @@ const MuiDataTable = (props) => {
   const options = {
     viewColumns: false,
     filter: false,
-    responsive: "stacked",
+    responsive: "vertical",
     download: isDownload || false,
     serverSide: true,
     print: isPrint || false,
     count: count || 0,
     rowsPerpage: rowsPerPage,
-    rowsPerPageOptions: [10, 20, 30],
+    rowsPerPageOptions: [5, 10, 20],
     selectableRowsHideCheckboxes: false,
     selectableRows: "none",
     selectableRowsHeader: false,
@@ -230,38 +233,50 @@ const MuiDataTable = (props) => {
     search: false,
     pagination: false,
     sort: false,
+    textLabels: {
+      body: {
+        noMatch:
+          data?.length === 0 ? (
+            <Typography variant="h3" color="primary" align="center">
+              {t("messages.noRecordsFound")}
+            </Typography>
+          ) : (
+            <Typography variant="h2" color="primary" align="center">
+              <CircularProgress color="secondary" disableShrink size={30} />
+            </Typography>
+          ),
+      },
+    },
     customFooter: () => {
       return (
-        <div>
-          {count > 0 && (
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              bgcolor={"#FFF"}
-              style={{
-                borderBottomLeftRadius: "5px",
-                borderBottomRightRadius: "5px",
+        <TableFooter>
+          <TableRow
+            style={{
+              borderBottomLeftRadius: "5px",
+              borderBottomRightRadius: "5px",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 20]}
+              count={count || 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={onPageChange}
+              onRowsPerPageChange={onRowsPerPageChange}
+              classes={{
+                actions: classes.actions,
+                caption: classes.caption,
+                input: classes.input,
               }}
-            >
-              <TablePagination
-                rowsPerPageOptions={[10, 20, 30]}
-                component="div"
-                count={count || 0}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={onPageChange}
-                onRowsPerPageChange={onRowsPerPageChange}
-                classes={{
-                  actions: classes.actions,
-                  caption: classes.caption,
-                  input: classes.input,
-                }}
-                style={{ padding: 0 }}
-                SelectProps={{
-                  native: true,
-                }}
-              />
+              style={{ padding: 6 }}
+              SelectProps={{
+                native: true,
+              }}
+            />
+
+            <TableCell>
               <Pagination
                 count={Math.ceil((count || 0) / rowsPerPage)}
                 showFirstButton
@@ -269,9 +284,9 @@ const MuiDataTable = (props) => {
                 onChange={onPageChange}
                 page={page + 1}
               />
-            </Box>
-          )}
-        </div>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
       );
     },
     onChangeRowsPerPage: (numberOfRows) => {
@@ -281,12 +296,6 @@ const MuiDataTable = (props) => {
     onChangePage: (currentPage) => {
       setPage(currentPage);
     },
-    // onTableChange: (action, tableState) => {
-    //   switch (action) {
-    //     default:
-    //       break;
-    //   }
-    // },
   };
 
   return (
@@ -304,9 +313,8 @@ const MuiDataTable = (props) => {
           {t("tableHeadings.visits")}
         </Typography>
       }
-      data={
-        data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
-      }
+      key={data}
+      data={data || []}
       columns={columns}
       options={options}
     />
