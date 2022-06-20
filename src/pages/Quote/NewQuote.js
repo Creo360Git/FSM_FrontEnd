@@ -7,6 +7,7 @@ import { Grid, Typography, useTheme, IconButton, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Link } from "react-router-dom";
+import QuoteForm from "../../components/Quote/QuoteForm";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -93,15 +94,7 @@ const NewQuote = () => {
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        spacing={3}
-        style={{
-          marginTop: theme.spacing(3),
-        }}
-      >
-        <Grid item xs={12}></Grid>
-      </Grid>
+      <QuoteForm />
     </main>
   );
 };

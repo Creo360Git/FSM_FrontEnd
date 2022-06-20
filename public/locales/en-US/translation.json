@@ -23,20 +23,22 @@
       "addJob": "Add Job",
       "addRequest": "Add Request",
       "addTrack": "Add Track",
-      "newQuote": "New Quote"
+      "newQuote": "New Quote",
+      "save": "Save"
     },
     "messages": {
-      "noRecordsFound": "No records found !"
+      "noRecordsFound": "No records found !",
+      "required": "Required"
     },
     "admin": {
     },
     "headings": {
-    "dashboard": "Dashboard",
-    "revenue": "Revenue",
-    "quotation": "Quotation",
-    "upcomingJobs": "Upcoming Jobs",
-    "invoicePastDue": "Invoice Past Due",
-    "quotes": "Quotes"
+      "dashboard": "Dashboard",
+      "revenue": "Revenue",
+      "quotation": "Quotation",
+      "upcomingJobs": "Upcoming Jobs",
+      "invoicePastDue": "Invoice Past Due",
+      "quotes": "Quotes"
     },
     "tableHeadings": {
       "visits": "Visits",
@@ -59,7 +61,8 @@
       "approvedJobs": "Approved Jobs",
       "paidInvoice": "Paid Invoice",
       "seeMore": "See More",
-      "rowsPerPage": "Rows per Page"
+      "rowsPerPage": "Rows per Page",
+      "dropZoneLabel": "Drag your file here or Select A File"
     },
     "adminToolTips": {
       
