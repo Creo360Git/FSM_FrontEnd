@@ -294,7 +294,7 @@ const NewQuote = () => {
                 ]}
                 maxFileSize={5000000}
                 dropzoneText={t("labels.dropZoneLabel")}
-                onChange={(image) => setDocument(image)}
+                onChange={(file) => setDocument(file)}
                 getPreviewIcon={handlePreviewIcon}
               />
             </Grid>

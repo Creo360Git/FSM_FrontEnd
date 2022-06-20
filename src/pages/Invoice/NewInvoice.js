@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewQuote = () => {
+const NewInvoice = () => {
   const classes = useStyles();
 
   const theme = useTheme();
@@ -69,7 +69,7 @@ const NewQuote = () => {
                     color="primary"
                     className={`${classes.buttonSmall} ${classes.links}`}
                     component={Link}
-                    to={"/quotes"}
+                    to={"/invoice"}
                   >
                     <ArrowBackIosNewIcon />
                   </IconButton>
@@ -87,7 +87,7 @@ const NewQuote = () => {
                   width: 240,
                 }}
               >
-                {t("headings.newQuote")}
+                {t("headings.newInvoice")}
               </Typography>
             </Grid>
           </Grid>
@@ -99,4 +99,4 @@ const NewQuote = () => {
   );
 };
 
-export default NewQuote;
+export default NewInvoice;

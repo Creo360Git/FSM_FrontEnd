@@ -24,7 +24,8 @@
       "addRequest": "Add Request",
       "addTrack": "Add Track",
       "newQuote": "New Quote",
-      "save": "Save"
+      "save": "Save",
+      "newInvoice": "New Invoice"
     },
     "messages": {
       "noRecordsFound": "No records found !",
@@ -38,7 +39,10 @@
       "quotation": "Quotation",
       "upcomingJobs": "Upcoming Jobs",
       "invoicePastDue": "Invoice Past Due",
-      "quotes": "Quotes"
+      "quotes": "Quotes",
+      "invoice": "Invoice",
+      "newQuote": "New Quote",
+      "newInvoice": "New Invoice"
     },
     "tableHeadings": {
       "visits": "Visits",
