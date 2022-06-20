@@ -7,7 +7,7 @@ import { Grid, Typography, useTheme, IconButton, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Link } from "react-router-dom";
-import QuoteForm from "../../components/Quote/QuoteForm";
+import InvoiceForm from "../../components/Invoice/InvoiceForm";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -94,7 +94,7 @@ const NewInvoice = () => {
         </Grid>
       </Grid>
 
-      <QuoteForm />
+      <InvoiceForm />
     </main>
   );
 };

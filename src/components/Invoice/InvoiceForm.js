@@ -19,15 +19,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SelectClientDialog from "../Common/SelectClientDialog";
-import AddIcon from "@mui/icons-material/Add";
 import { DropzoneArea } from "react-mui-dropzone";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import AddProduct from "./AddProduct";
+import AddProduct from "../Quote/AddProduct";
 import { Box } from "@mui/system";
 import MoreOptionsMenu from "../Controls/MoreOptionsMenu";
 
-const NewQuote = () => {
+const InvoiceForm = () => {
   const theme = useTheme();
 
   const matchSmDown = useMediaQuery(theme.breakpoints.down("sm"));
@@ -164,90 +162,68 @@ const NewQuote = () => {
           style={{ width: "100%" }}
         >
           <Grid container item spacing={3} alignItems="center" justify="center">
-            {!!client ? (
-              <>
+            <Grid item xs={12}>
+              <Typography
+                variant="h2"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Invoice for SND pvt
+              </Typography>
+            </Grid>
+            <Grid md={3} sm={5} xs={6} item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Property adress
+              </Typography>
+              <Grid container item>
                 <Grid item xs={12}>
                   <Typography
-                    variant="h3"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    {client?.name}
-                  </Typography>
-                </Grid>
-                <Grid md={3} sm={5} xs={6} item>
-                  <Typography
                     variant="h5"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
                   >
-                    Property adress
+                    135/B Garden State Ave , Mississauga,Ontario,L4T 0A5,{" "}
                   </Typography>
-                  <Grid container item>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        135/B Garden State Ave , Mississauga,Ontario,L4T 0A5,{" "}
-                      </Typography>
-                    </Grid>
-                  </Grid>
                 </Grid>
-
-                <Grid xs="auto" item>
-                  <Typography
-                    variant="h5"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    Contact details
-                  </Typography>
-                  <Grid container item>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        0777898734
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        snd89@gmail.com
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </>
-            ) : (
-              <Grid xs={12} item>
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: theme.typography.fontWeightBold }}
-                >
-                  {t("labels.clientName")}
-                  <Fab
-                    size="small"
-                    color="primary"
-                    aria-label="add"
-                    sx={{ ml: 2 }}
-                    onClick={handleOpen}
-                  >
-                    <AddIcon />
-                  </Fab>
-                </Typography>
               </Grid>
-            )}
+            </Grid>
+
+            <Grid xs="auto" item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Contact details
+              </Typography>
+              <Grid container item>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    0777898734
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    snd89@gmail.com
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
 
             <Grid
               item
@@ -312,19 +288,6 @@ const NewQuote = () => {
                 </Grid>
               );
             })}
-
-            <Grid item xs={12}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => handleAddProduct(values)}
-                sx={{ textTransform: "uppercase" }}
-                startIcon={<AddCircleIcon />}
-                size="small"
-              >
-                {t("buttons.addMore")}
-              </Button>
-            </Grid>
 
             <Grid
               item
@@ -638,4 +601,4 @@ const NewQuote = () => {
   );
 };
 
-export default NewQuote;
+export default InvoiceForm;
