@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function createFullName({ firstName, middleName, lastName }) {
   let name =
     (firstName || "") + " " + (middleName || "") + " " + (lastName || "");
@@ -68,4 +70,8 @@ export function validateEmail(email) {
   const re =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
+}
+
+export function fDate(date) {
+  return moment(date).format('DD MMMM yyyy')
 }
