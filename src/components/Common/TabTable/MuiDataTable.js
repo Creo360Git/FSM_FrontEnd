@@ -20,7 +20,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "../../../services/datetime";
 import { formatText } from "../../Controls/formatUtils";
-// import { useFeature } from "../../auth/permissions";
 import { Buffer } from "buffer";
 import CustomToolbar from "./CustomToolbar";
 
@@ -53,18 +52,11 @@ const MuiDataTable = (props) => {
   const {
     headers,
     data,
-    // count,
-    // rowsPerPage,
-    // page,
-    // setPage,
-    // setRowsPerPage,
-    // onPageChange,
-    // onRowsPerPageChange,
-    rowsPerPageOptions=[10, 20, 30],
+    rowsPerPageOptions = [10, 20, 30],
     isDownload,
     isPrint,
     toolBar,
-    setData
+    setData,
   } = props;
 
   const classes = useStyles();
@@ -76,7 +68,9 @@ const MuiDataTable = (props) => {
   const isStandardUnit = false;
 
   const [page, setPage] = useState(0);
+
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage - 1);
   };
@@ -87,15 +81,21 @@ const MuiDataTable = (props) => {
   };
 
   const [columns, setColumns] = useState([]);
-  const [rows, setRows] = useState(data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
-  useEffect(()=>{setRows(data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))},[page, rowsPerPage,data])
+
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    setRows(
+      data?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) || []
+    );
+  }, [page, rowsPerPage, data]);
 
   useEffect(() => {
     if (headers?.length > 0) {
       let columnsData = [];
 
       headers.forEach((column) => {
-        if (!column?.options) {
+        if (!column?.options && rows?.length > 0) {
           const columnObj = {
             name: column.name,
             label: column.label,
@@ -240,8 +240,8 @@ const MuiDataTable = (props) => {
     }
   }, [headers, rows]);
 
+  let count = data?.length || 0;
 
-  let count = data.length
   const options = {
     viewColumns: false,
     filter: false,
@@ -261,15 +261,16 @@ const MuiDataTable = (props) => {
     sort: false,
     textLabels: {
       body: {
-        noMatch: !data ? (
-          <Typography variant="h2" color="primary" align="center">
-            <CircularProgress color="secondary" disableShrink size={30} />
-          </Typography>
-        ) : (
-          <Typography variant="h3" color="primary" align="center">
-            {t("messages.noRecordsFound")}
-          </Typography>
-        ),
+        noMatch:
+          data?.length === 0 ? (
+            <Typography variant="h3" color="primary" align="center">
+              {t("messages.noRecordsFound")}
+            </Typography>
+          ) : (
+            <Typography variant="h2" color="primary" align="center">
+              <CircularProgress color="secondary" disableShrink size={30} />
+            </Typography>
+          ),
       },
     },
     customFooter: () => {
@@ -284,7 +285,7 @@ const MuiDataTable = (props) => {
             }}
           >
             <TablePagination
-              rowsPerPageOptions={[10, 20, 30]}
+              rowsPerPageOptions={rowsPerPageOptions}
               count={count || 0}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -325,8 +326,15 @@ const MuiDataTable = (props) => {
 
   return (
     <>
-      {toolBar?.length > 0 && <CustomToolbar toolBar={toolBar} rows={data} setRows={setRows} />}
-      <MUIDataTable data={rows || []} columns={columns} options={options} />
+      {toolBar?.length > 0 && (
+        <CustomToolbar toolBar={toolBar} rows={rows} setRows={setRows} />
+      )}
+      <MUIDataTable
+        key={data}
+        data={rows || []}
+        columns={columns}
+        options={options}
+      />
     </>
   );
 };

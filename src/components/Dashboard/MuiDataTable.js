@@ -235,15 +235,16 @@ const MuiDataTable = (props) => {
     sort: false,
     textLabels: {
       body: {
-        noMatch: !data ? (
-          <Typography variant="h2" color="primary" align="center">
-            <CircularProgress color="secondary" disableShrink size={30} />
-          </Typography>
-        ) : (
-          <Typography variant="h3" color="primary" align="center">
-            {t("messages.noRecordsFound")}
-          </Typography>
-        ),
+        noMatch:
+          data?.length === 0 ? (
+            <Typography variant="h3" color="primary" align="center">
+              {t("messages.noRecordsFound")}
+            </Typography>
+          ) : (
+            <Typography variant="h2" color="primary" align="center">
+              <CircularProgress color="secondary" disableShrink size={30} />
+            </Typography>
+          ),
       },
     },
     customFooter: () => {
@@ -312,6 +313,7 @@ const MuiDataTable = (props) => {
           {t("tableHeadings.visits")}
         </Typography>
       }
+      key={data}
       data={data || []}
       columns={columns}
       options={options}
