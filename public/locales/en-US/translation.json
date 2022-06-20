@@ -24,7 +24,15 @@
       "addRequest": "Add Request",
       "addTrack": "Add Track",
       "newQuote": "New Quote",
-      "save": "Save"
+      "save": "Save",
+      "newInvoice": "New Invoice",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "addMore": "Add More",
+      "saveAnd": "Save And ...",
+      "sendAsEmail": "Send As Email",
+      "convertToJob": "Convert To Job",
+      "clientNotResponded": "Client Not Responded"
     },
     "messages": {
       "noRecordsFound": "No records found !",
@@ -38,7 +46,13 @@
       "quotation": "Quotation",
       "upcomingJobs": "Upcoming Jobs",
       "invoicePastDue": "Invoice Past Due",
-      "quotes": "Quotes"
+      "quotes": "Quotes",
+      "invoice": "Invoice",
+      "newQuote": "New Quote",
+      "newInvoice": "New Invoice",
+      "quoteTitle": "Quote Title",
+      "productService": "PRODUCT / SERVICE",
+      "notesAttachments": "Notes & Attachments"
     },
     "tableHeadings": {
       "visits": "Visits",
@@ -62,7 +76,21 @@
       "paidInvoice": "Paid Invoice",
       "seeMore": "See More",
       "rowsPerPage": "Rows per Page",
-      "dropZoneLabel": "Drag your file here or Select A File"
+      "dropZoneLabel": "Drag your file here or Select A File",
+      "clientName": "Client Name",
+      "quoteTitle": "Quote Title",
+      "clientMessage": "Client Message",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "tax": "Tax",
+      "total": "Total",
+      "deposite": "Deposite",
+      "noteDetails": "Note details",
+      "serviceName": "Service Name",
+      "qty": "Qty",
+      "unitPrice": "Unit Price",
+      "description": "Description",
+      "image": "Image"
     },
     "adminToolTips": {
       
