@@ -34,9 +34,9 @@ const theme = createTheme({
       contrastText: "#fff",
     },
     common: {
-      black,
-      darkBlack,
-      danger,
+      black: black,
+      darkBlack: darkBlack,
+      danger: danger,
     },
     warning: {
       light: warningLight,
@@ -204,11 +204,16 @@ const theme = createTheme({
     MuiDropzoneArea: {
       styleOverrides: {
         root: {
-          color: "#808080",
+          color: "#050d33",
           border: `2px solid ${borderColor}`,
         },
         icon: {
           color: "#050d33",
+          fontSize: "3rem !important",
+        },
+        text: {
+          padding: "3rem",
+          fontSize: "1.1rem !important",
         },
       },
     },

@@ -13,9 +13,12 @@ const NewQuote = lazy(() => import("./pages/Quote/NewQuote"));
 const Request = lazy(() => import("./pages/Request/Request"));
 const NewRequest = lazy(() => import("./pages/Request/NewRequest"));
 const Schedule = lazy(() => import("./pages/Schedule"));
+const Invoice = lazy(() => import("./pages/Invoice/Invoice"));
+const NewInvoice = lazy(() => import("./pages/Invoice/NewInvoice"));
 const Job = lazy(() => import("./pages/Job/Job"));
 const NewJob = lazy(() => import("./pages/Job/NewJob"));
 
+const Reports = lazy(() => import("./pages/Reports"));
 
 const Router = () => (
   <Routes>
@@ -33,6 +36,9 @@ const Router = () => (
     <Route path="/schedule" element={<Schedule/>} />
     <Route path="/jobs" element={<Job/>} />
     <Route path="/jobs/new" element={<NewJob/>} />
+    <Route path="/invoice" element={<Invoice />} />
+    <Route path="/invoice/newInvoice" element={<NewInvoice />} />
+    <Route path="/reports" element={<Reports />} />
 
     <Route path="/" element={<Dashboard />} />
 
