@@ -54,7 +54,8 @@
       "productService": "Product / Service",
       "notesAttachments": "Notes & Attachments",
       "invoiceSubject": "Invoice Subject",
-      "invoiceDetails": "Invoice Details"
+      "invoiceDetails": "Invoice Details",
+      "reports": "Reports"
     },
     "tableHeadings": {
       "visits": "Visits",

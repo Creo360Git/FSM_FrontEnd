@@ -113,14 +113,12 @@ const Invoice = ({ locations, types }) => {
     },
   ];
 
-  // const rows = [];
-
-  const [quotes, setQuotes] = useState(null);
+  const [invoices, setInvoices] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(
       () =>
-        setQuotes([
+        setInvoices([
           {
             id: 1287,
             number: null,
@@ -575,8 +573,8 @@ const Invoice = ({ locations, types }) => {
         <Grid item xs={12}>
           <MuiDataTable
             headers={headCells}
-            data={quotes}
-            setData={setQuotes}
+            data={invoices}
+            setData={setInvoices}
             isDownload={false}
             isPrint={false}
             toolBar={toolBar}

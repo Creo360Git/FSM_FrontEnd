@@ -16,6 +16,7 @@ const Schedule = lazy(() => import("./pages/Schedule"));
 const Invoice = lazy(() => import("./pages/Invoice/Invoice"));
 const NewInvoice = lazy(() => import("./pages/Invoice/NewInvoice"));
 const Job = lazy(() => import("./pages/Job/Job"));
+const Reports = lazy(() => import("./pages/Reports"));
 
 const Router = () => (
   <Routes>
@@ -34,6 +35,7 @@ const Router = () => (
     <Route path="/invoice" element={<Invoice />} />
     <Route path="/invoice/newInvoice" element={<NewInvoice />} />
     <Route path="/jobs" element={<Job />} />
+    <Route path="/reports" element={<Reports />} />
 
     <Route path="/" element={<Dashboard />} />
 
