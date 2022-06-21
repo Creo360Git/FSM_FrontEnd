@@ -51,8 +51,10 @@
       "newQuote": "New Quote",
       "newInvoice": "New Invoice",
       "quoteTitle": "Quote Title",
-      "productService": "PRODUCT / SERVICE",
-      "notesAttachments": "Notes & Attachments"
+      "productService": "Product / Service",
+      "notesAttachments": "Notes & Attachments",
+      "invoiceSubject": "Invoice Subject",
+      "invoiceDetails": "Invoice Details"
     },
     "tableHeadings": {
       "visits": "Visits",
@@ -90,7 +92,10 @@
       "qty": "Qty",
       "unitPrice": "Unit Price",
       "description": "Description",
-      "image": "Image"
+      "image": "Image",
+      "invoiceSubject": "Invoice Subject",
+      "issuedDate": "Issued date",
+      "paymentDue": "Payment due"
     },
     "adminToolTips": {
       
