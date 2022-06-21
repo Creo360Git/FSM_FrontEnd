@@ -36,7 +36,7 @@ const viewOptions = [
     { value: 'dayGridMonth', label: 'Month', icon: <ViewModuleIcon width={20} height={20} /> },
     { value: 'timeGridWeek', label: 'Week', icon: <ViewWeekIcon width={20} height={20} /> },
     { value: 'timeGridDay', label: 'Day', icon: <ViewDayIcon width={20} height={20} /> },
-    { value: 'listWeek', label: 'Agenda', icon: <ViewAgendaIcon width={20} height={20} /> },
+    { value: 'listWeek', label: 'List', icon: <ViewAgendaIcon width={20} height={20} /> },
 ];
 
 const CalendarToolbar = ({ date, view, onToday, onNextDate, onPrevDate, onChangeView }) => {
@@ -69,7 +69,7 @@ const CalendarToolbar = ({ date, view, onToday, onNextDate, onPrevDate, onChange
                     <ArrowBackIosIcon width={20} height={20} />
                 </IconButton>
     
-                <Typography variant="h5">{fDate(date)}</Typography>
+                <Typography component={'span'} variant="h5">{fDate(date)}</Typography>
     
                 <IconButton onClick={onNextDate}>
                     <ArrowForwardIosIcon width={20} height={20} />
@@ -79,14 +79,14 @@ const CalendarToolbar = ({ date, view, onToday, onNextDate, onPrevDate, onChange
             {isUpXs && 
                 (
                     <Stack direction="row" alignItems="center" spacing={0.5}>
+                        <Button  variant="contained" onClick={onToday}>
+                            Today
+                        </Button>
                         <Button variant="contained" endIcon={<ExpandMoreIcon />}>
                             Action
                         </Button>
                         <Button variant="contained" endIcon={<ExpandMoreIcon />} >
                             Filter
-                        </Button>
-                        <Button size="small"  variant="contained" onClick={onToday}>
-                            Today
                         </Button>
                     </Stack>
                 )

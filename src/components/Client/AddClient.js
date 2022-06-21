@@ -266,7 +266,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         
                     <Button
                         onClick={() => {
-                            append({ PhoneNumber: "", NumberType: "" });
+                            append({ PhoneNumber: "", NumberType: "" }, { shouldFocus: false });
                         }}
                         sx={{textTransform:'uppercase', mb: 1}}
                     >

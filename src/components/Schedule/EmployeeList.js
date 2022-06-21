@@ -58,7 +58,7 @@ const EmployeeList = () => {
                 }
                 {
                     (filterEmployees.length == 0 && !!searchQuery) && 
-                    <Typography ml={1} sx={{fontWeight: theme.typography.fontWeightBold}}>No data</Typography>
+                    <Typography component={'span'} ml={1} sx={{fontWeight: theme.typography.fontWeightBold}}>No data</Typography>
                 }
             </List>
         </React.Fragment>

@@ -75,3 +75,7 @@ export function validateEmail(email) {
 export function fDate(date) {
   return moment(date).format('DD MMMM yyyy')
 }
+
+export function fDateShort(date) {
+  return moment(date).format('yyyy-MM-DD')
+}

@@ -24,6 +24,7 @@ import EmployeeList from '../components/Schedule/EmployeeList';
 import ArrowForward from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackward from '@mui/icons-material/ArrowBackIos';
 import UnscheduledItems from '../components/Schedule/UnscheduledItems';
+import StyleWrapper from '../components/Schedule/StyleWrapper';
 
 
 const colorOptions = {
@@ -196,29 +197,31 @@ const Schedule = () => {
                         }
                     </Grid>
                     <Grid item lg={8} xs={11}>
-                        <FullCalendar
-                            plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                            weekends
-                            editable
-                            droppable
-                            selectable
-                            events={events}
-                            ref={calendarRef}
-                            rerenderDelay={10}
-                            initialDate={date}
-                            initialView={view}
-                            dayMaxEventRows={3}
-                            eventDisplay="block"
-                            headerToolbar={false}
-                            allDayMaintainDuration
-                            eventResizableFromStart
-                            select={handleSelectRange}
-                            // eventDrop={handleDropEvent}
-                            eventClick={handleSelectEvent}
-                            // eventResize={handleResizeEvent}
-                            dateClick={handleOpenDialog}
-                            height={isUpXs ? 720 : 'auto'}
-                        />
+                        <StyleWrapper>
+                            <FullCalendar
+                                plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                weekends
+                                editable
+                                droppable
+                                selectable
+                                events={events}
+                                ref={calendarRef}
+                                rerenderDelay={10}
+                                initialDate={date}
+                                initialView={view}
+                                dayMaxEventRows={3}
+                                eventDisplay="block"
+                                headerToolbar={false}
+                                allDayMaintainDuration
+                                eventResizableFromStart
+                                select={handleSelectRange}
+                                // eventDrop={handleDropEvent}
+                                eventClick={handleSelectEvent}
+                                // eventResize={handleResizeEvent}
+                                dateClick={handleOpenDialog}
+                                height={isUpXs ? 720 : 'auto'}
+                            />
+                        </StyleWrapper>
                     </Grid>
                     {
                         !isDownLg && 

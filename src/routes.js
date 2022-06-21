@@ -14,6 +14,7 @@ const Request = lazy(() => import("./pages/Request/Request"));
 const NewRequest = lazy(() => import("./pages/Request/NewRequest"));
 const Schedule = lazy(() => import("./pages/Schedule"));
 const Job = lazy(() => import("./pages/Job/Job"));
+const NewJob = lazy(() => import("./pages/Job/NewJob"));
 
 
 const Router = () => (
@@ -31,6 +32,7 @@ const Router = () => (
     <Route path="/request/new" element={<NewRequest />} />
     <Route path="/schedule" element={<Schedule/>} />
     <Route path="/jobs" element={<Job/>} />
+    <Route path="/jobs/new" element={<NewJob/>} />
 
     <Route path="/" element={<Dashboard />} />
 
