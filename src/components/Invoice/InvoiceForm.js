@@ -8,32 +8,54 @@ import {
   useTheme,
   TextField,
   Typography,
-  Fab,
+  IconButton,
   Container,
   Stack,
   useMediaQuery,
   Divider,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import SelectClientDialog from "../Common/SelectClientDialog";
 import { DropzoneArea } from "react-mui-dropzone";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import AddProduct from "../Quote/AddProduct";
 import { Box } from "@mui/system";
 import MoreOptionsMenu from "../Controls/MoreOptionsMenu";
+import DeleteIcon from "@mui/icons-material/Delete";
+import moment from "moment";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+
+const useStyles = makeStyles((theme) => ({
+  deleteBtn: {
+    background: "#f8e8eb",
+    "&:hover": {
+      background: "#f8e8eb",
+    },
+  },
+  deleteIcon: {
+    color: theme.palette.common.danger,
+  },
+}));
 
 const InvoiceForm = () => {
   const theme = useTheme();
+
+  const classes = useStyles();
 
   const matchSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
-    quoteTitle: yup.string().required(t("messages.required")),
+    subject: yup.string().required(t("messages.required")),
     clientMessage: yup.string(),
     noteDetails: yup.string(),
     document: yup.string(),
@@ -59,20 +81,24 @@ const InvoiceForm = () => {
   };
 
   const [values, setValues] = useState({
-    quoteTitle: "",
+    subject: "",
     clientMessage: "",
     noteDetails: "",
     document: "",
+    issueDate: "",
+    paymentDue: "",
     product: [initProduct],
   });
 
   const onSubmit = async (data) => {
     setValues((values) => ({
       ...values,
-      quoteTitle: "",
+      subject: "",
       clientMessage: "",
       noteDetails: "",
       document: "",
+      issueDate: "",
+      paymentDue: "",
       product: [initProduct],
     }));
   };
@@ -82,23 +108,6 @@ const InvoiceForm = () => {
       ...values,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  const handleAddProduct = (values) => {
-    const products = [...values.product, initProduct];
-
-    setValues((values) => ({
-      ...values,
-      product: products,
-    }));
-  };
-
-  const [show, setShow] = useState(false);
-
-  const [client, setClient] = useState();
-
-  const handleOpen = () => {
-    setShow(true);
   };
 
   const [document, setDocument] = useState([]);
@@ -147,6 +156,14 @@ const InvoiceForm = () => {
     },
   ];
 
+  const paymentDueList = [
+    { label: "Upon Receipt", value: "uponReceipt" },
+    { label: "Net 15", value: "net15" },
+    { label: "Net 30", value: "net30" },
+    { label: "Net 45", value: "net45" },
+    { label: "Customize", value: "customize" },
+  ];
+
   return (
     <Grid
       container
@@ -170,12 +187,45 @@ const InvoiceForm = () => {
                 Invoice for SND pvt
               </Typography>
             </Grid>
-            <Grid md={3} sm={5} xs={6} item>
+
+            <Grid
+              item
+              xs={12}
+              style={{
+                marginTop: theme.spacing(1),
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                {t("headings.invoiceSubject")}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                name="subject"
+                label={t("labels.invoiceSubject")}
+                fullWidth
+                type="text"
+                variant="outlined"
+                size="small"
+                value={values?.subject || ""}
+                onChange={onChangeValueData}
+                {...register("subject")}
+                error={!!errors.subject}
+                helperText={errors.subject?.message}
+              />
+            </Grid>
+
+            <Grid md={3} sm={4} xs={12} item>
               <Typography
                 variant="h5"
                 sx={{ fontWeight: theme.typography.fontWeightBold }}
               >
-                Property adress
+                Billing Adress
               </Typography>
               <Grid container item>
                 <Grid item xs={12}>
@@ -192,12 +242,34 @@ const InvoiceForm = () => {
               </Grid>
             </Grid>
 
-            <Grid xs="auto" item>
+            <Grid md={3} sm={4} xs={12} item>
               <Typography
                 variant="h5"
                 sx={{ fontWeight: theme.typography.fontWeightBold }}
               >
-                Contact details
+                Service Adress
+              </Typography>
+              <Grid container item>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    Service adress (Same as billing address)
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid md={3} sm={4} xs={12} item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Contact Details
               </Typography>
               <Grid container item>
                 <Grid item xs={12}>
@@ -235,26 +307,107 @@ const InvoiceForm = () => {
               <Typography
                 variant="h4"
                 sx={{ fontWeight: theme.typography.fontWeightBold }}
+                gutterBottom
               >
-                {t("headings.quoteTitle")}
+                {t("headings.invoiceDetails")}
               </Typography>
+
+              <Divider />
             </Grid>
 
-            <Grid item xs={12}>
-              <TextField
-                required
-                name="quoteTitle"
-                label={t("labels.quoteTitle")}
-                fullWidth
-                type="text"
-                variant="outlined"
-                size="small"
-                value={values?.quoteTitle || ""}
-                onChange={onChangeValueData}
-                {...register("quoteTitle")}
-                error={!!errors.quoteTitle}
-                helperText={errors.quoteTitle?.message}
-              />
+            <Grid container spacing={1} item xs={12}>
+              <Grid item md={2} sm={3} xs={5}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightRegular,
+                    paddingTop: "0.5rem",
+                  }}
+                >
+                  {t("labels.issuedDate")}
+                </Typography>
+              </Grid>
+
+              <Grid item md={3} sm={6} xs={7}>
+                <Stack
+                  direction="row"
+                  alignItems="flex-end"
+                  justifyContent={"space-between"}
+                  spacing={2}
+                >
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                      label=""
+                      name="issueDate"
+                      value={values?.issueDate || moment().format("MM-DD-YYYY")}
+                      onChange={(newValue) => {
+                        setValues((values) => ({
+                          ...values,
+                          issueDate: newValue,
+                        }));
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" />
+                      )}
+                    />
+                  </LocalizationProvider>
+
+                  <IconButton
+                    className={classes.deleteBtn}
+                    // onClick={handleRemoveClick}
+                  >
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </IconButton>
+                </Stack>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={1} item xs={12}>
+              <Grid item md={2} sm={3} xs={5}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightRegular,
+                    paddingTop: "0.5rem",
+                  }}
+                >
+                  {t("labels.paymentDue")}
+                </Typography>
+              </Grid>
+
+              <Grid item md={3} sm={6} xs={7}>
+                <Stack
+                  direction="row"
+                  alignItems="flex-end"
+                  justifyContent={"space-between"}
+                  spacing={2}
+                >
+                  <FormControl fullWidth>
+                    <Select
+                      name="paymentDue"
+                      label=""
+                      value={values?.paymentDue || ""}
+                      onChange={onChangeValueData}
+                      size="small"
+                    >
+                      {paymentDueList?.map((item, index) => {
+                        return (
+                          <MenuItem value={item?.value} key={index}>
+                            {item?.label || ""}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  <IconButton
+                    className={classes.deleteBtn}
+                    // onClick={handleRemoveClick}
+                  >
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </IconButton>
+                </Stack>
+              </Grid>
             </Grid>
 
             <Grid
@@ -590,13 +743,6 @@ const InvoiceForm = () => {
           </Grid>
         </form>
       </Container>
-
-      <SelectClientDialog
-        show={show}
-        setShow={setShow}
-        theme={theme}
-        setClient={setClient}
-      />
     </Grid>
   );
 };
