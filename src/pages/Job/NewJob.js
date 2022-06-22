@@ -35,7 +35,8 @@ import RecurringJobSchedule from "../../components/Job/RecurringJobSchedule";
 import Invoicing from "../../components/Job/Invoicing";
 import LineItems from "../../components/Job/LineItems";
 import Add from "@mui/icons-material/Add";
-
+import MoreOptionsMenu from "../../components/Controls/MoreOptionsMenu";
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const NewJob = () => {
@@ -136,6 +137,10 @@ const NewJob = () => {
     const [client, setClient] = useState()
     const handleOpen = () => setShow(true)
     const defaultValues = {
+        startDate: new Date(),
+        endDate: new Date(),
+        startTime: new Date(),
+        endTime: new Date(),
         scheduleLater: false,
         title: '',
         LineItems: [
@@ -146,7 +151,6 @@ const NewJob = () => {
     }
 
     const validationSchema = yup.object().shape({
-
     })
 
     const { register, formState: { errors }, handleSubmit, getValues, setValue, reset, control, watch } = useForm({
@@ -161,8 +165,30 @@ const NewJob = () => {
         console.log(values)
     }
     const { fields, append, remove } = useFieldArray({control, name: 'LineItems'});
-    const scheduleLaterCheckbox = watch("scheduleLater");
-    const startDate = watch('startDate')
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const menuItems = [
+        {
+            label: (
+                <Typography color="primary" variant="h4">
+                    Send As Email
+                </Typography>
+            ),
+            color: theme.palette.primary.main
+        },
+        {
+            label: (
+                <Typography color="primary" variant="h4">
+                    Send As Email
+                </Typography>
+            ),
+            color: theme.palette.primary.main,
+        },
+    ];
 
     return (
         <DashboardLayout heading="new job">
@@ -235,7 +261,7 @@ const NewJob = () => {
                                     type="text"
                                     variant="outlined"
                                     size="small"
-                                    {...register("title")}
+                                    {...register("describtion")}
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
                                 />
@@ -322,15 +348,16 @@ const NewJob = () => {
                                                                 errors={errors} 
                                                                 register={register} 
                                                                 defaultValues={defaultValues} 
-                                                                scheduleLaterCheckbox={scheduleLaterCheckbox}
+                                                                watch={watch}
+                                                                setValue={setValue}
                                                             />
                                                             :
                                                             <RecurringJobSchedule 
-                                                                startDate={startDate}
+                                                                setValue={setValue}
+                                                                watch={watch}
                                                                 errors={errors} 
                                                                 register={register} 
                                                                 defaultValues={defaultValues} 
-                                                                scheduleLaterCheckbox={scheduleLaterCheckbox}
                                                             />
                                                         }
                                                         <AssignEmployees 
@@ -361,7 +388,6 @@ const NewJob = () => {
                                                                     errors={errors} 
                                                                     register={register} 
                                                                     defaultValues={defaultValues} 
-                                                                    scheduleLaterCheckbox={scheduleLaterCheckbox}
                                                                 />
                                                             </Grid>
                                                         }
@@ -372,15 +398,34 @@ const NewJob = () => {
                                     })
                                 }
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                    PRODUCT / SERVICE
-                                </Typography>
+                            <Grid item xs={12} justifyContent="flex-end">
+                                <Grid container item  spacing={2}>
+                                    <Grid item xs={6} >
+                                        <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            PRODUCT / SERVICE
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            Qty
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            Unit price
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            Total
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
                                 <Divider />
                                 {
                                     fields.map((val, index)=>{
                                         return(
-                                            <LineItems key={index} theme={theme} index={index} remove={remove} register={register}/>
+                                            <LineItems keyValue={val.id} key={val.id} theme={theme} index={index} remove={remove} register={register}/>
                                         )
                                     })
                                 }
@@ -434,7 +479,7 @@ const NewJob = () => {
                                     rows={4}
                                     variant="outlined"
                                     size="small"
-                                    {...register("title")}
+                                    {...register("note")}
                                     error={!!errors.title}
                                     helperText={errors.title?.message}
                                 />
@@ -483,6 +528,7 @@ const NewJob = () => {
                                     /> 
                                 </Box>
                             </Grid>
+                            {MoreOptionsMenu(menuItems, anchorEl, setAnchorEl)}
                             {
                                 isDownSm ? 
                                 <Grid xs={12} item>
@@ -499,8 +545,8 @@ const NewJob = () => {
                                             <Button key="one" sx={{textTransform: 'uppercase', height: {xs:'42.5px'},width:'100%', overflow: 'hidden', display: "block"}}>Cancel</Button>
                                         </ButtonGroup>
                                         <ButtonGroup size="large" aria-label="large button group"> 
-                                            <Button variant='outlined' key="two" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save Job</Button>
-                                            <Button variant='contained' key="three" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save And ...</Button>
+                                            <Button type='submit' variant='outlined' key="two" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}}>Save Job</Button>
+                                            <Button variant='contained' key="three" sx={{textTransform: 'uppercase', height: {xs:'42.5px'}, overflow: 'hidden', display: "block"}} onClick={e=>{openMenu(e)}}>Save And ...</Button>
                                         </ButtonGroup>
                                     </Stack>
                                 </Grid>

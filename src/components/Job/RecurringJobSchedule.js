@@ -6,10 +6,14 @@ import {
     Typography,
     TextField,
     FormControlLabel,
-    Checkbox,
-    Divider
+    Backdrop,
+    Divider,
+    CircularProgress
 } from '@mui/material'
 import { useTheme } from '@emotion/react'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import moment from 'moment';
 import { fDateShort } from '../Controls/formatUtils'
 
 const options=[
@@ -21,181 +25,298 @@ const options=[
 ]
 
 const DurationOptions = [
-    {value: '0', label: 'Week (s)'},
-    {value: '1', label: 'Day (s)'},
-    {value: '2', label: 'Month (s)'},
-    {value: '3', label: 'Year (s)'},
+    {value: 'w', label: 'Week (s)'},
+    {value: 'd', label: 'Day (s)'},
+    {value: 'M', label: 'Month (s)'},
+    {value: 'y', label: 'Year (s)'},
     {value: '4', label: 'Customize schdule...'},
 ]
 
-const RecurringJobSchedule = ({errors, register, defaultValues, scheduleLaterCheckbox, startDate=fDateShort(new Date()) }) => {
+const RecurringJobSchedule = ({errors, register, defaultValues, scheduleLaterCheckbox, setValue,  watch }) => {
     const theme = useTheme()
-    const [sDate, setSDate] = useState('')
+    const [open, setOpen] = useState(false)
+    const [values, setValues] = useState({
+        startDate: new Date(),
+        startTime: new Date(),
+        endTime: new Date(),
+        visitRepeat: '1',
+        duration: '6',
+        durationTitle: 'w'
+    })
+    const [visits, setVisits] = useState({
+        firstVisit: '',
+        lastVisit: '',
+        totalDays: ''
+    })
 
-    const handleOptionsChange = (val) => {
-        var d = new Date()
-        switch(val) {
-            case 1:
-                d.setDate(d.getDate() + (((1 + 7 - d.getDay()) % 7) || 7));
-                setSDate(d)
-                break
-            case 2:
-
-        }
+    const handleChange = (e) => {
+        setOpen(true)
+        setValues(({...values})=>{
+            values[e.target.name]= e.target.value
+            return values
+        })
     }
-    
+
+    useEffect(()=>{
+        let start = moment(values.startDate)
+        var futureMonth = moment(start).add(parseInt(values.duration), values.durationTitle);
+        var futureMonthEnd = moment(futureMonth).endOf('month');
+        
+        if(start.date() != futureMonth.date() && futureMonth.isSame(futureMonthEnd.format('YYYY-MM-DD'))) {
+            futureMonth = futureMonth.add(1, 'd');
+        }
+
+        let end = futureMonth
+        const arr=[]
+        let weekdayCounter=0
+        
+        switch(values.visitRepeat) {
+            case '1':
+                while (start < end) {
+                    if (start.format('ddd') === 'Mon'){
+                        arr.push(fDateShort(start))
+                        weekdayCounter++; 
+                    }
+                    start = moment(start, 'YYYY-MM-DD').add(1, 'd')
+                }
+                setVisits({
+                    firstVisit: arr[0],
+                    lastVisit: arr.at(-1),
+                    totalDays: weekdayCounter
+                })
+                setOpen(false)
+                break
+            case '2': 
+                while (start < end) {
+                    if (start.format('ddd') === 'Mon'){
+                        if(weekdayCounter===0 || (weekdayCounter)%2===0){
+                            arr.push(fDateShort(start))
+                        }
+                        weekdayCounter++
+                    }
+                    start = moment(start, 'YYYY-MM-DD').add(1, 'd')
+                }
+                setVisits({
+                    firstVisit: arr[0],
+                    lastVisit: arr.at(-1),
+                    totalDays: arr.length
+                })
+                setOpen(false)
+                break
+            case '3':
+                while (start < end) {
+                    if(start.format('DD')==='15'){
+                        arr.push(fDateShort(start))
+                        weekdayCounter++
+                    }
+                    start = moment(start, 'YYYY-MM-DD').add(1, 'd')
+                }
+                setVisits({
+                    firstVisit: arr[0],
+                    lastVisit: arr.at(-1),
+                    totalDays: weekdayCounter
+                })
+                setOpen(false)
+                break
+            default: 
+                alert('alert')
+                break
+        }
+
+    },[values])
+
     return(
         <Card sx={{p:3}}>
-            <Typography gutterBottom variant="h5" component="div" sx={{backgroundColor:'#D2E0F3', p: 1, fontWeight: theme.typography.fontWeightBold, textTransform: 'uppercase'}}>
-                Schedule
-            </Typography>
-            <Grid container  alignItems='flex-start'>
-            {
-                !scheduleLaterCheckbox &&
-                <React.Fragment>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+                <Typography gutterBottom variant="h5" component="div" sx={{backgroundColor:'#D2E0F3', p: 1, fontWeight: theme.typography.fontWeightBold, textTransform: 'uppercase'}}>
+                    Schedule
+                </Typography>
+                <Grid container  alignItems='flex-start'>
                     <Grid item md={12}  xs={12} sm={6} mb={1}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             Start Date
                         </Typography>
-                        <TextField
-                            type='date'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("startDate")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <DesktopDatePicker
+                            inputFormat="yyyy-MM-DD"
+                            value={values.startDate}
+                            name='startDate'
+                            onChange={
+                                (e)=>{
+                                    setValues(
+                                        ({...values})=>{
+                                            values['startDate']=fDateShort(e)
+                                            return values
+                                        }
+                                    )
+                                }
+                            }
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.startDate?.message}
+                                    {...params} 
+                                    error={!!errors.startDate}
+                                />
+                            }
                         />
                     </Grid>
                     <Grid item md={6}  xs={12} sm={6} mb={1}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             Start Time
                         </Typography>
-                        <TextField
-                            type='time'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <TimePicker
+                            value={values.startTime}
+                            name='startTime'
+                            onChange={
+                                (e)=>{
+                                    setValues(
+                                        ({...values})=>{
+                                            values['startTime']=(e)
+                                            return values
+                                        }
+                                    )
+                                }
+                            }
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.startTime?.message}
+                                    {...params} 
+                                    error={!!errors.startTime}
+                                />
+                            }
                         />
                     </Grid>
                     <Grid item md={6}  xs={12} sm={6} mb={1}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             End Time
                         </Typography>
-                        <TextField
-                            type='time'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <TimePicker
+                            value={values.endTime}
+                            name='endTime'
+                            onChange={
+                                (e)=>{
+                                    setValues(
+                                        ({...values})=>{
+                                            values['endTime']=(e)
+                                            return values
+                                        }
+                                    )
+                                }
+                            }
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.endTime?.message}
+                                    {...params} 
+                                    error={!!errors.endTime}
+                                />
+                            }
                         />
                     </Grid>
-                </React.Fragment>
-            }
-                <Grid item md={12} mb={1}>
-                    <FormControlLabel
-                        sx={{height: '25px', mt: 2}}
-                        control={
-                            <Checkbox 
-                                {...register("scheduleLater")}
-                                defaultChecked={scheduleLaterCheckbox}
-                                sx={{color:theme.palette.secondary.dark}}
-                            />
-                        }
-                        label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
-                    />
-                </Grid>
-                <Grid xs={12} item mb={1}>
-                    <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                        Visit repeats for jobs
-                    </Typography>
-                    <TextField
-                        select
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        {...register("select")}
-                        error={!!errors.title}
-                        helperText={errors.title?.message}
-                        defaultValue={1}
-                    >
-                        {
-                            options.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))
-                        }
-					</TextField>
-                </Grid>
-                <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                    Duration
-                </Typography>
-                <Grid container item xs={12} mb={1}>
-                    <Grid item md={2}  xs={12} sm={4}>
-                        <TextField
-                            type='text'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("duration")}
-                            value={'6'}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
-                        />
-                    </Grid>
-                    <Grid item md={10}  xs={12} sm={8}>
+                    <Grid xs={12} item mb={1}>
+                        <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                            Visit repeats for jobs
+                        </Typography>
                         <TextField
                             select
                             fullWidth
                             variant="outlined"
                             size="small"
-                            {...register("title")}
+                            name='visitRepeat'
+                            value={values.visitRepeat}
+                            onChange={handleChange}
                             error={!!errors.title}
                             helperText={errors.title?.message}
-                            defaultValue={0}
+                            defaultValue={1}
                         >
                             {
-                                DurationOptions.map((option) => (
+                                options.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
                                 ))
                             }
-					    </TextField>
+                        </TextField>
                     </Grid>
+                    <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                        Duration
+                    </Typography>
+                    <Grid container item xs={12} mb={1}>
+                        <Grid item md={2}  xs={12} sm={4}>
+                            <TextField
+                                type='text'
+                                fullWidth
+                                name='duration'
+                                value={values.duration}
+                                variant="outlined"
+                                size="small"
+                                onChange={handleChange}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                            />
+                        </Grid>
+                        <Grid item md={10}  xs={12} sm={8}>
+                            <TextField
+                                select
+                                fullWidth
+                                variant="outlined"
+                                size="small"
+                                name='durationTitle'
+                                onChange={handleChange}
+                                error={!!errors.title}
+                                helperText={errors.title?.message}
+                                value={values.durationTitle}
+                                defaultValue={'w'}
+                            >
+                                {
+                                    DurationOptions.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))
+                                }
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                    <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                        Visits
+                    </Typography>
+                    
+                    <Grid container item xs={12} sx={{position: 'relative'}} >
+                        <Backdrop
+                            sx={{ color: 'black', zIndex: 100, position: 'absolute' }}
+                            open={open}
+                        >
+                            <CircularProgress size={'1.5rem'} />
+                        </Backdrop>
+                        <Grid md={3} xs={12} item>
+                            <Typography variant='h6'>First visit</Typography>
+                            <Typography variant='h6' sx={{color:'#818EA1'}}>
+                                {fDateShort(visits.firstVisit)}
+                            </Typography>
+                        </Grid>
+                        <Divider orientation="vertical" sx={{height: '38px', mr: 1, ml: 1}} />
+                        <Grid md={3} xs={12} item>
+                            <Typography variant='h6'>Last visit</Typography>
+                            <Typography variant='h6' sx={{color:'#818EA1'}}>
+                                {fDateShort(visits.lastVisit)}
+                            </Typography>
+                        </Grid>
+                        <Divider orientation="vertical" sx={{height: '38px', mr: 1, ml: 1}} />
+                        <Grid md={3} xs={12} item>
+                            <Typography variant='h6'>Total days</Typography>
+                            <Typography variant='h6' sx={{color:'#818EA1'}}>
+                                {(visits.totalDays)}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    
                 </Grid>
-                <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                    Visits
-                </Typography>
-                <Grid container item xs={12}>
-                    <Grid md={3} xs={12} item>
-                        <Typography variant='h6'>First visit</Typography>
-                        <Typography variant='h6' sx={{color:'#818EA1'}}>
-                            2022-06-15
-                        </Typography>
-                    </Grid>
-                    <Divider orientation="vertical" sx={{height: '38px', mr: 1, ml: 1}} />
-                    <Grid md={3} xs={12} item>
-                        <Typography variant='h6'>Last visit</Typography>
-                        <Typography variant='h6' sx={{color:'#818EA1'}}>
-                            2022-06-15
-                        </Typography>
-                    </Grid>
-                    <Divider orientation="vertical" sx={{height: '38px', mr: 1, ml: 1}} />
-                    <Grid md={3} xs={12} item>
-                        <Typography variant='h6'>Total days</Typography>
-                        <Typography variant='h6' sx={{color:'#818EA1'}}>
-                            1
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
+            </LocalizationProvider>
         </Card>
     )
 }

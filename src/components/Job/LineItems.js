@@ -9,9 +9,9 @@ import DeleteIcon from "@mui/icons-material/Delete"
 
 
 
-const LineItems = ({theme, index, remove, register}) => {
+const LineItems = ({theme, index, remove, register, keyValue}) => {
     return(
-        <Grid container spacing={2} mt={0.1}>
+        <Grid container spacing={2} mt={0.1} key={keyValue}>
             <Grid item xs={6}>
                 <TextField 
                     fullWidth
@@ -62,7 +62,7 @@ const LineItems = ({theme, index, remove, register}) => {
                         startAdornment: <InputAdornment position="start">Rs</InputAdornment>,
                     }}
                 />
-                {
+                {   index != 0 &&
                     <Grid item xs={1} alignItems='flex-start'>
                         <IconButton aria-label="delete" onClick={() => remove(index)} sx={{color: theme.palette.common.danger}}>
                             <DeleteIcon />

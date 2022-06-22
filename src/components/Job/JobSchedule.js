@@ -10,91 +10,122 @@ import {
     Stack
 } from '@mui/material'
 import { useTheme } from '@emotion/react'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { fDateShort } from '../Controls/formatUtils';
 
 
-const JobSchedule = ({errors, register, defaultValues, scheduleLaterCheckbox}) => {
+const JobSchedule = ({errors, register, defaultValues, watch, setValue}) => {
     const theme = useTheme()
+    const startDate=watch('startDate')
+    const startTime=watch('startTime')
+    const endDate=watch('endDate')
+    const endTime=watch('endTime')
+    const scheduleLater=watch('scheduleLater')
     return(
         <Card sx={{p:3}}>
-            <Typography gutterBottom variant="h5" component="div" sx={{backgroundColor:'#D2E0F3', p: 1, fontWeight: theme.typography.fontWeightBold, textTransform: 'uppercase'}}>
-                Schedule
-            </Typography>
-            <Grid container  alignItems='flex-start'>
-            {
-                !scheduleLaterCheckbox &&
-                <React.Fragment>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+                <Typography gutterBottom variant="h5" component="div" sx={{backgroundColor:'#D2E0F3', p: 1, fontWeight: theme.typography.fontWeightBold, textTransform: 'uppercase'}}>
+                    Schedule
+                </Typography>
+                <Grid container  alignItems='flex-start'>
                     <Grid item md={6}  xs={12} sm={6} mb={1}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             Start Date
                         </Typography>
-                        <TextField
-                            type='date'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <DesktopDatePicker
+                            inputFormat="yyyy-MM-DD"
+                            value={startDate}
+                            name='startDate'
+                            onChange={e=>setValue('startDate',fDateShort(e))}
+                            disabled={scheduleLater}
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.startDate?.message}
+                                    {...params} 
+                                    error={!!errors.startDate}
+                                />
+                            }
                         />
                     </Grid>
                     <Grid item md={6}  xs={12} sm={6} mb={1}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             End Date
                         </Typography>
-                        <TextField
-                            type='date'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <DesktopDatePicker
+                            inputFormat="yyyy-MM-DD"
+                            disabled={scheduleLater}
+                            value={endDate}
+                            name='endDate'
+                            onChange={e=>setValue('endDate',fDateShort(e))}
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.endDate?.message}
+                                    {...params} 
+                                    error={!!errors.endDate}
+                                />
+                            }
                         />
                     </Grid>
                     <Grid item md={6}  xs={12} sm={6}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             Start Time
                         </Typography>
-                        <TextField
-                            type='time'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <TimePicker
+                            value={startTime}
+                            disabled={scheduleLater}
+                            name='startTime'
+                            onChange={e=>setValue('startTime',(e))}
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.startTime?.message}
+                                    {...params} 
+                                    error={!!errors.startTime}
+                                />
+                            }
                         />
                     </Grid>
                     <Grid item md={6}  xs={12} sm={6}>
                         <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
                             End Time
                         </Typography>
-                        <TextField
-                            type='time'
-                            fullWidth
-                            variant="outlined"
-                            size="small"
-                            {...register("title")}
-                            error={!!errors.title}
-                            helperText={errors.title?.message}
+                        <TimePicker
+                            value={endTime}
+                            disabled={scheduleLater}
+                            name='endTime'
+                            onChange={e=>setValue('endTime',(e))}
+                            renderInput={(params) => 
+                                <TextField 
+                                    size="small" 
+                                    fullWidth 
+                                    helperText={errors.endTime?.message}
+                                    {...params} 
+                                    error={!!errors.endTime}
+                                />
+                            }
                         />
                     </Grid>
-                </React.Fragment>
-            }
-                <Grid item md={12} >
-                    <FormControlLabel
-                        sx={{height: '25px', mt: 2}}
-                        control={
-                            <Checkbox 
-                                {...register("scheduleLater")}
-                                defaultChecked={scheduleLaterCheckbox}
-                                sx={{color:theme.palette.secondary.dark}}
-                            />
-                        }
-                        label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
-                    />
+                    <Grid item md={12} >
+                        <FormControlLabel
+                            sx={{height: '25px', mt: 2}}
+                            control={
+                                <Checkbox 
+                                    {...register("scheduleLater")}
+                                    checked={scheduleLater}
+                                    sx={{color:theme.palette.secondary.dark}}
+                                />
+                            }
+                            label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
+                        />
+                    </Grid>
                 </Grid>
-            </Grid>
+            </LocalizationProvider>
         </Card>
     )
 }

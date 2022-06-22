@@ -22,7 +22,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useTheme } from "@emotion/react";
 import SelectClientDialog from "../../components/Common/SelectClientDialog";
-import { styled } from '@mui/material/styles'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import { fDateShort } from "../../components/Controls/formatUtils";
 
 
 const NewRequest = () => {
@@ -75,7 +77,7 @@ const NewRequest = () => {
         reset()
         console.log(values)
     }
-    const scheduleLaterCheckbox = watch("scheduleLater");
+    const watchValues = watch()
     return (
         <DashboardLayout heading="new Request">
             <SelectClientDialog show={show} setShow={setShow} theme={theme} setClient={setClient} />
@@ -261,71 +263,90 @@ const NewRequest = () => {
                                     label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Schedule later</Typography>}
                                 />
                             </Grid>
-                            { !scheduleLaterCheckbox && 
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='date'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
+                            { !watchValues.scheduleLater && 
+                            <LocalizationProvider dateAdapter={AdapterMoment}>
+                                <Grid container item xs={12}>
+                                    <Grid item md={2} sm={6} xs={12}>
+                                        <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            Start Date
+                                        </Typography>
+                                        <DesktopDatePicker
+                                            inputFormat="yyyy-MM-DD"
+                                            value={watchValues.startDate}
+                                            name='startDate'
+                                            onChange={e=>setValue('startDate',fDateShort(e))}
+                                            renderInput={(params) => 
+                                                <TextField 
+                                                    size="small" 
+                                                    fullWidth 
+                                                    helperText={errors.startDate?.message}
+                                                    {...params} 
+                                                    error={!!errors.startDate}
+                                                />
+                                            }
                                         />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>Start Date</Typography>}
-                                />
-                            
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='date'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
+                                    </Grid>
+                                    <Grid item md={2} sm={6} xs={12}>
+                                        <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            End Date
+                                        </Typography>
+                                        <DesktopDatePicker
+                                            inputFormat="yyyy-MM-DD"
+                                            value={watchValues.endDate}
+                                            name='endDate'
+                                            onChange={e=>setValue('endDate',fDateShort(e))}
+                                            renderInput={(params) => 
+                                                <TextField 
+                                                    size="small" 
+                                                    fullWidth 
+                                                    helperText={errors.endDate?.message}
+                                                    {...params} 
+                                                    error={!!errors.endDate}
+                                                />
+                                            }
                                         />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>End Date</Typography>}
-                                />
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='time'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
+                                    </Grid>
+                                    <Grid item md={1} />
+                                    <Grid item md={2} sm={6} xs={12}>
+                                        <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            Start Time
+                                        </Typography>
+                                        <TimePicker
+                                            value={watchValues.startTime}
+                                            name='startTime'
+                                            onChange={e=>setValue('startTime',(e))}
+                                            renderInput={(params) => 
+                                                <TextField 
+                                                    size="small" 
+                                                    fullWidth 
+                                                    helperText={errors.startTime?.message}
+                                                    {...params} 
+                                                    error={!!errors.startTime}
+                                                />
+                                            }
                                         />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>Start Time</Typography>}
-                                />
-                                
-                                <FormControlLabel
-                                    labelPlacement="top"
-                                    control={
-                                        <TextField
-                                            type='time'
-                                            fullWidth
-                                            variant="outlined"
-                                            size="small"
-                                            {...register("title")}
-                                            error={!!errors.title}
-                                            helperText={errors.title?.message}
+                                    </Grid>
+                                    <Grid item md={2} sm={6} xs={12}>
+                                        <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
+                                            End Time
+                                        </Typography>
+                                        <TimePicker
+                                            value={watchValues.endTime}
+                                            name='endTime'
+                                            onChange={e=>setValue('endTime',(e))}
+                                            renderInput={(params) => 
+                                                <TextField 
+                                                    size="small" 
+                                                    fullWidth 
+                                                    helperText={errors.endTime?.message}
+                                                    {...params} 
+                                                    error={!!errors.endTime}
+                                                />
+                                            }
                                         />
-                                    }
-                                    label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -8}}>End Time</Typography>}
-                                />
-                            </Grid>
+                                    </Grid>
+                                </Grid>
+                            </LocalizationProvider>
                             }
                             <Grid item xs={12}>
                                 <Typography variant='h4' sx={{fontWeight: theme.typography.fontWeightBold}}>
