@@ -17,6 +17,10 @@ import { fDateShort } from '../Controls/formatUtils';
 
 const JobSchedule = ({errors, register, defaultValues, watch, setValue}) => {
     const theme = useTheme()
+    const [values, setValues] = useState({
+        startTime: new Date(),
+        endTime: new Date(),
+    })
     const startDate=watch('startDate')
     const startTime=watch('startTime')
     const endDate=watch('endDate')
@@ -76,10 +80,19 @@ const JobSchedule = ({errors, register, defaultValues, watch, setValue}) => {
                             Start Time
                         </Typography>
                         <TimePicker
-                            value={startTime}
+                            value={values.startTime}
                             disabled={scheduleLater}
                             name='startTime'
-                            onChange={e=>setValue('startTime',(e))}
+                            onChange={
+                                (e)=>{
+                                    setValues(
+                                        ({...values})=>{
+                                            values['startTime']=(e)
+                                            return values
+                                        }
+                                    )
+                                }
+                            }
                             renderInput={(params) => 
                                 <TextField 
                                     size="small" 
@@ -96,10 +109,19 @@ const JobSchedule = ({errors, register, defaultValues, watch, setValue}) => {
                             End Time
                         </Typography>
                         <TimePicker
-                            value={endTime}
+                            value={values.endTime}
                             disabled={scheduleLater}
                             name='endTime'
-                            onChange={e=>setValue('endTime',(e))}
+                            onChange={
+                                (e)=>{
+                                    setValues(
+                                        ({...values})=>{
+                                            values['endTime']=(e)
+                                            return values
+                                        }
+                                    )
+                                }
+                            }
                             renderInput={(params) => 
                                 <TextField 
                                     size="small" 

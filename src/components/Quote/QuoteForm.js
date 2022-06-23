@@ -27,6 +27,34 @@ import AddProduct from "./AddProduct";
 import { Box } from "@mui/system";
 import MoreOptionsMenu from "../Controls/MoreOptionsMenu";
 
+
+import { createTheme, ThemeProvider,adaptV4Theme } from '@mui/material/styles';
+import Checkbox from '@mui/material/Checkbox';
+import { green, orange } from '@mui/material/colors';
+
+
+const outerTheme = createTheme(adaptV4Theme({
+  overrides: {
+    MuiDropzoneSnackbar: {
+      errorAlert: {
+        backgroundColor: "#AFA",
+        color: "#000"
+      },
+      successAlert: {
+        backgroundColor: "red",
+        color: "orange"
+      },
+    },
+    MuiDropzoneArea: {
+      active: {
+        backgroundColor: orange
+      },
+    },
+  }
+})
+);
+
+
 const NewQuote = () => {
   const theme = useTheme();
 
@@ -557,6 +585,7 @@ const NewQuote = () => {
                 marginTop: theme.spacing(1),
               }}
             >
+              <ThemeProvider theme={outerTheme}>
               <DropzoneArea
                 filesLimit={1}
                 acceptedFiles={[
@@ -567,6 +596,7 @@ const NewQuote = () => {
                 onChange={(file) => setDocument(file)}
                 getPreviewIcon={handlePreviewIcon}
               />
+              </ThemeProvider>
             </Grid>
 
             {!matchSmDown && (
