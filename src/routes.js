@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import Track from "./pages/Track/Track";
 // import { PrivateRoute } from "./auth/PrivateRoute";
 // import { Callback } from "./auth/Callback";
 // import { Logout } from "./auth/Logout";
@@ -26,7 +27,7 @@ const Router = () => (
     <Route path="/quotes/newQuotes" element={<NewQuote />} />
     <Route path="/request" element={<Request />} />
     <Route path="/request/new" element={<NewRequest />} />
-
+    <Route path="/track" element={<Track/>} />
     <Route path="/" element={<Dashboard />} />
 
     {/* <PrivateRoute path="/" component={Dashboard} /> */}
