@@ -99,7 +99,23 @@ const useStyles = makeStyles((theme)=>({
             right:0,
             top:'220px',
         }
-    }
+    },
+    mobileHeaderContainer:{
+        display:'none',
+        width:'100%',
+        position:'absolute',
+        left:0,
+        right:0,
+        [theme.breakpoints.down('sm')]:{
+            display: 'block'
+        }
+    },
+    mobileHeader:{
+        display:'flex',
+        justifyContent: 'space-between',
+        backgroundColor:'white',
+        padding:'0px 10px',
+    },
 
 }))
 
@@ -143,9 +159,9 @@ const TrackTab = ({tabs=[],initialTabId,heading,title}) => {
                         </CardContent>
                     </Card>  
                 </Box>
-                <Box sx={{display:{xs:'block',sm:'none'},width:'100%',position:'absolute',left:0,right:0}}>
-                    <Grid sx={{display:'flex',justifyContent: 'space-between',backgroundColor:'white',padding:'0px 10px'}}>
-                        <Grid sx={{verticalAlign:'middle', margin:'auto 0px'}}>
+                <Box className={classes.mobileHeaderContainer}>
+                    <Grid className={classes.mobileHeader} >
+                        <Grid sx={{ margin:'auto 0px'}}>
                             <Typography variant='h1'>
                                 {
                                     tabs.map(({id, description,...values})=>{ return id==value? description:'' })

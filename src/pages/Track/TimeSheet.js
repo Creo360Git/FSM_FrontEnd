@@ -113,7 +113,7 @@ const TimeSheet = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{marginTop:'50px'}}>
+            <Box sx={{marginTop:'50px',p:3}}>
                 <Box>
                     <Grid sx={{display:'flex', justifyContent:'space-between'}}>
                         <Grid sx={{margin:'auto 0px'}}>
