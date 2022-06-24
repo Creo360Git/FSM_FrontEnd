@@ -6,6 +6,8 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from "@emotion/react";
 import TimeSheetDayForm from "../../components/Track/TimeSheet/TimeSheetDayForm";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const useStyles = makeStyles((theme)=>({
     header:{
@@ -113,7 +115,19 @@ const TimeSheet = () => {
                     </Grid>
                 </Box>
             </Box>
-            <Box sx={{marginTop:'50px',p:3}}>
+            <Box sx={{m:3}}>
+                <ButtonGroup>
+                    <Button variant="outlined">
+                        <ArrowBackIosIcon/>
+                    </Button>
+                    <Button variant="outlined">Day</Button>
+                    <Button variant="outlined">Week</Button>
+                    <Button variant="outlined">
+                        <ArrowForwardIosIcon/>
+                    </Button>
+                </ButtonGroup>
+            </Box>
+            <Box sx={{p:3}}>
                 <Box>
                     <Grid sx={{display:'flex', justifyContent:'space-between'}}>
                         <Grid sx={{margin:'auto 0px'}}>

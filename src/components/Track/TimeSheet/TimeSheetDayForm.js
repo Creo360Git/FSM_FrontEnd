@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Box, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize, FormHelperText, ButtonGroup, Button } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { makeStyles } from "@mui/styles";
@@ -5,14 +6,14 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme)=>({
     label:{
         fontWeight: 'bolder!important',
-        padding:'0px 5px!important',
+        padding:'0px 5px',
         
     },
     input :{
         width:'100%!important',
-        margin:'0px',
-        marginBottom:'10px',
-        padding:'0px 5px'
+        margin:'0!important',
+        marginBottom:'10px!important',
+        padding:'0px 5px!important'
     }
 }))
 
@@ -21,16 +22,35 @@ const TimeSheetDayForm = () => {
     const theme = useTheme();
     const classes = useStyles();
 
+    const [values,setValues] = React.useState({
+        type:'',
+        startTime:'',
+        endTime:'',
+        duration:'',
+        description:''
+    });
+
+    //const [type, setType] = React.useState();
+
+    const [users,setUsers] = React.useState();
+
+    const handleChange = (e)=>{
+        console.log(e.target.value)
+        const temp = {...values}
+        temp[e.target.name] = e.target.value;
+        setValues(temp)
+    }
+
     return ( 
 
-        <Box sx={{pt:3}}>
-            <form>
+        <Box sx={{mt:6}}>
             <Grid container>
                 <Grid item md={4} xs={12}>
                     <Typography  className={classes.label}>Type</Typography>
                     <FormControlLabel
                         labelPlacement="top"
                         className= {classes.input}
+                        
                         control={
                             <TextField
                                 fullWidth        
@@ -38,14 +58,18 @@ const TimeSheetDayForm = () => {
                                 type="text"
                                 variant="outlined"
                                 size="small"  
-                        
-                        >
-                                                
-                            <MenuItem >
-                                General
-                            </MenuItem>
-                                                    
-                        </TextField>}
+                                name = 'type'
+                                onChange = {handleChange}
+                            >
+
+                                <MenuItem  value= ""  >
+                                    General
+                                </MenuItem>                 
+                                <MenuItem  value= {'general'}  >
+                                    General
+                                </MenuItem>
+                                                        
+                            </TextField>}
                         
                     />
 
@@ -61,6 +85,7 @@ const TimeSheetDayForm = () => {
                             size="small"
                             sx={{resize:'both'}}
                             multiline
+                            name = "description"
                             minRows={4}
 
                         />}
@@ -83,13 +108,13 @@ const TimeSheetDayForm = () => {
                         <Grid item xs={6}> 
                         <Typography className={classes.label}>Start</Typography>
                             <FormControlLabel
-                                
-                                labelPlacement="top"
                                 className= {classes.input}
+                                labelPlacement="top"
                                 control={
                                 <TextField
                                     type='time'
                                     variant="outlined"
+                                    name = "startTime"
                                     size="small"
                                     fullWidth
                                 />}
@@ -105,6 +130,7 @@ const TimeSheetDayForm = () => {
                                 <TextField
                                     type='time'
                                     fullWidth
+                                    name = "endTime"
                                     variant="outlined"
                                     size="small"
                                 />}
@@ -118,7 +144,7 @@ const TimeSheetDayForm = () => {
                             className= {classes.input}
                             control={
                             <TextField
-                                type=''
+                                name = "duration"
                                 fullWidth
                                 variant="outlined"
                                 size="small"
@@ -127,7 +153,7 @@ const TimeSheetDayForm = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <ButtonGroup sx={{right:0,position:'absolute', mt:2,mr:3,}}>
+                        <ButtonGroup sx={{right:0,position:'absolute', m:3, mt:2 }}>
                             <Button variant='contained' sx={{width:'120px',height:'30px',m:1,borderRadius:'0px'}}>
                                 Start 
                             </Button>
@@ -139,7 +165,7 @@ const TimeSheetDayForm = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            </form>
+           
         </Box>
     );
 }
