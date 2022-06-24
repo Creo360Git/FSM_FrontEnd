@@ -26,7 +26,6 @@ import SelectClientDialog from "../../components/Common/SelectClientDialog";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { fDateShort } from "../../components/Controls/formatUtils";
-import PreviewList from "../../components/Common/FileUpload/PreviewList";
 import FileUploadArea from "../../components/Common/FileUpload";
 
 
@@ -56,9 +55,6 @@ const NewRequest = () => {
         reValidateMode: 'onBlur',
         resolver: yupResolver(validationSchema)
     });
-
-
-
 
 
     const [show, setShow]= useState(false)
@@ -372,9 +368,6 @@ const NewRequest = () => {
                                         helperText={errors.title?.message}
                                     />
                                 </Grid>
-                                {/* <Grid xs={12} sm={6} md={4} item > */}
-                                    {/* <PreviewList fileList={fileList} fileRemove={fileRemove} theme={theme} /> */}
-                                {/* </Grid> */}
                                 <Grid item xs={12}>
                                     <FileUploadArea theme={theme} setValue={setValue} getValues={getValues} fileList={fileList}/>
                                 </Grid>

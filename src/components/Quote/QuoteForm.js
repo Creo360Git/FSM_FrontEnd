@@ -86,6 +86,7 @@ const NewQuote = () => {
     unitPrice: 0,
     total: 0,
     imgUrl: "",
+    fileList:[]
   };
 
   const [values, setValues] = useState({

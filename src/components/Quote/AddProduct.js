@@ -15,6 +15,9 @@ import { useTranslation } from "react-i18next";
 import { DropzoneDialog } from "react-mui-dropzone";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PreviewImage from "../Common/FileUpload/PreviewImage";
+import CustomSnackbar from "../Common/FileUpload/CustomSnackbar";
+import FileUploadArea from "../Common/FileUpload";
 
 const useStyles = makeStyles((theme) => ({
   deleteBtn: {
@@ -62,7 +65,30 @@ const AddProduct = (props) => {
 
   const [openImage, setOpenImage] = useState(false);
 
+  const setValue = (parameter, val) => {
+    setValues(({...values})=>{
+      values.product[index][parameter]=val
+      return values
+    })
+  }
+
+  const getValues = (parameter) => {
+    return values.product[index][parameter]
+  }
+
+  const [customSnackbarData, setCustomSnackbarData] = useState({
+    view: false,
+    variant: 'success',
+    message: 'success'
+})
+
+const setOpenValue = (val) => {
+  setCustomSnackbarData({...customSnackbarData, view: val})
+}
+
   return (
+    <React.Fragment>
+    <CustomSnackbar setOpen={setOpenValue} open={customSnackbarData.view} variant={customSnackbarData.variant} message={customSnackbarData.message} />
     <Grid container item xs={12} spacing={3}>
       <Grid item sm={4} xs={12}>
         <Autocomplete
@@ -154,19 +180,26 @@ const AddProduct = (props) => {
 
       <Grid item sm={2} xs={12}>
         <Box ml={1}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setOpenImage(true)}
-            startIcon={<AddCircleIcon />}
-            size="small"
-            fullWidth
-            sx={{ textTransform: "uppercase" }}
-          >
-            <Typography variant="h4">{t("labels.image")}</Typography>
-          </Button>
+          {
+            getValues('fileList').length > 0 ?
+            <PreviewImage fileList={ getValues('fileList')} setValue={setValue} setCustomSnackbarData={setCustomSnackbarData}/>
+            :
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setOpenImage(true)}
+              startIcon={<AddCircleIcon />}
+              size="small"
+              fullWidth
+              sx={{ textTransform: "uppercase" }}
+            >
+              <Typography variant="h4">{t("labels.image")}</Typography>
+            </Button>
+          }
+          
 
-          <DropzoneDialog
+          <FileUploadArea isDialogArea={true} open={openImage} setOpen={setOpenImage} setValue={setValue} getValues={getValues} fileList={getValues('fileList')} />
+          {/* <DropzoneDialog
             acceptedFiles={["image/*"]}
             cancelButtonText={t("buttons.cancel")}
             submitButtonText={t("buttons.submit")}
@@ -181,7 +214,7 @@ const AddProduct = (props) => {
             }}
             showPreviews={false}
             showPreviewsInDropzone={true}
-          />
+          /> */}
         </Box>
       </Grid>
 
@@ -203,6 +236,7 @@ const AddProduct = (props) => {
         </Grid>
       )}
     </Grid>
+    </React.Fragment>
   );
 };
 export default AddProduct;
