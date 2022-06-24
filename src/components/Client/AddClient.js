@@ -220,7 +220,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                     <Grid container spacing={0.5}>
                         {fields.map((val, index) => {
                             return (
-                                <> 
+                                <React.Fragment key={index}> 
                                     <Grid item sx={{mb: 1}} xs={4}>
                                         <TextField
                                             // label= 'Type'
@@ -259,14 +259,14 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                             </IconButton>
                                         </Grid>
                                     }
-                                </>
+                                </React.Fragment >
                             );
                         })}
                     </Grid>
                         
                     <Button
                         onClick={() => {
-                            append({ PhoneNumber: "", NumberType: "" });
+                            append({ PhoneNumber: "", NumberType: "" }, { shouldFocus: false });
                         }}
                         sx={{textTransform:'uppercase', mb: 1}}
                     >
@@ -276,7 +276,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                     <Grid container spacing={0.5}>
                         {emailFields.map((val, index) => {
                             return (
-                                <> 
+                                <React.Fragment key={index}> 
                                     <Grid item  xs={4} sx={{mb: 1}} >
                                         <TextField
                                             // label= 'Type'
@@ -315,7 +315,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                             </IconButton>
                                         </Grid>
                                     }
-                                </>
+                                </React.Fragment >
                             );
                         })}
                     </Grid>

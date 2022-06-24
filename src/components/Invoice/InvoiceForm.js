@@ -8,34 +8,54 @@ import {
   useTheme,
   TextField,
   Typography,
-  Fab,
+  IconButton,
   Container,
   Stack,
   useMediaQuery,
   Divider,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import SelectClientDialog from "../Common/SelectClientDialog";
-import AddIcon from "@mui/icons-material/Add";
 import { DropzoneArea } from "react-mui-dropzone";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import AddProduct from "./AddProduct";
+import AddProduct from "../Quote/AddProduct";
 import { Box } from "@mui/system";
 import MoreOptionsMenu from "../Controls/MoreOptionsMenu";
+import DeleteIcon from "@mui/icons-material/Delete";
+import moment from "moment";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
-const NewQuote = () => {
+const useStyles = makeStyles((theme) => ({
+  deleteBtn: {
+    background: "#f8e8eb",
+    "&:hover": {
+      background: "#f8e8eb",
+    },
+  },
+  deleteIcon: {
+    color: theme.palette.common.danger,
+  },
+}));
+
+const InvoiceForm = () => {
   const theme = useTheme();
+
+  const classes = useStyles();
 
   const matchSmDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
-    quoteTitle: yup.string().required(t("messages.required")),
+    subject: yup.string().required(t("messages.required")),
     clientMessage: yup.string(),
     noteDetails: yup.string(),
     document: yup.string(),
@@ -61,20 +81,24 @@ const NewQuote = () => {
   };
 
   const [values, setValues] = useState({
-    quoteTitle: "",
+    subject: "",
     clientMessage: "",
     noteDetails: "",
     document: "",
+    issueDate: "",
+    paymentDue: "",
     product: [initProduct],
   });
 
   const onSubmit = async (data) => {
     setValues((values) => ({
       ...values,
-      quoteTitle: "",
+      subject: "",
       clientMessage: "",
       noteDetails: "",
       document: "",
+      issueDate: "",
+      paymentDue: "",
       product: [initProduct],
     }));
   };
@@ -84,23 +108,6 @@ const NewQuote = () => {
       ...values,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  const handleAddProduct = (values) => {
-    const products = [...values.product, initProduct];
-
-    setValues((values) => ({
-      ...values,
-      product: products,
-    }));
-  };
-
-  const [show, setShow] = useState(false);
-
-  const [client, setClient] = useState();
-
-  const handleOpen = () => {
-    setShow(true);
   };
 
   const [document, setDocument] = useState([]);
@@ -149,6 +156,14 @@ const NewQuote = () => {
     },
   ];
 
+  const paymentDueList = [
+    { label: "Upon Receipt", value: "uponReceipt" },
+    { label: "Net 15", value: "net15" },
+    { label: "Net 30", value: "net30" },
+    { label: "Net 45", value: "net45" },
+    { label: "Customize", value: "customize" },
+  ];
+
   return (
     <Grid
       container
@@ -164,90 +179,14 @@ const NewQuote = () => {
           style={{ width: "100%" }}
         >
           <Grid container item spacing={3} alignItems="center" justify="center">
-            {!!client ? (
-              <>
-                <Grid item xs={12}>
-                  <Typography
-                    variant="h3"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    {client?.name}
-                  </Typography>
-                </Grid>
-                <Grid md={3} sm={5} xs={6} item>
-                  <Typography
-                    variant="h5"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    Property adress
-                  </Typography>
-                  <Grid container item>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        135/B Garden State Ave , Mississauga,Ontario,L4T 0A5,{" "}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid xs="auto" item>
-                  <Typography
-                    variant="h5"
-                    sx={{ fontWeight: theme.typography.fontWeightBold }}
-                  >
-                    Contact details
-                  </Typography>
-                  <Grid container item>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        0777898734
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: "#818EA1",
-                          fontWeight: theme.typography.fontWeightRegular,
-                        }}
-                      >
-                        snd89@gmail.com
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </>
-            ) : (
-              <Grid xs={12} item>
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: theme.typography.fontWeightBold }}
-                >
-                  {t("labels.clientName")}
-                  <Fab
-                    size="small"
-                    color="primary"
-                    aria-label="add"
-                    sx={{ ml: 2 }}
-                    onClick={handleOpen}
-                  >
-                    <AddIcon />
-                  </Fab>
-                </Typography>
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <Typography
+                variant="h2"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Invoice for SND pvt
+              </Typography>
+            </Grid>
 
             <Grid
               item
@@ -260,25 +199,215 @@ const NewQuote = () => {
                 variant="h4"
                 sx={{ fontWeight: theme.typography.fontWeightBold }}
               >
-                {t("headings.quoteTitle")}
+                {t("headings.invoiceSubject")}
               </Typography>
             </Grid>
 
             <Grid item xs={12}>
               <TextField
                 required
-                name="quoteTitle"
-                label={t("labels.quoteTitle")}
+                name="subject"
+                label={t("labels.invoiceSubject")}
                 fullWidth
                 type="text"
                 variant="outlined"
                 size="small"
-                value={values?.quoteTitle || ""}
+                value={values?.subject || ""}
                 onChange={onChangeValueData}
-                {...register("quoteTitle")}
-                error={!!errors.quoteTitle}
-                helperText={errors.quoteTitle?.message}
+                {...register("subject")}
+                error={!!errors.subject}
+                helperText={errors.subject?.message}
               />
+            </Grid>
+
+            <Grid md={3} sm={4} xs={12} item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Billing Adress
+              </Typography>
+              <Grid container item>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    135/B Garden State Ave , Mississauga,Ontario,L4T 0A5,{" "}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid md={3} sm={4} xs={12} item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Service Adress
+              </Typography>
+              <Grid container item>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    Service adress (Same as billing address)
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid md={3} sm={4} xs={12} item>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+              >
+                Contact Details
+              </Typography>
+              <Grid container item>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    0777898734
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: "#818EA1",
+                      fontWeight: theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    snd89@gmail.com
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              style={{
+                marginTop: theme.spacing(1),
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: theme.typography.fontWeightBold }}
+                gutterBottom
+              >
+                {t("headings.invoiceDetails")}
+              </Typography>
+
+              <Divider />
+            </Grid>
+
+            <Grid container spacing={1} item xs={12}>
+              <Grid item md={2} sm={3} xs={5}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightRegular,
+                    paddingTop: "0.5rem",
+                  }}
+                >
+                  {t("labels.issuedDate")}
+                </Typography>
+              </Grid>
+
+              <Grid item md={3} sm={6} xs={7}>
+                <Stack
+                  direction="row"
+                  alignItems="flex-end"
+                  justifyContent={"space-between"}
+                  spacing={2}
+                >
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                      label=""
+                      name="issueDate"
+                      value={values?.issueDate || moment().format("MM-DD-YYYY")}
+                      onChange={(newValue) => {
+                        setValues((values) => ({
+                          ...values,
+                          issueDate: newValue,
+                        }));
+                      }}
+                      renderInput={(params) => (
+                        <TextField {...params} size="small" />
+                      )}
+                    />
+                  </LocalizationProvider>
+
+                  <IconButton
+                    className={classes.deleteBtn}
+                    // onClick={handleRemoveClick}
+                  >
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </IconButton>
+                </Stack>
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={1} item xs={12}>
+              <Grid item md={2} sm={3} xs={5}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: theme.typography.fontWeightRegular,
+                    paddingTop: "0.5rem",
+                  }}
+                >
+                  {t("labels.paymentDue")}
+                </Typography>
+              </Grid>
+
+              <Grid item md={3} sm={6} xs={7}>
+                <Stack
+                  direction="row"
+                  alignItems="flex-end"
+                  justifyContent={"space-between"}
+                  spacing={2}
+                >
+                  <FormControl fullWidth>
+                    <Select
+                      name="paymentDue"
+                      label=""
+                      value={values?.paymentDue || ""}
+                      onChange={onChangeValueData}
+                      size="small"
+                    >
+                      {paymentDueList?.map((item, index) => {
+                        return (
+                          <MenuItem value={item?.value} key={index}>
+                            {item?.label || ""}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+
+                  <IconButton
+                    className={classes.deleteBtn}
+                    // onClick={handleRemoveClick}
+                  >
+                    <DeleteIcon className={classes.deleteIcon} />
+                  </IconButton>
+                </Stack>
+              </Grid>
             </Grid>
 
             <Grid
@@ -312,19 +441,6 @@ const NewQuote = () => {
                 </Grid>
               );
             })}
-
-            <Grid item xs={12}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => handleAddProduct(values)}
-                sx={{ textTransform: "uppercase" }}
-                startIcon={<AddCircleIcon />}
-                size="small"
-              >
-                {t("buttons.addMore")}
-              </Button>
-            </Grid>
 
             <Grid
               item
@@ -627,15 +743,8 @@ const NewQuote = () => {
           </Grid>
         </form>
       </Container>
-
-      <SelectClientDialog
-        show={show}
-        setShow={setShow}
-        theme={theme}
-        setClient={setClient}
-      />
     </Grid>
   );
 };
 
-export default NewQuote;
+export default InvoiceForm;

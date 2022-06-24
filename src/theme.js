@@ -34,9 +34,9 @@ const theme = createTheme({
       contrastText: "#fff",
     },
     common: {
-      black,
-      darkBlack,
-      danger,
+      black: black,
+      darkBlack: darkBlack,
+      danger: danger,
     },
     warning: {
       light: warningLight,

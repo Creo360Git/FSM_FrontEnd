@@ -1,6 +1,5 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import Track from "./pages/Track/Track";
 // import { PrivateRoute } from "./auth/PrivateRoute";
 // import { Callback } from "./auth/Callback";
 // import { Logout } from "./auth/Logout";
@@ -13,6 +12,15 @@ const Quote = lazy(() => import("./pages/Quote/Quote"));
 const NewQuote = lazy(() => import("./pages/Quote/NewQuote"));
 const Request = lazy(() => import("./pages/Request/Request"));
 const NewRequest = lazy(() => import("./pages/Request/NewRequest"));
+const Schedule = lazy(() => import("./pages/Schedule"));
+const Invoice = lazy(() => import("./pages/Invoice/Invoice"));
+const NewInvoice = lazy(() => import("./pages/Invoice/NewInvoice"));
+const Job = lazy(() => import("./pages/Job/Job"));
+const NewJob = lazy(() => import("./pages/Job/NewJob"));
+const Login = lazy(() => import("./pages/Login"));
+const Track = lazy(()=> import("./pages/Track/Track"));
+
+const Reports = lazy(() => import("./pages/Reports"));
 
 const Router = () => (
   <Routes>
@@ -27,7 +35,15 @@ const Router = () => (
     <Route path="/quotes/newQuotes" element={<NewQuote />} />
     <Route path="/request" element={<Request />} />
     <Route path="/request/new" element={<NewRequest />} />
+    <Route path="/schedule" element={<Schedule/>} />
+    <Route path="/jobs" element={<Job/>} />
+    <Route path="/jobs/new" element={<NewJob/>} />
+    <Route path="/invoice" element={<Invoice />} />
+    <Route path="/invoice/newInvoice" element={<NewInvoice />} />
+    <Route path="/reports" element={<Reports />} />
+    <Route path="/login" element={<Login />} />
     <Route path="/track" element={<Track/>} />
+
     <Route path="/" element={<Dashboard />} />
 
     {/* <PrivateRoute path="/" component={Dashboard} /> */}
