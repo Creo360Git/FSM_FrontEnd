@@ -17,6 +17,8 @@ const Invoice = lazy(() => import("./pages/Invoice/Invoice"));
 const NewInvoice = lazy(() => import("./pages/Invoice/NewInvoice"));
 const Job = lazy(() => import("./pages/Job/Job"));
 const NewJob = lazy(() => import("./pages/Job/NewJob"));
+const Login = lazy(() => import("./pages/Login"));
+const Track = lazy(()=> import("./pages/Track/Track"));
 
 const Reports = lazy(() => import("./pages/Reports"));
 
@@ -39,6 +41,8 @@ const Router = () => (
     <Route path="/invoice" element={<Invoice />} />
     <Route path="/invoice/newInvoice" element={<NewInvoice />} />
     <Route path="/reports" element={<Reports />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/track" element={<Track/>} />
 
     <Route path="/" element={<Dashboard />} />
 
