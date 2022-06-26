@@ -1,4 +1,5 @@
-import { Box, Button, ButtonGroup, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize } from "@mui/material";
+import * as React from 'react';
+import { Box, Button, ButtonGroup, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize, Menu } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -8,6 +9,7 @@ import { useTheme } from "@emotion/react";
 import TimeSheetDayForm from "../../components/Track/TimeSheet/TimeSheetDayForm";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { useForm } from "react-hook-form";
 
 const useStyles = makeStyles((theme)=>({
     header:{
@@ -68,14 +70,53 @@ const useStyles = makeStyles((theme)=>({
     },
     divider:{
         backgroundColor: '#007AFF!important'
+    },
+    menuItem:{
+        minWidth:'200px',
+        '&:hover':{
+            color:theme.palette.primary.contrastText,
+            backgroundColor: `${theme.palette.primary.dark}!important`
+        }
     }
+
 }))
+
+const employees = [
+        {id:'1', label:'User_1', value:'user_1'},
+        {id:'2', label:'User_2', value:'user_2'},
+        {id:'3', label:'User_3', value:'user_3'}
+    ]
 
 const TimeSheet = () => {
 
 
     const classes = useStyles();
     const theme = useTheme();
+
+    
+
+    const [users,setUsers] = React.useState(employees);
+    const [user, setUser] = React.useState('');
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleUser = (e)=>{
+        console.log(e.currentTarget)
+        setAnchorEl(e.currentTarget);
+    }
+
+    const handleClose = (e)=>{
+        
+        const value = e.currentTarget.attributes?.value?.value
+        users.map((props)=>{
+            if (props.id == value){
+                setUser(props)
+            }
+        })
+        
+        setAnchorEl(null); 
+             
+    }
 
     useEffect(()=>{
         console.log("TimeSheet")
@@ -104,14 +145,47 @@ const TimeSheet = () => {
                     </Grid>
                     
                     <Grid   className={classes.userButton}>
-                        <ButtonGroup >
-                            <Button variant="contained" className={classes.userSelect} >
-                                Switch User
+                        <ButtonGroup>
+                            <Button variant="contained" className={classes.userSelect} onClick={handleUser}>
+                                { !user? "Switch User": user.label }
                             </Button>
-                            <Button variant="contained" className={classes.userDropdown} >
+                            <Button variant="contained" className={classes.userDropdown} onClick={handleUser}>
                                 <ArrowDropDownIcon />
                             </Button>
                         </ButtonGroup>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            transformOrigin={{ 
+                                horizontal: 'right', 
+                                vertical: 'top' 
+                            }}
+                            anchorOrigin={{ 
+                                horizontal: 'right', 
+                                vertical: 'bottom' 
+                            }}
+                            
+                            
+                            
+                        >
+                            {
+                                users.map((prop)=>{
+                                    return(
+                                        <MenuItem 
+                                            value={prop.id}  
+                                            key = {prop.id}
+                                            className={classes.menuItem}
+                                            onClick = {handleClose}
+                                        > 
+                                            {prop.label}
+                                        </MenuItem>
+                                    )
+                                })
+                            }
+                
+                        </Menu>
+                        
                     </Grid>
                 </Box>
             </Box>
