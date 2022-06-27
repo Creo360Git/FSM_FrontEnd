@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, ButtonGroup, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize, Menu } from "@mui/material";
+import { Box, Button, ButtonGroup, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize, Menu, useMediaQuery } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -7,9 +7,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from "@emotion/react";
 import TimeSheetDayForm from "../../components/Track/TimeSheet/TimeSheetDayForm";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useForm } from "react-hook-form";
+import DateSetter from '../../components/Track/TimeSheet/DateSetter';
+import moment from 'moment';
+import CustomButtonDropDown from '../../components/Track/TimeSheet/CustomButtonDropDown';
+import DayEntryTable from '../../components/Track/TimeSheet/DayEntryTable';
 
 const useStyles = makeStyles((theme)=>({
     header:{
@@ -82,40 +84,45 @@ const useStyles = makeStyles((theme)=>({
 }))
 
 const employees = [
-        {id:'1', label:'User_1', value:'user_1'},
-        {id:'2', label:'User_2', value:'user_2'},
-        {id:'3', label:'User_3', value:'user_3'}
-    ]
+    {id:'1', label:'User_1', value:'user_1',name:'User_1',gmail:'user1@gmail.com'},
+    {id:'2', label:'User_2', value:'user_2',name:'User_2',gmail:'user2@gmail.com'},
+    {id:'3', label:'User_3', value:'user_3',name:'User_3',gmail:'user3@gmail.com'}
+]
+
+const entries = [
+    {id:'1', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530',duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'},
+    {id:'2', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530',duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'},
+    {id:'3', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530', duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'}
+]
+
 
 const TimeSheet = () => {
 
 
     const classes = useStyles();
-    const theme = useTheme();
+
+    const [date,setDate] = React.useState(Date.now());
+    const [isDay,setIsDay] = React.useState(true)
+
+    const [visible,setVisible] = React.useState(true)
+
+    const [users,setUsers] = React.useState(employees);
+    const [user, setUser] = React.useState(users[0]);
+
 
     
 
-    const [users,setUsers] = React.useState(employees);
-    const [user, setUser] = React.useState('');
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleUser = (e)=>{
-        console.log(e.currentTarget)
-        setAnchorEl(e.currentTarget);
+    const handleAddTime = (e)=>{
+        e.preventDefault();
+        setVisible(true);
     }
 
-    const handleClose = (e)=>{
-        
-        const value = e.currentTarget.attributes?.value?.value
-        users.map((props)=>{
-            if (props.id == value){
-                setUser(props)
-            }
-        })
-        
-        setAnchorEl(null); 
-             
+    
+
+    const handleUserChange = (props)=>{
+        if(props.id){
+            setUser(props)
+        }
     }
 
     useEffect(()=>{
@@ -136,81 +143,45 @@ const TimeSheet = () => {
                         <AccountCircleIcon sx={{ fontSize: 55 }} />
                         <Stack >
                             <Typography variant="h2" >
-                                Sample User
+                                {user.name}
                             </Typography>
                             <Typography sx={{fontWeight:700,color: 'rgba(0, 0, 0, 0.6)'}}>
-                                sample@gmail.com
+                                {user.gmail}
                             </Typography>
                         </Stack>
                     </Grid>
                     
                     <Grid   className={classes.userButton}>
                         <ButtonGroup>
-                            <Button variant="contained" className={classes.userSelect} onClick={handleUser}>
-                                { !user? "Switch User": user.label }
-                            </Button>
-                            <Button variant="contained" className={classes.userDropdown} onClick={handleUser}>
-                                <ArrowDropDownIcon />
-                            </Button>
+                            <CustomButtonDropDown
+                                lists = {users} 
+                                handleFunction = {handleUserChange}
+                                title = "Switch users"
+                                width = "150px"
+                                IsContained={true}
+                            />
                         </ButtonGroup>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            transformOrigin={{ 
-                                horizontal: 'right', 
-                                vertical: 'top' 
-                            }}
-                            anchorOrigin={{ 
-                                horizontal: 'right', 
-                                vertical: 'bottom' 
-                            }}
-                            
-                            
-                            
-                        >
-                            {
-                                users.map((prop)=>{
-                                    return(
-                                        <MenuItem 
-                                            value={prop.id}  
-                                            key = {prop.id}
-                                            className={classes.menuItem}
-                                            onClick = {handleClose}
-                                        > 
-                                            {prop.label}
-                                        </MenuItem>
-                                    )
-                                })
-                            }
-                
-                        </Menu>
-                        
                     </Grid>
                 </Box>
             </Box>
             <Box sx={{m:3}}>
-                <ButtonGroup>
-                    <Button variant="outlined">
-                        <ArrowBackIosIcon/>
-                    </Button>
-                    <Button variant="outlined">Day</Button>
-                    <Button variant="outlined">Week</Button>
-                    <Button variant="outlined">
-                        <ArrowForwardIosIcon/>
-                    </Button>
-                </ButtonGroup>
+                <DateSetter
+                    date = {date}
+                    setDate = {setDate}
+                    isDay = {isDay}
+                    setIsDay = {setIsDay}
+                />
             </Box>
             <Box sx={{p:3}}>
                 <Box>
                     <Grid sx={{display:'flex', justifyContent:'space-between'}}>
                         <Grid sx={{margin:'auto 0px'}}>
                             <Typography className={classes.dividerHeading}>
-                                My hours for June 5th, 2022
+                                My hours for {moment(date).format('DD MMM, yyyy')}
                             </Typography>
                         </Grid>
                         <Grid sx={{paddingBottom: '5px!important'}}>
-                            <Button variant="outlined" className={classes.addTimeButton}>
+                            <Button variant="outlined" className={classes.addTimeButton} onClick={handleAddTime}>
                                 <AddIcon sx={{fontSize:20}}/>
                                 Add Time
                             </Button>
@@ -219,7 +190,20 @@ const TimeSheet = () => {
                 </Box>
                 <Divider className={classes.divider}/>
 
-                <TimeSheetDayForm/>
+                    {
+                        entries.map((props)=>{
+                            return <DayEntryTable data={props} key={props.id} />
+                        })
+                    }
+                
+                    { visible ?
+                        <TimeSheetDayForm
+                            setVisible={setVisible}
+                        />
+                        :
+                        null
+                    }
+                
                
                 
             </Box>

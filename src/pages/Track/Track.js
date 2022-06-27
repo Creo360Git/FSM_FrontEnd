@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import DashboardLayout from '../../components/Common/Layouts/DashboardLayout';
 import { makeStyles } from '@mui/styles';
-import { Card, CardContent, CardHeader, FormControl, InputLabel } from '@mui/material';
+import { Card, CardContent, CardHeader, FormControl, InputLabel, useMediaQuery } from '@mui/material';
 import Select from '@mui/material/Select';
 
 
@@ -20,6 +20,7 @@ import Approved from './Approved';
 import Payment from './Payment';
 import { fontWeight } from '@mui/system';
 import TrackTab from '../../components/Track/TrackTab';
+import { useTheme } from '@emotion/react';
 
 
 const tabs = [
@@ -30,13 +31,13 @@ const tabs = [
 
 const Track = () => {
 
-
+    const theme = useTheme();
+    const breakpoint = useMediaQuery(theme.breakpoints.up('sm'));
     
-
     return ( 
         <TrackTab
             tabs={tabs}
-            heading = "Track"
+            heading = {breakpoint?"Track":''}
             title= "Time Tracker"
             initialTabId ={0}
         />

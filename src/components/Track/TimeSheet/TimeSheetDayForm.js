@@ -8,8 +8,10 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form';
+import { get, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { fTimeShort } from '../../Controls/formatUtils';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme)=>({
     label:{
@@ -28,52 +30,65 @@ const useStyles = makeStyles((theme)=>({
     }
 }))
 
-const TimeSheetDayForm = () => {
+const emptyValues = {
+    type:'',
+    startTime:'',
+    endTime:'',
+    duration:'',
+    description:''
+}
+
+
+const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
 
     const theme = useTheme();
     const classes = useStyles();
 
     const {t} =  useTranslation()
 
+    React.useEffect(()=>{
+        console.log(initialValues)
+    },[])
+
     const schema = yup.object().shape({
         type: yup.string().required("Select the type"),
-        startTime: yup.string().nullable(true),
-        endTime: yup.string().nullable(true),
+        startTime: yup.string(),
+        endTime: yup.string(),
         duration: yup.string().required("Time Duration required"),
         description: yup.string()
     })
 
+    const [values,setValues] = React.useState(initialValues);
+
     const {
         register, formState: { errors }, handleSubmit,  getValues, setValue, reset, control, watch
     } = useForm({
+        defaultValues: values,
         mode:'onBlur',
         reValidateMode:'onBlur',
         resolver: yupResolver(schema)
     })
 
-    const [values,setValues] = React.useState({
-        type:'',
-        startTime:'',
-        endTime:'',
-        duration:'',
-        description:''
-    });
+    const data = watch();
+    
+    const handleCancel = ()=>{
+        reset({
+            type:'',
+            startTime:'',
+            endTime:'',
+            duration:'',
+            description:''
+        });
+        setVisible(false);
+    }
 
     //const [type, setType] = React.useState();
 
     const [users,setUsers] = React.useState();
     
 
-    const handleChange = (e)=>{
-        console.log(e)
-        setValues((value)=>({
-            ...value,
-            [e.target.name]:e.target.value
-        }))
-    }
-
     const onSubmit = async ()=>{
-        console.log(values)
+        console.log(data)
         setValues({
             type:'',
             startTime:'',
@@ -86,7 +101,10 @@ const TimeSheetDayForm = () => {
     return ( 
 
         <Box sx={{mt:6}}>
-            <form >
+            <form 
+                onSubmit={handleSubmit(onSubmit)}
+                autoComplete = "off"
+            >
                 <Grid container>
                     <Grid item md={4} xs={12}>
                         <Typography  className={classes.label}>Type</Typography>
@@ -98,18 +116,18 @@ const TimeSheetDayForm = () => {
                             className= {classes.input}
                             variant="outlined"
                             size="small"  
-                            name = 'type'
-                            value={values?.type}
+                            //name = 'type'
+                            //value={data.type}
+                            value={getValues('type')}
                             //onChange = {handleChange}
                             helperText = {errors.type?.message}
                             {...register('type')}
                             error = {!!errors.type}
+                            
                         >
 
-                            <MenuItem  value= "" onChange={handleChange} >
-                                General
-                            </MenuItem>                 
-                            <MenuItem  value='general' onChange={handleChange} >
+                                      
+                            <MenuItem  value='General' key="1">
                                 General
                             </MenuItem>
                                                             
@@ -123,26 +141,13 @@ const TimeSheetDayForm = () => {
                             size="small"
                             sx={{resize:'both'}}
                             multiline
-                            name = "description"
                             minRows={4}
                             className = {classes.input}
-                            value = {values.description}
-                            onChange = {handleChange}
                             {...register('description')}
                             error ={!!errors.description}
                             helperText = {errors.description?.message}
                         />
                         
-    {/*                     
-                        <TextareaAutosize
-                            
-                            minRows={4}
-                            aria-label="maximum height"
-                            placeholder="Maximum 4 rows"
-                            defaultValue="Description"
-                            style={{ width:'100%', mt:1,backgroundColor:'#E9ECFF',border:'1px solid #b3b5c4', borderRadius:'4px',padding:'0px 5px'}}
-                            label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular, ml: -14}}>End</Typography>}
-                        /> */}
                         
                     </Grid>
                     <Grid item md={8}>
@@ -156,13 +161,15 @@ const TimeSheetDayForm = () => {
                                         //value={watchValues.startTime}
                                         name='startTime'
                                         ampm = {false}
-                                        
-                                        onChange={(time)=> setValues((values)=>({
-                                            ...values,
-                                            startTime:time
-                                        }))}
-                                        value = {values.startTime}
-                                        //onChange={e=>setValue('startTime',(e))}
+                                        openTo="hours"
+                                        views={["hours", "minutes"]}
+                                        inputFormat="HH:mm"
+                                        mask="__:__"
+                                        onChange={(value) => (
+                                            console.log(value),
+                                            setValue('startTime', value)
+                                        )}
+                                        value = {getValues('startTime')}
                                         renderInput={(params) => 
                                             <TextField 
                                                 size="small" 
@@ -171,6 +178,7 @@ const TimeSheetDayForm = () => {
                                                 helperText={errors.startTime?.message}
                                                 {...params} 
                                                 error={!!errors.startTime}
+                                        
                                             />
                                         }
                                     />
@@ -180,23 +188,26 @@ const TimeSheetDayForm = () => {
                                     
                                     <TimePicker
                                         ampm = {false}
-                                        name = "endTime"
-                                        onChange={(time)=> setValues((values)=>({
-                                            ...values,
-                                            endTime:time
-                                        }))}
-                                        value = {values?.endTime}
+                                        openTo="hours"
+                                        views={["hours", "minutes"]}
+                                        inputFormat="HH:mm"
+                                        mask="__:__"
+                                        value={getValues('endTime')}
+                                        //value = {data.endTime}
+                                        onChange={(value)=>{
+                                            setValue('endTime', value)
+                                        }}
                                         renderInput={(params)=>
-                                        <TextField
-                                            fullWidth
-                                            size="small" 
-                                            className={classes.input}
-                                        
-                                            helperText={errors.startTime?.message}
-                                            {...params} 
-                                            error={!!errors.startTime}
+                                            <TextField
+                                                fullWidth
+                                                size="small" 
+                                                className={classes.input}
                                             
-                                        />}
+                                                helperText={errors.endTime?.message}
+                                                {...params} 
+                                                error={!!errors.endTime}
+                                                
+                                            />}
                                     />
                                 </Grid>
                         
@@ -213,24 +224,23 @@ const TimeSheetDayForm = () => {
                             /> */}
                             <TimePicker 
                                 ampm = {false}
+
                                 openTo="hours"
                                 views={["hours", "minutes"]}
-                                inputFormat="mm:ss"
+                                inputFormat="HH:mm"
                                 mask="__:__"
-                                value={values?.duration}
-                                onChange={(time)=> setValues((values)=>({
-                                    ...values,
-                                    duration:time
-                                }))}
+                                value={getValues('duration')}
+                                onChange={(value)=> 
+                                    setValue('duration',value)
+                                }
                                 renderInput={(params) => 
                                     <TextField 
                                         size="small" 
                                         fullWidth 
                                         className={classes.input}
-                                        helperText={errors.startTime?.message}
+                                        helperText={errors.duration?.message}
                                         {...params} 
-                                        {...register("startTime")}
-                                        error={!!errors.startTime}
+                                        error={!!errors.duration}
                                     />
                                 }
                             />
@@ -239,10 +249,10 @@ const TimeSheetDayForm = () => {
                         </LocalizationProvider>
                         <Grid item xs={12}>
                             <ButtonGroup sx={{right:0,position:'absolute', m:3, mt:2 }}>
-                                <Button variant='contained' onClick={onSubmit}  sx={{width:'120px',height:'30px',m:1,borderRadius:'0px'}}>
+                                <Button variant='contained' type="submit"  sx={{width:'120px',height:'30px',m:1,borderRadius:'0px'}}>
                                     Start 
                                 </Button>
-                                <Button varient='outlined' sx={{width:'120px',height:'30px',m:1,borderRadius:'0px',background: 'rgba(63, 81, 181, 0.08)!important'}}>
+                                <Button varient='outlined' onClick={handleCancel} sx={{width:'120px',height:'30px',m:1,borderRadius:'0px',background: 'rgba(63, 81, 181, 0.08)!important'}}>
                                     Cancel
                                 </Button>
                             </ButtonGroup>

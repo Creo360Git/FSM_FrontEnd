@@ -79,3 +79,7 @@ export function fDate(date) {
 export function fDateShort(date) {
   return moment(date).format('yyyy-MM-DD')
 }
+
+export function fTimeShort(time) {
+  return moment(time).format('HH:mm')
+}
