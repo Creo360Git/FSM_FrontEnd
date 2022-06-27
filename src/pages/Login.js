@@ -25,13 +25,13 @@ import {
         background: "linear-gradient(109.46deg, #457CCE 1.4%, rgba(196, 196, 196, 0.1) 300%)",
         borderRadius:"25px",
 
-      [theme.breakpoints.up(theme.breakpoints.values.md)]: {
+      [theme.breakpoints.up(900)]: {
         marginTop:"10vw"
       },
-      [theme.breakpoints.up(theme.breakpoints.values.lg)]: {
+      [theme.breakpoints.up(1500)]: {
         marginTop:"9vw"
       }, 
-      [theme.breakpoints.up(theme.breakpoints.values.xl)]: {
+      [theme.breakpoints.up(1700)]: {
         marginTop:"12vw"
       },
     },
