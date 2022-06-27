@@ -181,7 +181,7 @@ const setOpenValue = (val) => {
       <Grid item sm={2} xs={12}>
         <Box ml={1}>
           {
-            getValues('fileList').length > 0 ?
+            getValues('fileList')?.length > 0 ?
             <PreviewImage fileList={ getValues('fileList')} setValue={setValue} setCustomSnackbarData={setCustomSnackbarData}/>
             :
             <Button

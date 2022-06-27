@@ -30,7 +30,7 @@ const EmployeeList = () => {
             setFilterEmployees(employees.filter(emp=>(emp.name).toLowerCase().match(searchQuery.toLowerCase()) || (emp.skill).toLowerCase().match(searchQuery.toLowerCase())))
         }
     },[searchQuery])
-    console.log(!searchQuery)
+
     return(
         <React.Fragment>
             <TextField 
