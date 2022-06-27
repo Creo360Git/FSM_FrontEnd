@@ -59,13 +59,13 @@ const theme = createTheme({
     borderColor: borderColor,
     borderWidth: borderWidth,
   },
-  breakpoints: {
-    values: {
-      md: 900,
-      lg: 1500,
-      xl: 1700,
-    },
-  },
+  // breakpoints: {
+  //   values: {
+  //     md: 900,
+  //     lg: 1500,
+  //     xl: 1700,
+  //   },
+  // },
   components: {
     MuiAvatar: {
       styleOverrides: {
