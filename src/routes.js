@@ -18,8 +18,8 @@ const NewInvoice = lazy(() => import("./pages/Invoice/NewInvoice"));
 const Job = lazy(() => import("./pages/Job/Job"));
 const NewJob = lazy(() => import("./pages/Job/NewJob"));
 const Login = lazy(() => import("./pages/Login"));
-const Track = lazy(()=> import("./pages/Track/Track"));
-
+const Track = lazy(() => import("./pages/Track/Track"));
+const Map = lazy(() => import("./pages/Map"));
 const Reports = lazy(() => import("./pages/Reports"));
 
 const Router = () => (
@@ -35,14 +35,15 @@ const Router = () => (
     <Route path="/quotes/newQuotes" element={<NewQuote />} />
     <Route path="/request" element={<Request />} />
     <Route path="/request/new" element={<NewRequest />} />
-    <Route path="/schedule" element={<Schedule/>} />
-    <Route path="/jobs" element={<Job/>} />
-    <Route path="/jobs/new" element={<NewJob/>} />
+    <Route path="/schedule" element={<Schedule />} />
+    <Route path="/jobs" element={<Job />} />
+    <Route path="/jobs/new" element={<NewJob />} />
     <Route path="/invoice" element={<Invoice />} />
     <Route path="/invoice/newInvoice" element={<NewInvoice />} />
     <Route path="/reports" element={<Reports />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/track" element={<Track/>} />
+    <Route path="/track" element={<Track />} />
+    <Route path="/map" element={<Map />} />
 
     <Route path="/" element={<Dashboard />} />
 

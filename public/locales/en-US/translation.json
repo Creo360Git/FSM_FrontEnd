@@ -55,7 +55,8 @@
       "notesAttachments": "Notes & Attachments",
       "invoiceSubject": "Invoice Subject",
       "invoiceDetails": "Invoice Details",
-      "reports": "Reports"
+      "reports": "Reports",
+      "map": "Map"
     },
     "tableHeadings": {
       "visits": "Visits",
@@ -96,7 +97,8 @@
       "image": "Image",
       "invoiceSubject": "Invoice Subject",
       "issuedDate": "Issued date",
-      "paymentDue": "Payment due"
+      "paymentDue": "Payment due",
+      "scheduledItems": "Scheduled Items"
     },
     "adminToolTips": {
       
