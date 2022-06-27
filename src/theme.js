@@ -59,7 +59,6 @@ const theme = createTheme({
     borderColor: borderColor,
     borderWidth: borderWidth,
   },
-
   components: {
     MuiAvatar: {
       styleOverrides: {

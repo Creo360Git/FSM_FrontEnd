@@ -36,7 +36,7 @@ import Invoicing from "../../components/Job/Invoicing";
 import LineItems from "../../components/Job/LineItems";
 import Add from "@mui/icons-material/Add";
 import MoreOptionsMenu from "../../components/Controls/MoreOptionsMenu";
-import EditIcon from '@mui/icons-material/Edit';
+import FileUploadArea from "../../components/Common/FileUpload";
 
 
 const NewJob = () => {
@@ -109,34 +109,11 @@ const NewJob = () => {
         )
     }
 
-    const wrapperRef = useRef(null);
-    const onDragEnter = () => wrapperRef.current?.classList.add('dragover');
-    const onDragLeave = () => wrapperRef.current?.classList.remove('dragover');
-    const [fileList, setFileList] = useState([]);
-
-    const onFileDrop = (e) => {
-        const target = e.target;
-        if (!target.files) return;
-        
-        const arrMultiple = []
-        const newFiles = Object.values(target.files).map((file) => file);
-        newFiles.map((data, id) => {
-            arrMultiple.push({file: data, previewFile: URL.createObjectURL(data)})
-        })
-        if (newFiles) {
-            const updatedList = [...fileList, ...newFiles];
-            if (updatedList.length > 10) {
-                return alert(`Files must not be more than ${10}`);
-            }
-            setFileList(arrMultiple);
-        }
-        
-    }
-
     const [show, setShow]= useState(false)
     const [client, setClient] = useState()
     const handleOpen = () => setShow(true)
     const defaultValues = {
+        fileList: [],
         startDate: new Date(),
         endDate: new Date(),
         startTime: new Date(),
@@ -160,6 +137,7 @@ const NewJob = () => {
         resolver: yupResolver(validationSchema)
     });
 
+    const fileList= watch('fileList')
     const onSubmit = (values) => {
         reset()
         console.log(values)
@@ -485,48 +463,7 @@ const NewJob = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Box
-                                    display='flex'
-                                    justifyContent='center'
-                                    alignItems='center'
-                                    sx={{
-                                        position: 'relative',
-                                        width: '100%',
-                                        height: '6rem',
-                                        border: '2px dashed #4267b2',
-                                        borderRadius: '20px',
-                                        backgroundColor: '#e9ecff'
-                                    }}
-                                    ref={wrapperRef}
-                                    onDragEnter={onDragEnter}
-                                    onDragLeave={onDragLeave}
-                                    onDrop={onDragLeave}
-                                >
-                                    <Stack justifyContent='center' sx={{ p: 1, textAlign: 'center' }}>
-                                        <Typography sx={{fontWeight: theme.typography.fontWeightBold }}>
-                                            {'Browse files to upload'}
-                                        </Typography>
-                                    </Stack>
-                                    
-                                    <input
-                                        type='file'
-                                        name={'files'}
-                                        // onBlur={onBlur}
-                                        // ref={ref}
-                                        onChange={onFileDrop}
-                                        multiple = {true}
-                                        accept='image/jpg, image/png, image/jpeg'
-                                        style={{
-                                            opacity: 0,
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            cursor: 'pointer',
-                                        }}
-                                    /> 
-                                </Box>
+                                <FileUploadArea theme={theme} setValue={setValue} getValues={getValues} fileList={fileList}/>
                             </Grid>
                             {MoreOptionsMenu(menuItems, anchorEl, setAnchorEl)}
                             {

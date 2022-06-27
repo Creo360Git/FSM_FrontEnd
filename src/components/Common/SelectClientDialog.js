@@ -46,8 +46,8 @@ const SelectClientDialog = ({show, setShow, setClient, theme, title ='request'})
                     <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
                         {`Which client you would like to create ${title} for ?`}
                     </Typography>
-                    <Grid container spacing={2} direction='row' alignItems="center" justify="center">
-                        <Grid item xs={5}>
+                    <Grid container spacing={2} direction='row' alignItems="center" justifyContent="center">
+                        <Grid item xs={5} sm={5}>
                             <TextField
                                 label= 'Search clients...'
                                 fullWidth
@@ -59,12 +59,12 @@ const SelectClientDialog = ({show, setShow, setClient, theme, title ='request'})
                                 // helperText={errors.LastName?.message}
                             />
                         </Grid>
-                        <Grid item xs='auto'>
+                        <Grid item xs={2} sm='auto'>
                             OR
                         </Grid>
-                        <Grid item xs={6}>
-                            <Button variant='contained' key="two" sx={{textTransform: 'uppercase', width: '100%'}} onClick={handleOpen}>
-                                create new client
+                        <Grid item xs={5} sm={6}>
+                            <Button variant='contained' key="two" sx={{textTransform: 'uppercase', width: '100%', height: '40px'}} onClick={handleOpen}>
+                                <Typography noWrap>create new client</Typography>
                             </Button>  
                         </Grid>
                     </Grid>

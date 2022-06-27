@@ -196,7 +196,7 @@ const Schedule = () => {
                             <EmployeeList />
                         }
                     </Grid>
-                    <Grid item lg={8} xs={11}>
+                    <Grid item lg={8} xs={12} sm={11}>
                         <StyleWrapper>
                             <FullCalendar
                                 plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -233,7 +233,7 @@ const Schedule = () => {
                     }
                 </Grid>
             </Card>
-            <CalendarEventForm open={open} setOpen={setOpen} onCancel={handleClose} range={range} events={events} setEvents={setEvents} color={color} event={value} />
+            {open && <CalendarEventForm open={open} setOpen={setOpen} onCancel={handleClose} range={range} events={events} setEvents={setEvents} color={color} event={value} />}
         </DashboardLayout>
     )
 }
