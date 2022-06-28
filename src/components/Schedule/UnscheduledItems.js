@@ -10,18 +10,20 @@ import {
  } from '@mui/material';
  import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+ import { useTranslation } from 'react-i18next';
  import { useTheme } from '@emotion/react';
 
 
-const UnscheduledItems = () => {
-    const [open, setOpen] = useState(false)
+const UnscheduledItems = ({maxWidth=360, initialOpen= false}) => {
+    const [open, setOpen] = useState(initialOpen)
     const handleClick = () => {setOpen(!open)}
+    const {t} = useTranslation()
     return(
         <List
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper', boxShadow: 2 }}
+            sx={{ width: '100%', maxWidth: maxWidth, bgcolor: 'background.paper', boxShadow: 2 }}
         >
             <ListItemButton onClick={handleClick}>
-                <ListItemText primary="Unscheduled Items" />
+                <ListItemText primary={t("buttons.unScheduledItems")} />
                 {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>

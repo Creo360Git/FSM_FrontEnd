@@ -23,18 +23,18 @@ const toolBar = [
   {
     field: "Parameter",
     type: "search",
-    placeholder: "Search clients",
+    placeholder: "searchRequest",
   },
   {
     field: "SortBy",
     type: "select",
-    placeholder: "Sort",
+    placeholder: "sort",
     options: sortByOptions,
   },
   {
     field: "Filter",
     type: "select",
-    placeholder: "Filter",
+    placeholder: "filter",
     options: filterOptions,
   },
 ];
@@ -144,6 +144,19 @@ const Request = () => {
       name: "CustomerName",
       label: "lead",
       options: {
+        customHeadLabelRender: (columnMeta) => {
+          return (
+            <span>
+              <Typography
+                align={
+                  "left"
+                }
+              >
+                {columnMeta.label}
+              </Typography>
+            </span>
+          );
+        },
         customBodyRender: (value, tableMeta) => {
           return (
             <div key={tableMeta.rowIndex}>
@@ -164,6 +177,19 @@ const Request = () => {
       name: "Phone",
       label: "contact",
       options: {
+        customHeadLabelRender: (columnMeta) => {
+          return (
+            <span>
+              <Typography
+                align={
+                  "left"
+                }
+              >
+                {columnMeta.label}
+              </Typography>
+            </span>
+          );
+        },
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>

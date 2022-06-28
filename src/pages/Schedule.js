@@ -5,8 +5,10 @@ import {
     useMediaQuery,
     Button,
     Icon,
+    Stack,
     Drawer,
-    Container
+    Container,
+    Dialog
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { makeStyles } from '@mui/styles';
@@ -25,6 +27,7 @@ import ArrowForward from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackward from '@mui/icons-material/ArrowBackIos';
 import UnscheduledItems from '../components/Schedule/UnscheduledItems';
 import StyleWrapper from '../components/Schedule/StyleWrapper';
+import { useTranslation } from 'react-i18next';
 
 
 const colorOptions = {
@@ -158,8 +161,14 @@ const Schedule = () => {
         }
     }, [drawerOpen]);
 
+    const [unscheduleOpen, setUnscheduleOpen] = useState(false)
+    const {t} = useTranslation()
+    
     return(
         <DashboardLayout heading="schedule">
+            <Dialog open={unscheduleOpen} onClose={()=>setUnscheduleOpen(false)} maxWidth='xs' sx={{width:'100%'}} scroll='body'>
+                <UnscheduledItems maxWidth='100%' initialOpen={true} />
+            </Dialog>
             <Card >
                 <Grid container spacing={2} ref={containerRef} style={{ position: "relative" }}>
                     <Grid item xs={12}>
@@ -171,6 +180,14 @@ const Schedule = () => {
                             onToday={handleClickToday}
                             onChangeView={handleChangeView}
                         />
+                        {
+                            isDownLg && 
+                            (   
+                                <Stack alignItems='flex-end' justifyContent='center'>
+                                    <Button variant='outlined' onClick={()=>setUnscheduleOpen(true)} sx={{mr: 3}}>{t("buttons.unScheduledItems")}</Button>
+                                </Stack>
+                            )
+                        }
                     </Grid>
                     <Grid item xs='auto' lg={2}>
                         {

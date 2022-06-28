@@ -23,6 +23,7 @@ import moment from 'moment';
 import { fDateShort } from '../Controls/formatUtils'
 import { useTheme } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -48,6 +49,7 @@ const getInitialValues = (event, range, color) => {
 export default function CalendarEventForm({ event={}, range, onCancel, open, setOpen, events, setEvents, color }) {
     const isCreating = Object.keys(event).length === 0;
     const theme = useTheme()
+    const {t} = useTranslation()
 
     const [values, setValues] = useState({
         startDate: new Date(),
@@ -120,7 +122,7 @@ return (
         maxWidth="xs"
     >
         <DialogTitle variant='h3' onClose={onCancel} sx={{textTransform:'uppercase', fontWeight: theme.typography.fontWeightBold, backgroundColor: '#f4f4f4'}}>
-            New Event
+            {t("headings.newEvent")}
         </DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -129,20 +131,20 @@ return (
                         name={'title'}
                         control={control}
                         render={({ field, fieldState: { error } }) => (
-                            <TextField {...field} fullWidth error={!!error} helperText={error?.message} label="Title" />
+                            <TextField {...field} fullWidth error={!!error} helperText={error?.message} label={t("labels.title")} />
                         )}
                     />
                     <Controller
                         name={'description'}
                         control={control}
                         render={({ field, fieldState: { error } }) => (
-                            <TextField {...field} fullWidth error={!!error} helperText={error?.message} label="Description" multiline rows={4} />
+                            <TextField {...field} fullWidth error={!!error} helperText={error?.message} label={t("labels.description")} multiline rows={4} />
                         )}
                     />
                     <Grid container spacing={0.5}>
                         <Grid item xs={12} sm={6}>
                             <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                Start Date
+                                {t("labels.startDate")}
                             </Typography>
                             <DesktopDatePicker
                                 inputFormat="yyyy-MM-DD"
@@ -171,7 +173,7 @@ return (
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                Start Date
+                                {t("labels.endDate")}
                             </Typography>
                             <DesktopDatePicker
                                 inputFormat="yyyy-MM-DD"
@@ -203,7 +205,7 @@ return (
                         control={
                             <Controller name={'allDay'} control={control} render={({ field }) => <Switch {...field} checked={field.value} />} />
                         }
-                        label="All day"
+                        label={t("labels.allDay")}
                     />
                     {
                         allDay ? null :
@@ -211,7 +213,7 @@ return (
                             <Grid container spacing={0.5}>
                                 <Grid item md={6}  xs={12} sm={6} mb={1}>
                                     <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                        Start Time
+                                        {t("labels.startTime")}
                                     </Typography>
                                     <TimePicker
                                         value={values.startTime}
@@ -239,7 +241,7 @@ return (
                                 </Grid>
                                 <Grid item md={6}  xs={12} sm={6} mb={1}>
                                     <Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightBold}}>
-                                        End Time
+                                        {t("labels.endTime")}
                                     </Typography>
                                     <TimePicker
                                         value={values.endTime}
@@ -289,11 +291,11 @@ return (
                     <Box sx={{ flexGrow: 1 }} />
 
                     <Button variant="outlined" color="inherit" onClick={onCancel}>
-                        Cancel
+                        {t("buttons.cancel")}
                     </Button>
 
                     <Button type="submit" variant="contained">
-                        {isSubmitting ? 'Loading...' : 'Add'}
+                        {isSubmitting ? t("buttons.loading") : t("buttons.add")}
                     </Button>
                 </DialogActions>
             </LocalizationProvider>
