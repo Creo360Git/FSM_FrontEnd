@@ -57,6 +57,7 @@ const MuiDataTable = (props) => {
     isPrint,
     toolBar,
     setData,
+    url
   } = props;
 
   const classes = useStyles();
@@ -327,7 +328,7 @@ const MuiDataTable = (props) => {
   return (
     <>
       {toolBar?.length > 0 && (
-        <CustomToolbar toolBar={toolBar} rows={rows} setRows={setRows} />
+        <CustomToolbar toolBar={toolBar} rows={rows} setRows={setRows} url={url} />
       )}
       <MUIDataTable
         key={data}

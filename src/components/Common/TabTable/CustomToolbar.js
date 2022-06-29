@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Toolbar, Grid, MenuItem, TextField, alpha } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import useFetch from "../../../hooks/useFetch";
 
 const CustomToolbar = (props) => {
-	const { toolBar } = props;
+	const { toolBar, rows, setRows, url } = props;
 	const {t} = useTranslation()
 	const [values, setValues] = useState({});
 	useEffect(() => {
@@ -19,6 +20,22 @@ const CustomToolbar = (props) => {
 			return values;
 		});
 	};
+	console.log((values))
+
+	const urlgen = () => {
+		const urls=[url]
+		const l = toolBar.map(({field})=>{
+			 urls.push(field+'='+values[field])
+		})
+		return urls.join('&')
+	} 
+
+	console.log(urlgen())
+
+	const [data, loading] = useFetch(urlgen())
+	useEffect(()=>{
+		setRows(data)
+	},[data])
 
 	return (
 		<Toolbar
