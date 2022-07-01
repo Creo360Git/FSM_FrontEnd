@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 // import { PrivateRoute } from "./auth/PrivateRoute";
 // import { Callback } from "./auth/Callback";
 // import { Logout } from "./auth/Logout";
@@ -21,6 +21,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Track = lazy(() => import("./pages/Track/Track"));
 const Map = lazy(() => import("./pages/Map"));
 const Reports = lazy(() => import("./pages/Reports"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const Router = () => (
   <Routes>
@@ -44,8 +45,9 @@ const Router = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/track" element={<Track />} />
     <Route path="/map" element={<Map />} />
+    <Route path="/settings" element={<Settings />} />
 
-    <Route path="/" element={<Dashboard />} />
+    <Route path="/" element={<Navigate to="/dashboard" replace={true} />} />
 
     {/* <PrivateRoute path="/" component={Dashboard} /> */}
   </Routes>

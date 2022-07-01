@@ -40,17 +40,7 @@ const toolBar = [
 ];
 
 const Request = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePageWithoutPagination = (event, newPage) => {
-    setPage(newPage - 1);
-  };
-
-  const handleChangeRowsPerPageWithoutPagination = (event) => {
-    setRowsPerPage(parseInt(+event.target.value, 10));
-    setPage(0);
-  };
+  
 
   const [rows, setRows] = useState([
     {

@@ -345,10 +345,13 @@ function Navbar({ user, children }) {
                 <GlobalSearch />
               </Hidden>
             </Box>
+            
+            <Link to='/settings'>
+              <Avatar variant="rounded" className={classes.small}>
+                <SettingsIcon />
+              </Avatar>
+            </Link>
 
-            <Avatar variant="rounded" className={classes.small}>
-              <SettingsIcon />
-            </Avatar>
             <Avatar variant="rounded" className={classes.small}>
               <ForumIcon />
             </Avatar>
