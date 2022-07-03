@@ -11,7 +11,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Box, TextField } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { makeStyles } from "@mui/styles";
-import CustomButtonDropDown from "./CustomButtonDropDown";
+import CustomButtonDropDown from "../CustomButtonDropDown";
 
 
 
@@ -36,6 +36,7 @@ const DateSetter = ({date, setDate, isDay, setIsDay}) => {
     const classes = useStyles();
 
     const handlechange = (increment)=>{
+        increment = isDay ? increment : increment*7
         setDate(moment(date).clone().add(increment,'d'))
     }
 
@@ -45,6 +46,7 @@ const DateSetter = ({date, setDate, isDay, setIsDay}) => {
         if(props.label){
             setIsDay(props.value);
             setTitle(props.label);
+            
         }
     }
 
@@ -96,10 +98,12 @@ const DateSetter = ({date, setDate, isDay, setIsDay}) => {
                             inputFormat="yyyy-MM-DD"
                             open={Boolean(anchorEl)}
                             anchorEl = {anchorEl}
+                            value = {date}
+                            onClose = {()=>{setAnchorEl(null)}}
                             onChange={ (value)=>{
                                 console.log(value)
                                 setDate(value)
-                                setAnchorEl(null)
+                                
                                 }
                             }
                             transformOrigin={{ 
@@ -111,13 +115,15 @@ const DateSetter = ({date, setDate, isDay, setIsDay}) => {
                                 vertical: 'bottom' 
                             }}
                             
-                            renderInput={(params) => 
+                            renderInput={({ inputRef, ...params }) => 
+                                <div ref={inputRef}>
                                 <TextField 
                                     size="small" 
-                                    sx={{display:'none'}}
+                                    sx={{display:'none',}}
                                     {...params} 
                                 
                                 />
+                                </div>
                             }
                             />
                         </LocalizationProvider>

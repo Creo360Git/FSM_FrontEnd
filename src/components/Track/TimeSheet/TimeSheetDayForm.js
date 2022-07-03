@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
 import { get, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { fTimeShort } from '../../Controls/formatUtils';
+import { fTimeAdd, fTimeDifference, fTimeDifferenceDate, fTimeShort, fTimeValidate } from '../../Controls/formatUtils';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme)=>({
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme)=>({
 
 const emptyValues = {
     type:'',
-    startTime:'',
+    startTime:moment(),
     endTime:'',
     duration:'',
     description:''
@@ -52,9 +52,23 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
 
     const schema = yup.object().shape({
         type: yup.string().required("Select the type"),
-        startTime: yup.string(),
-        endTime: yup.string(),
-        duration: yup.string().required("Time Duration required"),
+        startTime: yup.string().test('start time test','Invalid Time',function (value){
+            return fTimeValidate(value)
+        }),
+        endTime: yup.string().test('end time test','Invalid Time',function (value) {
+            return fTimeValidate(value)
+        }),
+        duration: yup.string().required("Time Duration required").test('start time test','Invalid Time',function (value) {
+            return fTimeValidate(value)
+        }).test('start time test','Validate ',function (value){
+            const {startTime, endTime} = this.parent;
+            if (startTime && endTime){
+                const diff = fTimeDifference(startTime,endTime);
+                return diff == fTimeShort(value)               
+            }
+            return true
+
+        }),
         description: yup.string()
     })
 
@@ -70,11 +84,12 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
     })
 
     const data = watch();
-    
+
+
     const handleCancel = ()=>{
         reset({
             type:'',
-            startTime:'',
+            startTime: '',
             endTime:'',
             duration:'',
             description:''
@@ -88,7 +103,9 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
     
 
     const onSubmit = async ()=>{
+       
         console.log(data)
+        console.log(errors)
         setValues({
             type:'',
             startTime:'',
@@ -165,10 +182,15 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
                                         views={["hours", "minutes"]}
                                         inputFormat="HH:mm"
                                         mask="__:__"
-                                        onChange={(value) => (
-                                            console.log(value),
+                                        onChange={(value) => {
+                                            
                                             setValue('startTime', value)
-                                        )}
+                                            if (fTimeValidate(getValues('startTime'))){
+                                                if (fTimeValidate(getValues('endTime'))){
+                                                    setValue('duration',fTimeDifferenceDate(getValues('startTime'),getValues('endTime')))
+                                                }
+                                            }
+                                        }}
                                         value = {getValues('startTime')}
                                         renderInput={(params) => 
                                             <TextField 
@@ -196,13 +218,16 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
                                         //value = {data.endTime}
                                         onChange={(value)=>{
                                             setValue('endTime', value)
+                                            if(fTimeValidate(getValues('startTime')) && fTimeValidate(getValues('endTime')) ){
+                                                setValue('duration',fTimeDifferenceDate(getValues('startTime'),getValues('endTime')))
+                                            }
                                         }}
                                         renderInput={(params)=>
                                             <TextField
                                                 fullWidth
                                                 size="small" 
                                                 className={classes.input}
-                                            
+
                                                 helperText={errors.endTime?.message}
                                                 {...params} 
                                                 error={!!errors.endTime}
@@ -230,9 +255,13 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
                                 inputFormat="HH:mm"
                                 mask="__:__"
                                 value={getValues('duration')}
-                                onChange={(value)=> 
+                                onChange={(value)=> {
+                                    
                                     setValue('duration',value)
-                                }
+                                    if(fTimeValidate(getValues('startTime')) && fTimeValidate(getValues('duration')) ){
+                                        setValue('endTime',fTimeAdd(getValues('startTime'),getValues('duration')))
+                                    }
+                                }}
                                 renderInput={(params) => 
                                     <TextField 
                                         size="small" 
@@ -250,7 +279,7 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
                         <Grid item xs={12}>
                             <ButtonGroup sx={{right:0,position:'absolute', m:3, mt:2 }}>
                                 <Button variant='contained' type="submit"  sx={{width:'120px',height:'30px',m:1,borderRadius:'0px'}}>
-                                    Start 
+                                    Save 
                                 </Button>
                                 <Button varient='outlined' onClick={handleCancel} sx={{width:'120px',height:'30px',m:1,borderRadius:'0px',background: 'rgba(63, 81, 181, 0.08)!important'}}>
                                     Cancel

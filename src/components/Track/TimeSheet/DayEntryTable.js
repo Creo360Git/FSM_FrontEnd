@@ -77,14 +77,14 @@ const DayEntryTable = ({data}) => {
                         <Grid xs={12} md={3} item>
                             <Grid container >
                                 <Grid xs={6} md={12} item>
-                                    <Button variant="outlined"  sx={styles.button} onClick={()=>{setIsEdit(true)}}>
+                                    <Button variant="outlined"  sx={styles.button} onClick={(e)=>{setIsEdit(true)}}>
                                         Edit
                                     </Button>
                                 </Grid>
                                 <Grid xs={6} md={12} item>
-                                <Button variant="outlined" color="error" sx={styles.button}>
-                                    Delete
-                                </Button>
+                                    <Button variant="outlined" color="error" sx={styles.button} onClick={(e)=>{setIsEdit(false)}}>
+                                        Delete
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>
