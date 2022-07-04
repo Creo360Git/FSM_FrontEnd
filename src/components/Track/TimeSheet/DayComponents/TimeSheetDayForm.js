@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup'
 import { get, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { fTimeAdd, fTimeDifference, fTimeDifferenceDate, fTimeShort, fTimeValidate } from '../../Controls/formatUtils';
+import { fTimeAdd, fTimeDifference, fTimeDifferenceDate, fTimeShort, fTimeValidate } from '../../../Controls/formatUtils';
 import moment from 'moment';
 
 const useStyles = makeStyles((theme)=>({
@@ -104,8 +104,6 @@ const TimeSheetDayForm = ({setVisible,date, initialValues=emptyValues}) => {
 
     const onSubmit = async ()=>{
        
-        console.log(data)
-        console.log(errors)
         setValues({
             type:'',
             startTime:'',
