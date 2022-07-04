@@ -346,7 +346,7 @@ function Navbar({ user, children }) {
               </Hidden>
             </Box>
             
-            <Link to='/settings'>
+            <Link to='/settings/app-config/permission-management'>
               <Avatar variant="rounded" className={classes.small}>
                 <SettingsIcon />
               </Avatar>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Toolbar, Grid, MenuItem, TextField, alpha } from "@mui/material";
+import { Toolbar, Grid, MenuItem, TextField, alpha, Card, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import Search from "@mui/icons-material/Search";
 
 const CustomToolbar = (props) => {
 	const { toolBar } = props;
@@ -21,26 +22,29 @@ const CustomToolbar = (props) => {
 	};
 
 	return (
-		<Toolbar
+		<Card
 			sx={{
 				mb: 2,
-				pl: { sm: 2 },
-				pr: { xs: 1, sm: 1 },
-				bgcolor: (theme) =>
-				alpha(
-					theme.palette.primary.main,
-					theme.palette.action.activatedOpacity
-				),
+				// pl: { sm: 2 },
+				// pr: { xs: 1, sm: 1 },
+				p: 2
+				// bgcolor: (theme) =>
+				// alpha(
+				// 	theme.palette.primary.main,
+				// 	theme.palette.action.activatedOpacity
+				// ),
 			}}
 		>
-			<Grid container spacing={2}>
+			<Grid container spacing={2} >
 				{toolBar.map((val, index) => {
 				return (
 					<Grid
 						item
-						lg={12 / toolBar.length}
-						xs={toolBar.length > 3 ? 4 : 12 / toolBar.length}
-						sx={{ mt: { lg: 2, md: 1, xs: 1 }, mb: { lg: 2, md: 1, xs: 1 } }}
+						lg={toolBar.length > 4 ? 3 : 11 / toolBar.length}
+						md={toolBar.length > 3 ? 4 : 11 / toolBar.length}
+						sm={toolBar.length > 2 ? 6 : 11 / toolBar.length}
+						xs={12}
+						// sx={{ mt: { lg: 2, md: 1, xs: 1 }, mb: { lg: 2, md: 1, xs: 1 } }}
 						key={index}
 					>
 						<TextField
@@ -53,6 +57,9 @@ const CustomToolbar = (props) => {
 							onChange={(e) => {
 								handleChange(e);
 							}}
+							size='small'
+							// variant='standard'
+							
 						>
 							{val.type === "select" &&
 							val.options.map((option) => (
@@ -64,8 +71,17 @@ const CustomToolbar = (props) => {
 					</Grid>
 				);
 				})}
+				<Grid xs='auto' item>
+					<Button
+						variant="contained"
+						size='small'
+						sx={{height: '100%'}}
+					>
+						<Search  />
+					</Button>
+				</Grid>
 			</Grid>
-		</Toolbar>
+		</Card>
   	);
 };
 export default CustomToolbar;

@@ -45,7 +45,7 @@ const Router = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/track" element={<Track />} />
     <Route path="/map" element={<Map />} />
-    <Route path="/settings" element={<Settings />} />
+    <Route path="/settings/:tab/:verticalTab" element={<Settings />} />
 
     <Route path="/" element={<Navigate to="/dashboard" replace={true} />} />
 

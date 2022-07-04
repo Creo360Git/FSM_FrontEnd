@@ -2,9 +2,10 @@ import VerticalTab from "./VerticalTab"
 import People from '@mui/icons-material/People';
 import PermissionManagement from "./Permission/PermissionManagement";
 import Users from "./User/Users";
+import { useParams } from "react-router-dom";
 
 
-const ApplicationConfig = () => {
+const ApplicationConfig = ({parentPath}) => {
     
     // const data = [
     //     { icon: <People />, label: 'Permission management' },
@@ -23,10 +24,15 @@ const ApplicationConfig = () => {
         { label: 'Logo' },
     ];
 
+    const {verticalTab} = useParams()
+
     return(
         <VerticalTab 
             data={data}
             panels={[<PermissionManagement />, <Users />]}
+            verticalTabUrls={['permission-management', 'users', 'reset-password', 'store-time', 'terms', 'bulk-upload', 'logo']}
+            currentVerticalTab = {verticalTab}
+            parentPath={parentPath}
         />
     )
 }

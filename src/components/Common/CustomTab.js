@@ -3,8 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
 import { makeStyles, useTheme } from '@mui/styles';
+import { useLocation, Link, Navigate, useNavigate } from 'react-router-dom';
 
 const tabHeight = '24px' // default: '48px'
 const useStyles = makeStyles(theme => ({
@@ -47,13 +47,23 @@ function a11yProps(index) {
     };
 }
 
-export default function CustomTab({tabs=[], panelComponents=[], ...rest}) {
+export default function CustomTab({tabs=[], panelComponents=[], currentTab, tabUrls, parentPath, childPath='', ...rest}) {
     const theme = useTheme()
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(tabUrls.indexOf(currentTab));
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    useEffect(()=>{
+        setValue(tabUrls.indexOf(currentTab))
+    },[currentTab])
+
+    useEffect(()=>{
+        navigate(`/${parentPath}/${tabUrls[value]}/${childPath}`, { replace: true })
+    },[value])
 
     const classes = useStyles()
 
@@ -74,12 +84,14 @@ export default function CustomTab({tabs=[], panelComponents=[], ...rest}) {
                 >
                     {
                         tabs.map((tab, index)=>(
-                            <Tab 
-                                key={index}
-                                label={<Typography component='span'  variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>{tab}</Typography>} 
-                                {...a11yProps(index)} 
-                                sx={{color: index == value ? 'white !important' : 'black', boxShadow: 2, width: '100%', backgroundColor: index == value ? '#08134a' : 'rgba(14, 165, 233, 0.28)',border: "1px solid #CACACA"}}
-                            />
+                            // <Link to={`/${parentPath}/${tabUrls[index]}`}>
+                                <Tab 
+                                    key={index}
+                                    label={<Typography component='span'  variant='h5' sx={{fontWeight: theme.typography.fontWeightBold}}>{tab}</Typography>} 
+                                    {...a11yProps(index)} 
+                                    sx={{color: index == value ? 'white !important' : 'black', boxShadow: 2, width: '100%', backgroundColor: index == value ? '#08134a' : 'rgba(14, 165, 233, 0.28)',border: "1px solid #CACACA"}}
+                                />
+                            // </Link>
                         ))
                     }
                 </Tabs>

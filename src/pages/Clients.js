@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Container } from "@mui/material";
 import AddNewButton from "../components/Controls/AddNewButton";
 import DashboardLayout from "../components/Common/Layouts/DashboardLayout";
 import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import { useTranslation } from "react-i18next";
+
+import { fetchClients } from "src/redux/Slices/Client";
+import { useDispatch, useSelector } from "src/redux/Store";
+import DataTable from "src/components/Common/DataTable";
+import { Link } from "react-router-dom";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -43,174 +48,72 @@ const toolBar = [
 const Clients = () => {
   const {t} = useTranslation()
 
-  const [rows, setRows] = useState([
-    {
-      CustomerName: 'e1',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e2',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "245345",
-      Email: "f",
-      carbs: "g",
-    },
-    {
-      CustomerName: "e",
-      Address: " f",
-      Phone: "657678",
-      Email: "f",
-      carbs: "g",
-    },
-    {
+  const dispatch = useDispatch()
+  const { clients, isLoading } = useSelector((state) => state.client);
 
-      CustomerName: 'e9',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e10',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e11',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e12',
-      Address:" f",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e13',
-      Address:" f",
-      Phone: '245345',
-      Email: 'f',
-      carbs: 'g'
-    },
-    {
-      CustomerName: 'e14',
-      Address:" f14",
-      Phone: '657678',
-      Email: 'f',
-      carbs: 'g14'
-    }
-  ])
+  useEffect(() => {
+    dispatch(fetchClients());
+  }, [dispatch]);
+
+  const [rows, setRows] = useState(clients)
+  useEffect(()=>{setRows(clients)},[clients])
   
 
   const columns = [
     {
-      name: "CustomerName",
+      name: "customerName",
       label: t("tableHeadings.lead"),
-      options: {
-        customHeadLabelRender: (columnMeta) => {
-          return (
-            <span>
-              <Typography
-                align={
-                  "left"
-                }
-              >
-                {columnMeta.label}
-              </Typography>
-            </span>
-          );
-        },
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <div key={tableMeta.rowIndex}>
-              <Typography sx={{ color: "black" }}>
-                {"#" + (tableMeta.rowIndex + 1).toString()}
-              </Typography>
-              {value}
-            </div>
-          );
-        },
-      },
+      render: (row, index) => {
+        return(
+          <div key={index}>
+            <Typography sx={{ color: "black" }}>
+              {"#" + (index + 1).toString()}
+            </Typography>
+            {row.customerName}
+          </div>
+        )
+      }
     },
     {
-      name: "Address",
+      name: "customerAddress",
       label: t("tableHeadings.address"),
     },
     {
-      name: "Phone",
+      name: "phoneNumber",
       label: t("tableHeadings.contactDetails"),
-      options: {
-        customHeadLabelRender: (columnMeta) => {
-          return (
-            <span>
-              <Typography
-                align={
-                  "left"
-                }
-              >
-                {columnMeta.label}
-              </Typography>
-            </span>
-          );
-        },
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <div>
-              {rows[tableMeta.rowIndex].Email} <br />
-              {value}
-            </div>
-          );
-        },
-      },
+      render: (row, index) => {
+        return(
+          <div key={index}>
+              {row.phoneList?.length > 0 ? row.phoneList[0] : '-'} <br/>
+              {row.email}
+          </div>
+        )
+      }
     },
     {
-      name: "carbs",
-      label: t("tableHeadings.status")
+      name: "createdDate",
+      label: 'Created Date',
+      isView: false,
+      fieldRenderType: 'date'
     },
+    {
+      name: "createdBy",
+      label: 'Created By',
+      isView: false
+    },
+    {
+      name: "isActive",
+      label: t("tableHeadings.status"),
+      fieldRenderType: 'status'
+    },
+    {
+      label: 'Job',
+      render: (row, index) => {
+        return(
+          <Link to='/jobs/new' sx={{textDecoration: "none"}}>Create Job</Link>
+        )
+      }
+    }
   ];
 
   const [open, setOpen] = useState(false);
@@ -222,14 +125,14 @@ const Clients = () => {
     <DashboardLayout heading="Clients">
         {open && <AddClient open={open} setOpen={setOpen} />}
         {/* <Container> */}
-        <AddNewButton title={t("buttons.addNewClient")} handleClick={handleOpen} />
-        <MuiDataTable
-            headers={columns}
-            data={rows}
-            setData={setRows}
-            isDownload={false}
-            isPrint={false}
+        <DataTable
+            columns={columns}
+            rows={clients}
+            setRows={setRows}
             toolBar={toolBar}
+            isLoading={isLoading}
+            btnTitle={t("buttons.addNewClient")}
+            handleBtnClick={handleOpen}
         />
         {/* </Container> */}
     </DashboardLayout>

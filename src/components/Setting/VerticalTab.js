@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { styled} from '@mui/material/styles';
 import {Divider, Grid, Accordion, AccordionSummary, Typography, AccordionDetails} from '@mui/material';
 import List from '@mui/material/List';
@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import {useMediaQuery, useTheme} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -26,8 +27,18 @@ const CustomList = styled(List)({
     },
 });
 
-const VerticalTab = ({panels=[], data}) => {
-    const [value, setValue] = useState(0)
+const VerticalTab = ({panels=[], data, verticalTabUrls, currentVerticalTab, parentPath}) => {
+    const [value, setValue] = useState(verticalTabUrls.indexOf(currentVerticalTab))
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        setValue(verticalTabUrls.indexOf(currentVerticalTab))
+    },[currentVerticalTab])
+
+    useEffect(()=>{
+        navigate(`${parentPath}/${verticalTabUrls[value]}`, { replace: true })
+    },[value])
+
     const theme = useTheme()
     const isUpMd =  useMediaQuery(theme.breakpoints.up("md"))
     const [isExpanded, setIsExpanded] = useState(false)
