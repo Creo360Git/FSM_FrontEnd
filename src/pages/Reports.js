@@ -3,7 +3,7 @@ import React, {
   //   useEffect,
   // useContext
 } from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles} from "@mui/styles";
 import {
   Grid,
   Typography,
@@ -63,14 +63,19 @@ const Reports = ({ locations, types }) => {
     { label: "Net 45", value: "net45" },
     { label: "Customize", value: "customize" },
   ];
-
+  const title = [
+    { label: "FINANCIAL REPORT", value: "financereport" },
+    { label: "WORK REPORT", value: "workreport" },
+    { label: "CLIENT REPORT", value: "clientreport" },
+    { label: "EXPENSE REPORT", value: "expensereport" },
+  ];
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container spacing={3}>
         <Grid item md={5} xs={7}>
           <Typography variant="h2" align="left" gutterBottom>
-            {t("headings.reports")}
+            {t("headings.reports").toUpperCase()}
           </Typography>
         </Grid>
       </Grid>
@@ -82,93 +87,26 @@ const Reports = ({ locations, types }) => {
           marginTop: theme.spacing(3),
         }}
       >
-        <Grid item xs={12}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"space-between"}
-            spacing={2}
-          >
-            <FormControl fullWidth>
-              <InputLabel id="selectOne">Financial Report</InputLabel>
-              <Select
-                labelId="selectOne"
-                name="financialReport"
-                label="Financial Report"
-                // value={values?.financialReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
+        <Grid item xs={8}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20}}>
+            {title?.map((item, index) => {
+                return (
+                  <div style={{border:'1px 1px 1px 0 solid black',height:'50px',width:300,backgroundColor:'#E0E0E0'}}>
                     <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
+                    {item?.label || ""}
                     </MenuItem>
+                    {list?.map((item, index) => {
+                              return (
+                                <div style={{border:'1px 1px 1px 1px solid black',height:'50px',width:300,backgroundColor:'#FFFFFF'}}>
+                                  <MenuItem value={item?.value} key={index}>
+                                    {item?.label || ""}
+                                  </MenuItem></div>
+                                );
+                          })}
+                    </div>
                   );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectTwo">Work Report</InputLabel>
-              <Select
-                labelId="selectTwo"
-                name="workReport"
-                label="Work Report"
-                // value={values?.workReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectThree">Client Report</InputLabel>
-              <Select
-                labelId="selectThree"
-                name="clientReport"
-                label="Client Report"
-                // value={values?.clientReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectFour">Expense Report</InputLabel>
-              <Select
-                labelId="selectFour"
-                name="expenseReport"
-                label="Expense Report"
-                // value={values?.expenseReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Stack>
+            })}
+          </div>
         </Grid>
       </Grid>
     </main>
