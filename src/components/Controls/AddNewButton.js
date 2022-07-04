@@ -24,9 +24,9 @@ const AddNewButton = (props) => {
         {...rest}
       >
         <Typography
-          variant="h3"
+          variant="h5"
           sx={{
-            textTransform: "uppercase",
+            textTransform: "capitalize", //uppercase
             fontWeight: theme.typography.fontWeightRegular,
           }}
         >

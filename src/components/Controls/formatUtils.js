@@ -83,6 +83,11 @@ export function fDateShort(date) {
 export function fTimeShort(time) {
   return moment(time).format('HH:mm')
 }
+
+export function fDateShortTime(dateTime) {
+  return moment(dateTime).format('yyyy-MM-DD HH:mm a')
+}
+
 export function formatBytes(bytes, decimals = 2) {
   if (bytes === 0) return '0 Bytes';
 

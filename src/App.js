@@ -10,6 +10,15 @@ import * as packageInfo from "../package.json";
 import Router from "./routes";
 import NavBar from "./components/NavBar";
 
+
+import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import LocalizationProvider from '@mui/lab/LocalizationProvider';
+
+import { Store, persistor } from 'src/redux/Store';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -28,6 +37,8 @@ const App = () => {
       isEnabled={isProduction} //If false, the library is disabled.
       isVerboseMode={false} //If true, the library writes verbose logs to console.
     >
+      <ReduxProvider store={Store} >
+      <PersistGate loading={null} persistor={persistor} >
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
@@ -48,6 +59,8 @@ const App = () => {
           </Suspense>
         </BrowserRouter>
       </ThemeProvider>
+      </PersistGate>
+      </ReduxProvider>
     </CacheBuster>
   );
 };

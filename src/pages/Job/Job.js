@@ -43,6 +43,26 @@ const toolBar = [
     placeholder: "type",
     options: filterOptions,
   },
+  {
+    field: "Parameter",
+    type: "search",
+    placeholder: "searchJobs",
+  },
+  {
+    field: "Parameter",
+    type: "search",
+    placeholder: "searchJobs",
+  },
+  {
+    field: "Parameter",
+    type: "search",
+    placeholder: "searchJobs",
+  },
+  {
+    field: "Parameter",
+    type: "search",
+    placeholder: "searchJobs",
+  },
 ];
 
 const Job = () => {
