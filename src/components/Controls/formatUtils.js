@@ -98,3 +98,30 @@ export function formatBytes(bytes, decimals = 2) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
 }
+
+export function fTimeDifference(startTime,endTime){
+  const start =moment(startTime ).format( "YYYY-MM-DD HH:mm");
+  const end = moment(moment(endTime ).format( "YYYY-MM-DD HH:mm")); 
+  const diff = end.diff(start);
+
+  return moment.utc(diff).format("HH:mm");
+}
+
+export function fTimeValidate(value){
+  return moment(moment(value).format('HH:mm'),'HH:mm',true).isValid()
+}
+
+export function fTimeDifferenceDate(startTime,endTime){
+
+  const value = fTimeDifference(startTime,endTime)
+  const init = moment(startTime).format("YYYY-MM-DD")
+  
+  return moment(moment(init).add(moment.duration(value)))
+
+}
+
+export function fTimeAdd(startTime,time){
+  const start =  moment(time).format('YYYY-MM-DD')
+  const diff  = fTimeDifference(start,time)
+  return moment(moment(startTime).add(moment.duration(diff)))
+}

@@ -1,17 +1,12 @@
 import * as React from 'react';
-import { Box, Button, ButtonGroup, FormControlLabel,FormControl,InputLabel, Grid, MenuItem, Select,TextField, Stack, Typography, Divider, TextareaAutosize, Menu, useMediaQuery } from "@mui/material";
+import { Box, ButtonGroup,  Grid,  Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import AddIcon from '@mui/icons-material/Add';
-import { useTheme } from "@emotion/react";
-import TimeSheetDayForm from "../../components/Track/TimeSheet/TimeSheetDayForm";
-import { useForm } from "react-hook-form";
 import DateSetter from '../../components/Track/TimeSheet/DateSetter';
-import moment from 'moment';
-import CustomButtonDropDown from '../../components/Track/TimeSheet/CustomButtonDropDown';
-import DayEntryTable from '../../components/Track/TimeSheet/DayEntryTable';
+import CustomButtonDropDown from '../../components/Track/CustomButtonDropDown';
+import DayComponent from '../../components/Track/TimeSheet/DayComponents';
+import WeekComponent from '../../components/Track/TimeSheet/WeekComponents';
 
 const useStyles = makeStyles((theme)=>({
     header:{
@@ -19,6 +14,7 @@ const useStyles = makeStyles((theme)=>({
         border: '2px solid rgba(0, 0, 0, 0.25)',
         height: '86px',
         background: 'rgba(69, 124, 206, 0.24)',
+        
         display: 'flex' ,
         
         [theme.breakpoints.down('md')]: {
@@ -29,7 +25,6 @@ const useStyles = makeStyles((theme)=>({
         justifyContent:'space-between',
         display:'flex',
         width:'100%',
-        
         [theme.breakpoints.down('md')]: {
             display:'block',
             height:'125px'
@@ -89,35 +84,17 @@ const employees = [
     {id:'3', label:'User_3', value:'user_3',name:'User_3',gmail:'user3@gmail.com'}
 ]
 
-const entries = [
-    {id:'1', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530',duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'},
-    {id:'2', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530',duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'},
-    {id:'3', type:'General', startTime:'Mon Jun 27 2022 13:32:02 GMT+0530',name:'Mon Jun 27 2022 13:32:02 GMT+0530', duration:'Mon Jun 27 2022 13:32:02 GMT+0530', description:'Description'}
-]
-
-
 const TimeSheet = () => {
 
 
     const classes = useStyles();
 
     const [date,setDate] = React.useState(Date.now());
-    const [isDay,setIsDay] = React.useState(true)
-
-    const [visible,setVisible] = React.useState(true)
+    const [isDay,setIsDay] = React.useState(false)
 
     const [users,setUsers] = React.useState(employees);
     const [user, setUser] = React.useState(users[0]);
 
-
-    
-
-    const handleAddTime = (e)=>{
-        e.preventDefault();
-        setVisible(true);
-    }
-
-    
 
     const handleUserChange = (props)=>{
         if(props.id){
@@ -128,6 +105,11 @@ const TimeSheet = () => {
     useEffect(()=>{
         console.log("TimeSheet")
     },[])
+
+
+    
+    
+    
 
 
 
@@ -170,43 +152,21 @@ const TimeSheet = () => {
                     setDate = {setDate}
                     isDay = {isDay}
                     setIsDay = {setIsDay}
+                    // callBack = {weekFunction}
                 />
             </Box>
-            <Box sx={{p:3}}>
-                <Box>
-                    <Grid sx={{display:'flex', justifyContent:'space-between'}}>
-                        <Grid sx={{margin:'auto 0px'}}>
-                            <Typography className={classes.dividerHeading}>
-                                My hours for {moment(date).format('DD MMM, yyyy')}
-                            </Typography>
-                        </Grid>
-                        <Grid sx={{paddingBottom: '5px!important'}}>
-                            <Button variant="outlined" className={classes.addTimeButton} onClick={handleAddTime}>
-                                <AddIcon sx={{fontSize:20}}/>
-                                Add Time
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Divider className={classes.divider}/>
+            
+            { isDay ?
 
-                    {
-                        entries.map((props)=>{
-                            return <DayEntryTable data={props} key={props.id} />
-                        })
-                    }
-                
-                    { visible ?
-                        <TimeSheetDayForm
-                            setVisible={setVisible}
-                        />
-                        :
-                        null
-                    }
-                
-               
-                
-            </Box>
+                <DayComponent
+                    date = {date}
+               />
+                :                
+                <WeekComponent
+                    date = {date}
+                />
+                   
+            }
         </Box>
      );
 }

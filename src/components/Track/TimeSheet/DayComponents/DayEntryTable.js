@@ -1,10 +1,9 @@
 import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import moment from 'moment';
-import { formatTime } from "../../../services/datetime";
-import { fTimeShort } from "../../Controls/formatUtils";
+import { formatTime } from "../../../../services/datetime";
+import { fTimeShort } from "../../../Controls/formatUtils";
 import { makeStyles } from "@mui/styles";
-import { ClassNames } from "@emotion/react";
 import TimeSheetDayForm from "./TimeSheetDayForm";
 
 const useStyles = makeStyles((theme)=>({
@@ -77,14 +76,14 @@ const DayEntryTable = ({data}) => {
                         <Grid xs={12} md={3} item>
                             <Grid container >
                                 <Grid xs={6} md={12} item>
-                                    <Button variant="outlined"  sx={styles.button} onClick={()=>{setIsEdit(true)}}>
+                                    <Button variant="outlined"  sx={styles.button} onClick={(e)=>{setIsEdit(true)}}>
                                         Edit
                                     </Button>
                                 </Grid>
                                 <Grid xs={6} md={12} item>
-                                <Button variant="outlined" color="error" sx={styles.button}>
-                                    Delete
-                                </Button>
+                                    <Button variant="outlined" color="error" sx={styles.button} onClick={(e)=>{setIsEdit(false)}}>
+                                        Delete
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Grid>
