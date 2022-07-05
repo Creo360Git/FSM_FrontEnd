@@ -231,7 +231,7 @@ const Invoice = ({ locations, types }) => {
         isLoading={isLoading}
         btnTitle={t("buttons.newInvoice")}
         fn={fetchFilterInvoices}
-        redirectPath={"/invoices/new"}
+        redirectPath={"/invoice/new"}
         filterUrl='/invoice'
       />
       {/* </Container> */}
