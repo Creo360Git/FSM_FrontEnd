@@ -4,6 +4,7 @@ import AddNewButton from "../components/Controls/AddNewButton";
 import DashboardLayout from "../components/Common/Layouts/DashboardLayout";
 import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
+import { useTranslation } from "react-i18next";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -23,34 +24,24 @@ const toolBar = [
   {
     field: "Parameter",
     type: "search",
-    placeholder: "Search clients",
+    placeholder: "searchClients",
   },
   {
     field: "SortBy",
     type: "select",
-    placeholder: "Sort",
+    placeholder: "sort",
     options: sortByOptions,
   },
   {
     field: "Filter",
     type: "select",
-    placeholder: "Filter",
+    placeholder: "filter",
     options: filterOptions,
   },
 ];
 
 const Clients = () => {
-  // const [page, setPage] = useState(0);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  // const handleChangePageWithoutPagination = (event, newPage) => {
-  //   setPage(newPage - 1);
-  // };
-
-  // const handleChangeRowsPerPageWithoutPagination = (event) => {
-  //   setRowsPerPage(parseInt(+event.target.value, 10));
-  //   setPage(0);
-  // };
+  const {t} = useTranslation()
 
   const [rows, setRows] = useState([
     {
@@ -158,8 +149,21 @@ const Clients = () => {
   const columns = [
     {
       name: "CustomerName",
-      label: "lead",
+      label: t("tableHeadings.lead"),
       options: {
+        customHeadLabelRender: (columnMeta) => {
+          return (
+            <span>
+              <Typography
+                align={
+                  "left"
+                }
+              >
+                {columnMeta.label}
+              </Typography>
+            </span>
+          );
+        },
         customBodyRender: (value, tableMeta) => {
           return (
             <div key={tableMeta.rowIndex}>
@@ -174,12 +178,25 @@ const Clients = () => {
     },
     {
       name: "Address",
-      label: "address",
+      label: t("tableHeadings.address"),
     },
     {
       name: "Phone",
-      label: "contact details",
+      label: t("tableHeadings.contactDetails"),
       options: {
+        customHeadLabelRender: (columnMeta) => {
+          return (
+            <span>
+              <Typography
+                align={
+                  "left"
+                }
+              >
+                {columnMeta.label}
+              </Typography>
+            </span>
+          );
+        },
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>
@@ -192,7 +209,7 @@ const Clients = () => {
     },
     {
       name: "carbs",
-      label: "status"
+      label: t("tableHeadings.status")
     },
   ];
 
@@ -205,7 +222,7 @@ const Clients = () => {
     <DashboardLayout heading="Clients">
         {open && <AddClient open={open} setOpen={setOpen} />}
         {/* <Container> */}
-        <AddNewButton title="Add new client" handleClick={handleOpen} />
+        <AddNewButton title={t("buttons.addNewClient")} handleClick={handleOpen} />
         <MuiDataTable
             headers={columns}
             data={rows}

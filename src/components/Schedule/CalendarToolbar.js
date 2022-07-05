@@ -20,6 +20,7 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import ViewDayIcon from '@mui/icons-material/ViewDay';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useTranslation } from "react-i18next";
 
 const RootStyle = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -42,6 +43,7 @@ const viewOptions = [
 const CalendarToolbar = ({ date, view, onToday, onNextDate, onPrevDate, onChangeView }) => {
     const theme = useTheme()
     const isUpXs = useMediaQuery(theme.breakpoints.up('xs'));
+    const {t} = useTranslation()
 
     return(
         <RootStyle>
@@ -80,13 +82,13 @@ const CalendarToolbar = ({ date, view, onToday, onNextDate, onPrevDate, onChange
                 (
                     <Stack direction="row" alignItems="center" spacing={0.5}>
                         <Button  variant="contained" onClick={onToday}>
-                            Today
+                            {t("buttons.today")}
                         </Button>
                         <Button variant="contained" endIcon={<ExpandMoreIcon />}>
-                            Action
+                            {t("buttons.action")}
                         </Button>
                         <Button variant="contained" endIcon={<ExpandMoreIcon />} >
-                            Filter
+                            {t("buttons.filter")}
                         </Button>
                     </Stack>
                 )

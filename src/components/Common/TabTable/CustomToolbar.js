@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Toolbar, Grid, MenuItem, TextField, alpha } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const CustomToolbar = (props) => {
 	const { toolBar } = props;
+	const {t} = useTranslation()
 	const [values, setValues] = useState({});
 	useEffect(() => {
 		const obj = toolBar.reduce((accumulator, value) => {
@@ -45,7 +47,7 @@ const CustomToolbar = (props) => {
 							fullWidth
 							id="outlined-select-currency"
 							select={val.type === "select"}
-							label={val.placeholder}
+							label={t(`labels.${val.placeholder}`)}
 							name={val.field}
 							value={values[val.field] || ""}
 							onChange={(e) => {

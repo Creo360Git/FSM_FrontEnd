@@ -23,24 +23,24 @@ const toolBar = [
   {
     field: "Parameter",
     type: "search",
-    placeholder: "Search jobs",
+    placeholder: "searchJobs",
   },
   {
     field: "Due",
     type: "select",
-    placeholder: "Due",
+    placeholder: "due",
     options: sortByOptions,
   },
   {
     field: "SortBy",
     type: "select",
-    placeholder: "Sort",
+    placeholder: "sort",
     options: sortByOptions,
   },
   {
     field: "Type",
     type: "select",
-    placeholder: "Type",
+    placeholder: "type",
     options: filterOptions,
   },
 ];

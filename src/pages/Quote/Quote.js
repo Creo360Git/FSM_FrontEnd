@@ -530,18 +530,18 @@ const Quote = ({ locations, types }) => {
     {
       field: "Parameter",
       type: "search",
-      placeholder: "Search clients",
+      placeholder: "searchClients",
     },
     {
       field: "SortBy",
       type: "select",
-      placeholder: "Sort",
+      placeholder: "sort",
       options: sortByOptions,
     },
     {
       field: "Filter",
       type: "select",
-      placeholder: "Filter",
+      placeholder: "filter",
       options: filterOptions,
     },
   ];

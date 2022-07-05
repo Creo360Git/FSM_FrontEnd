@@ -21,10 +21,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useTheme } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 
 const AddClient = ({open, setOpen, setClientValue}) => {
     const theme = useTheme()
+    const {t} = useTranslation()
     const [type, setType] = useState([
         {TypeId: 1, Module: 'phone', Type: 'main'},
         {TypeId: 2, Module: 'phone', Type: 'personel'},
@@ -154,17 +156,17 @@ const AddClient = ({open, setOpen, setClientValue}) => {
             maxWidth="sm"
         >
             <DialogTitle variant='h3' onClose={handleClose} sx={{textTransform:'uppercase', fontWeight: theme.typography.fontWeightBold, backgroundColor: '#f4f4f4'}}>
-                New Client
+                {t("headings.newClient")}
             </DialogTitle>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <DialogContent dividers>
                     <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
-                        Client Details
+                        {t("subHeadings.clientDetails")}
                     </Typography>
                     <Grid container spacing={1}>
                         <Grid item xs={6}>
                             <TextField
-                                label= 'First Name'
+                                label= {t("labels.firstName")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -176,7 +178,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= 'Last Name'
+                                label= {t("labels.lastName")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -188,7 +190,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                label= 'Company Name'
+                                label= {t("labels.companyName")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -207,7 +209,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                         sx={{color:theme.palette.secondary.dark}}
                                     />
                                 }
-                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Use company name as the primary name</Typography>}
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>{t("labels.companyNameAsPrimaryName")}</Typography>}
 
                             />
                         </Grid>
@@ -215,7 +217,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                 </DialogContent>
                 <DialogContent dividers>
                     <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
-                        Contact Details
+                        {t("subHeadings.contactDetails")}
                     </Typography>
                     <Grid container spacing={0.5}>
                         {fields.map((val, index) => {
@@ -241,7 +243,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     </Grid>
                                     <Grid item xs={index == 0 ? 8 : 7} >
                                         <TextField
-                                            label= 'Phone number'
+                                            label= {t("labels.phoneNumber")}
                                             fullWidth
                                             type="text"
                                             variant="outlined"
@@ -270,7 +272,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         }}
                         sx={{textTransform:'uppercase', mb: 1}}
                     >
-                        Add phone number 
+                        {t("buttons.addPhoneNumber")} 
                     </Button>
 
                     <Grid container spacing={0.5}>
@@ -297,7 +299,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     </Grid>
                                     <Grid item xs={index == 0 ? 8 : 7}  >
                                         <TextField
-                                            label= 'Email'
+                                            label= {t("labels.email")}
                                             fullWidth
                                             type="text"
                                             variant="outlined"
@@ -326,18 +328,18 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         }}
                         sx={{textTransform:'uppercase'}}
                     >
-                        Add Email 
+                        {t("buttons.addEmail")}
                     </Button>
 
                 </DialogContent>
                 <DialogContent dividers>
                     <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
-                            Property Details
+                        {t("subHeadings.propertyDetails")}
                     </Typography>
                     <Grid container spacing={1}>
                         <Grid item md={12} xs={12} sm={6}>
                             <TextField
-                                label= 'Street 1'
+                                label= {t("labels.street1")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -349,7 +351,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item md={12} xs={12} sm={6}>
                             <TextField
-                                label= 'Street 2'
+                                label= {t("labels.street2")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -361,7 +363,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= 'City'
+                                label= {t("labels.city")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -373,7 +375,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= 'State'
+                                label= {t("labels.state")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -385,7 +387,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= 'ZIP value'
+                                label= {t("labels.zipCode")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -423,7 +425,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                         sx={{color:theme.palette.secondary.dark}}
                                     />
                                 }
-                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>Billing address is the same as property address</Typography>}
+                                label={<Typography variant='h6' sx={{fontWeight: theme.typography.fontWeightRegular}}>{t("labels.billingAddressSameAsproPertyAddress")}</Typography>}
                             />
                         </Grid>
                     </Grid>
@@ -432,12 +434,12 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                     !checkboxForBilling &&
                     <DialogContent dividers>
                         <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
-                            Billing Address
+                            {t("subHeadings.billingAddress")}
                         </Typography>
                         <Grid container spacing={1}>
                             <Grid item md={12} xs={12} sm={6}>
                                 <TextField
-                                    label= 'Street 1'
+                                    label= {t("labels.street1")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -449,7 +451,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             </Grid>
                             <Grid item md={12} xs={12} sm={6}>
                                 <TextField
-                                    label= 'Street 2'
+                                    label= {t("labels.street2")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -461,7 +463,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label= 'City'
+                                    label= {t("labels.city")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -473,7 +475,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label= 'State'
+                                    label= {t("labels.state")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -485,7 +487,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label= 'ZIP value'
+                                    label= {t("labels.zipCode")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -519,7 +521,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                 }
                 <DialogContent>
                     <Typography variant='h5' sx={{color:'#818EA1', fontWeight: theme.typography.fontWeightRegular, mb: 2}}>
-                        Get Automated Notifications
+                        {t("subHeadings.getAutomatedNotifications")}
                     </Typography>
                     <Stack direction="row">
                         <Grid container spacing={1}>
@@ -588,10 +590,10 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} variant='contained' color='inherit' sx={{textTransform:'uppercase'}} >
-                        Cancel
+                        {t("buttons.cancel")}
                     </Button>
                     <Button type='submit' autoFocus variant='contained' color='primary' sx={{textTransform:'uppercase'}}>
-                        Create client
+                        {t("buttons.createClient")}
                     </Button>
                 </DialogActions>
             </form>

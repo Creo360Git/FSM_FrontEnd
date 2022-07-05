@@ -32,7 +32,23 @@
       "saveAnd": "Save And ...",
       "sendAsEmail": "Send As Email",
       "convertToJob": "Convert To Job",
-      "clientNotResponded": "Client Not Responded"
+      "clientNotResponded": "Client Not Responded",
+      "today": "Today",
+      "action": "Action",
+      "filter": "Filter",
+      "unScheduledItems": "UnScheduled Items",
+      "addNewClient": "Add new client",
+      "createClient": "Create client",
+      "addPhoneNumber": "Add phone number",
+      "addEmail": "Add email",
+      "addNewJob": "Add new job",
+      "assign": "Assign",
+      "addLineItem": "Add line item",
+      "saveJob": "Save job",
+      "addNewRequest": "Add new request",
+      "saveRequest": "Save request",
+      "add": "Add",
+      "loading": "Loading..."
     },
     "messages": {
       "noRecordsFound": "No records found !",
@@ -56,7 +72,20 @@
       "invoiceSubject": "Invoice Subject",
       "invoiceDetails": "Invoice Details",
       "reports": "Reports",
-      "map": "Map"
+      "map": "Map",
+      "schedule": "Schedule",
+      "clients": "Clients",
+      "jobs": "Jobs",
+      "request": "Request",
+      "newClient": "New Client",
+      "newEvent": "New Event"
+    },
+    "subHeadings": {
+      "clientDetails": "Client Details",
+      "contactDetails": "Contact Details",
+      "propertyDetails": "Property Details",
+      "billingAddress": "Billing Address",
+      "getAutomatedNotifications": "Get Automated Notifications"
     },
     "tableHeadings": {
       "visits": "Visits",
@@ -67,7 +96,10 @@
       "name": "Name",
       "date": "Date",
       "priority": "Priority",
-      "assignee": "Assignee"
+      "assignee": "Assignee",
+      "lead": "Lead",
+      "address": "Address",
+      "contactDetails": "Contact Details"
     },
     "tabs": {
       
@@ -98,7 +130,33 @@
       "invoiceSubject": "Invoice Subject",
       "issuedDate": "Issued date",
       "paymentDue": "Payment due",
-      "scheduledItems": "Scheduled Items"
+      "scheduledItems": "Scheduled Items",
+      "title": "Title",
+      "StartDate": "Start Date",
+      "endDate": "End Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "allDay": "All day",
+      "search": "Search...",
+      "searchClients": "Search clients",
+      "sort": "Sort",
+      "filter": "Filter",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "companyName": "Company Name",
+      "companyNameAsPrimaryName": "Use company name as the primary name",
+      "billingAddressSameAsproPertyAddress": "Billing address is the same as property address",
+      "phoneNumber": "Phone number",
+      "email": "Email",
+      "street1": "Street 1",
+      "street2": "Street 2",
+      "state": "State",
+      "city": "City",
+      "zipCode": "ZIP code",
+      "searchJobs": "Search jobs",
+      "due": "Due",
+      "type": "Type",
+      "searchRequest": "Search request"
     },
     "adminToolTips": {
       
