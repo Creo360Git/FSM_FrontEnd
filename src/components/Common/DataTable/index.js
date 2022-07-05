@@ -5,7 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Card from '@mui/material/Card';
-import { Container, Chip, Fab, Stack, TableFooter, Pagination, TablePagination, Divider, Button, ButtonGroup } from '@mui/material';
+import { Typography, Chip, Fab, Stack, TableFooter, Pagination, TablePagination, Divider, Button, ButtonGroup, CircularProgress } from '@mui/material';
 import VerticalSplitIcon from '@mui/icons-material/VerticalSplit';
 import { makeStyles } from "@mui/styles";
 import {useMediaQuery} from '@mui/material';
@@ -58,7 +58,9 @@ export default function DataTable(
         isLoading,
         handleBtnClick,
         btnTitle,
-        redirectPath='#'
+        redirectPath='#',
+        filterUrl,
+        fn
     }
 ) {
     const classes = useStyles()
@@ -118,88 +120,27 @@ export default function DataTable(
             </Stack>
             <ColumnViewer anchorEl={anchorEl} setAnchorEl={setAnchorEl} columns={columns} setRenderColumns={setRenderColumns} />
             {toolBar?.length > 0 && (
-                <CustomToolbar toolBar={toolBar} rows={rows} setRows={setRows} />
+                <CustomToolbar filterUrl={filterUrl} toolBar={toolBar} rows={rows} setRows={setRows} fn={fn} />
             )}
             <TableContainer component={Card} sx={{boxShadow: 2}}>
                 <Table sx={{ minWidth: isUpMd ? 650 : '' }} aria-label="simple table">
                     { isUpMd ? 
                     <React.Fragment>
-                    <TableHeader columns={renderColumns} />
-                    <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                            <TableRow
-                                key={index}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                {
-                                    renderColumns?.map((column, dataIndex) => (
-                                        <TableCell 
-                                            key={dataIndex}
-                                            align={!!column.bodyDataAlign ? column.bodyDataAlign : 'left'}
-                                        >
-                                            {
-                                                !!column.fieldRenderType ? 
-                                                    column.fieldRenderType === 'chip' ? 
-                                                        <Chip
-                                                            label={
-                                                                row[column.name] &&
-                                                                formatText(row[column.name])
-                                                            }
-                                                            variant="outlined"
-                                                            style={{
-                                                                width: "100%",
-                                                                border: "none",
-                                                                backgroundColor:
-                                                                row[column.name] === "New"
-                                                                    ? "#66a103"
-                                                                    : row[column.name] === "Close"
-                                                                    ? "red"
-                                                                    : "orange",
-                                                                color: "#FFF",
-                                                            }}
-                                                        />
-                                                    : 
-                                                        column.fieldRenderType === 'status' ? 
-                                                            <Chip
-                                                                label={
-                                                                    row[column.name] &&
-                                                                    formatText(row[column.name] ? 'true' : 'false')
-                                                                }
-                                                                variant="outlined"
-                                                                style={{
-                                                                    width: "100%",
-                                                                    border: "none",
-                                                                    backgroundColor:
-                                                                    row[column.name]
-                                                                        ? "#66a103"
-                                                                        : "red",
-                                                                    color: "#FFF",
-                                                                }}
-                                                            />
-                                                        :
-                                                        column.fieldRenderType === 'date' ? 
-                                                            fDateShort(row[column.name]) : column.fieldRenderType === 'dateTime' ? 
-                                                            fDateShortTime(row[column.name]) : ''
-                                                : 
-                                                    !!column.render ? column.render(row, index) : row[column.name] || '-'
-                                            }
-                                        </TableCell>
-                                    ))
-                                }
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                    </React.Fragment>
-                    : 
-                    <TableBody style={{width: '100%'}}>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index)=>(
-                            <React.Fragment>
-                                {
-                                    renderColumns.map((column, id)=>(
-                                        <TableRow key={index+id}>
-                                            <TableCell>{column.label}</TableCell>
+                        <TableHeader columns={renderColumns} />
+                        
+                        <TableBody>
+                        { isLoading ? 
+                        <TableRow ><TableCell align='center'  colSpan={renderColumns.length}><CircularProgress color="primary" disableShrink size={30} /></TableCell></TableRow>
+                        :
+                            rows.length > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                                <TableRow
+                                    key={index}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    {
+                                        renderColumns?.map((column, dataIndex) => (
                                             <TableCell 
-                                                key={index}
+                                                key={dataIndex}
                                                 align={!!column.bodyDataAlign ? column.bodyDataAlign : 'left'}
                                             >
                                                 {
@@ -223,20 +164,114 @@ export default function DataTable(
                                                                     color: "#FFF",
                                                                 }}
                                                             />
-                                                        : column.fieldRenderType === 'date' ? 
-                                                            fDateShort(row[column.name]) : column.fieldRenderType === 'dateTime' ? 
-                                                            fDateShortTime(row[column.name]) : ''
+                                                        : 
+                                                            column.fieldRenderType === 'status' ? 
+                                                                <Chip
+                                                                    label={
+                                                                        row[column.name] &&
+                                                                        formatText(row[column.name] ? 'true' : 'false')
+                                                                    }
+                                                                    variant="outlined"
+                                                                    style={{
+                                                                        width: "100%",
+                                                                        border: "none",
+                                                                        backgroundColor:
+                                                                        row[column.name]
+                                                                            ? "#66a103"
+                                                                            : "red",
+                                                                        color: "#FFF",
+                                                                    }}
+                                                                />
+                                                            :
+                                                            column.fieldRenderType === 'date' ? 
+                                                                fDateShort(row[column.name]) : column.fieldRenderType === 'dateTime' ? 
+                                                                fDateShortTime(row[column.name]) : ''
                                                     : 
-                                                        !!column.render ? column.render(row, id) : row[column.name] || '-'
+                                                        !!column.render ? column.render(row, index) : row[column.name] || '-'
                                                 }
                                             </TableCell>
-                                        </TableRow>
-                                    ))
-                                }
-                                <TableRow ><TableCell sx={{p: 0}} colSpan={2}><Divider  key={index} /></TableCell></TableRow>
-                            </React.Fragment>
-                        ))}
-                    </TableBody>
+                                        ))
+                                    }
+                                </TableRow>
+                            ))
+                            : 
+                            <TableRow ><TableCell align='center' sx={{color: theme.palette.primary.main}}  colSpan={renderColumns.length}>No records found</TableCell></TableRow>
+                            }
+                        </TableBody>
+                        
+                    </React.Fragment>
+                    : 
+                        <TableBody style={{width: '100%'}}>
+                        { isLoading ? 
+                            <TableRow ><TableCell align='center'  colSpan={renderColumns.length}><CircularProgress color="primary" disableShrink size={30} /></TableCell></TableRow>
+                        :
+                            rows.length > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index)=>(
+                                <React.Fragment>
+                                    {
+                                        renderColumns.map((column, id)=>(
+                                            <TableRow key={index+id}>
+                                                <TableCell>{column.label}</TableCell>
+                                                <TableCell 
+                                                    key={index}
+                                                    align={!!column.bodyDataAlign ? column.bodyDataAlign : 'left'}
+                                                >
+                                                    {
+                                                        !!column.fieldRenderType ? 
+                                                            column.fieldRenderType === 'chip' ? 
+                                                                <Chip
+                                                                    label={
+                                                                        row[column.name] &&
+                                                                        formatText(row[column.name])
+                                                                    }
+                                                                    variant="outlined"
+                                                                    style={{
+                                                                        width: "100%",
+                                                                        border: "none",
+                                                                        backgroundColor:
+                                                                        row[column.name] === "New"
+                                                                            ? "#66a103"
+                                                                            : row[column.name] === "Close"
+                                                                            ? "red"
+                                                                            : "orange",
+                                                                        color: "#FFF",
+                                                                    }}
+                                                                />
+                                                            : 
+                                                                column.fieldRenderType === 'status' ? 
+                                                                <Chip
+                                                                    label={
+                                                                        row[column.name] &&
+                                                                        formatText(row[column.name] ? 'true' : 'false')
+                                                                    }
+                                                                    variant="outlined"
+                                                                    style={{
+                                                                        width: "100%",
+                                                                        border: "none",
+                                                                        backgroundColor:
+                                                                        row[column.name]
+                                                                            ? "#66a103"
+                                                                            : "red",
+                                                                        color: "#FFF",
+                                                                    }}
+                                                                />
+                                                            :
+                                                            column.fieldRenderType === 'date' ? 
+                                                                fDateShort(row[column.name]) : column.fieldRenderType === 'dateTime' ? 
+                                                                fDateShortTime(row[column.name]) : ''
+                                                        : 
+                                                            !!column.render ? column.render(row, id) : row[column.name] || '-'
+                                                    }
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    }
+                                    <TableRow ><TableCell align='center' sx={{p: 0}} colSpan={2}><Divider  key={index} /></TableCell></TableRow>
+                                </React.Fragment>
+                            ))
+                            : 
+                            <TableRow ><TableCell  align='center' sx={{color: theme.palette.primary.main}} colSpan={renderColumns.length}>No records found</TableCell></TableRow>
+                            }
+                        </TableBody>
                     }
                 </Table>
                 <TableFooter style={{display: "flex", justifyContent: "flex-end",}}>

@@ -28,7 +28,7 @@ const ColumnViewer = ({columns, setAnchorEl, anchorEl, setRenderColumns}) => {
     useEffect(()=>{setRenderColumns(viewColumns.filter((col)=>typeof col.isView === 'boolean' ? col.isView : true))},[viewColumns])
 
     return(
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', maxHeight: '200px' }}>
             <FormControl sx={{ m: 1 }} component="fieldset" variant="standard">
                 <FormGroup>
                     <Menu
@@ -41,7 +41,8 @@ const ColumnViewer = ({columns, setAnchorEl, anchorEl, setRenderColumns}) => {
                         PaperProps={{
                             elevation: 0,
                             sx: {
-                                overflow: 'visible',
+                                maxHeight: '400px',
+                                overflow: 'body',
                                 filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                                 mt: 1.5,
                                 '& .MuiAvatar-root': {

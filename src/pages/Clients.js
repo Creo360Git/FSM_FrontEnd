@@ -6,10 +6,11 @@ import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import { useTranslation } from "react-i18next";
 
-import { fetchClients } from "src/redux/Slices/Client";
+import { fetchClients, GetClient } from "src/redux/Slices/Client";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { Link } from "react-router-dom";
+import { buildAddress } from "src/components/Controls/formatUtils";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -49,10 +50,12 @@ const Clients = () => {
   const {t} = useTranslation()
 
   const dispatch = useDispatch()
-  const { clients, isLoading } = useSelector((state) => state.client);
+  const { clients,  isLoading } = useSelector((state) => state.client);
+  const { client } = useSelector((state) => state.client);
 
   useEffect(() => {
-    dispatch(fetchClients());
+    dispatch(fetchClients('https://localhost:44367/api/v1/Customer?clientId=1'));
+    // dispatch(GetClient(5))
   }, [dispatch]);
 
   const [rows, setRows] = useState(clients)
@@ -61,7 +64,7 @@ const Clients = () => {
 
   const columns = [
     {
-      name: "customerName",
+      name: "CustomerName",
       label: t("tableHeadings.lead"),
       render: (row, index) => {
         return(
@@ -69,17 +72,24 @@ const Clients = () => {
             <Typography sx={{ color: "black" }}>
               {"#" + (index + 1).toString()}
             </Typography>
-            {row.customerName}
+            {row.CustomerName}
           </div>
         )
       }
     },
     {
-      name: "customerAddress",
+      name: "CustomerAddress",
       label: t("tableHeadings.address"),
+      render: (row, index) => {
+        return(
+          <div key={index}>
+             {buildAddress(row.CustomerAddress)}
+          </div>
+        )
+      }
     },
     {
-      name: "phoneNumber",
+      name: "PhoneNumber",
       label: t("tableHeadings.contactDetails"),
       render: (row, index) => {
         return(
@@ -91,18 +101,18 @@ const Clients = () => {
       }
     },
     {
-      name: "createdDate",
+      name: "CreatedDate",
       label: 'Created Date',
       isView: false,
       fieldRenderType: 'date'
     },
     {
-      name: "createdBy",
+      name: "CreatedBy",
       label: 'Created By',
       isView: false
     },
     {
-      name: "isActive",
+      name: "IsActive",
       label: t("tableHeadings.status"),
       fieldRenderType: 'status'
     },
@@ -133,6 +143,7 @@ const Clients = () => {
             isLoading={isLoading}
             btnTitle={t("buttons.addNewClient")}
             handleBtnClick={handleOpen}
+            fn={fetchClients}
         />
         {/* </Container> */}
     </DashboardLayout>

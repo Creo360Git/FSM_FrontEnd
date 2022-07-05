@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Container } from "@mui/material";
 import MuiDataTable from "../../components/Common/TabTable/MuiDataTable";
 import AddNewButton from "../../components/Controls/AddNewButton";
 import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
+
+import DataTable from "src/components/Common/DataTable";
+import { fetchJobs, fetchFilterJobs } from "src/redux/Slices/Job";
+import { useDispatch, useSelector } from "src/redux/Store";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -14,11 +18,17 @@ const filterOptions = [
 ];
 
 const sortByOptions = [
-  { label: "First Name", value: "first" },
-  { label: "Last Name", value: "Last" },
+  { label: "First Name", value: "NAME" },
+  { label: "Job Id", value: "JOBNUM" },
   { label: "Recent Active", value: "recent" },
 ];
 
+const dueOptions = [
+  {label: 'Last 30 Days', value: 'LAST30'},
+  {label: 'Current Month', value: 'CURMONTH'},
+  {label: 'Previous Month', value: 'PREMONTH'},
+  {label: 'Current Year', value: 'CURYEAR'},
+]
 const toolBar = [
   {
     field: "Parameter",
@@ -29,7 +39,7 @@ const toolBar = [
     field: "Due",
     type: "select",
     placeholder: "due",
-    options: sortByOptions,
+    options: dueOptions,
   },
   {
     field: "SortBy",
@@ -42,120 +52,20 @@ const toolBar = [
     type: "select",
     placeholder: "type",
     options: filterOptions,
-  },
-  {
-    field: "Parameter",
-    type: "search",
-    placeholder: "searchJobs",
-  },
-  {
-    field: "Parameter",
-    type: "search",
-    placeholder: "searchJobs",
-  },
-  {
-    field: "Parameter",
-    type: "search",
-    placeholder: "searchJobs",
-  },
-  {
-    field: "Parameter",
-    type: "search",
-    placeholder: "searchJobs",
-  },
+  }
 ];
 
 const Job = () => {
 
-  const [rows, setRows] = useState([
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-      date: "2021-11-10T19:40:00",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-      date: "2021-11-10T19:40:00",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-      date: "2021-11-10T19:40:00",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "9",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "10",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "11",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "12",
-    },
-  ]);
+  const dispatch = useDispatch()
+  const { jobs,  isLoading } = useSelector((state) => state.job);
+
+  useEffect(() => {
+    dispatch(fetchJobs());
+  }, [dispatch]);
+
+  const [rows, setRows] = useState(jobs)
+  useEffect(()=>{setRows(jobs)},[jobs])
 
   const columns = [
     {
@@ -176,22 +86,67 @@ const Job = () => {
         label: "invoicing",
     },
     {
-        name: "Requested",
+        name: "Total",
         label: "total",
+        render: (row, index) => {
+          return(
+            row.Total.toString()
+          )
+        }
+    },
+    {
+      name: "StartDate",
+      label: 'Start Date',
+      isView: false,
+      fieldRenderType: 'date'
+    },
+    {
+      name: "EndDate",
+      label: 'End Date',
+      isView: false,
+      fieldRenderType: 'date'
+    },
+    {
+      name: "Instruction",
+      label: 'Instruction',
+      isView: false
+    },
+    {
+      name: "CreatedDate",
+      label: 'Created Date',
+      isView: false,
+      fieldRenderType: 'date'
+    },
+    {
+      name: "CreatedBy",
+      label: 'Created By',
+      isView: false
+    },
+    {
+      name: 'IsScheduled',
+      label: 'is scheduled',
+      fieldRenderType: 'status'
+    },
+    {
+      name: "IsActive",
+      label: 'Is active',
+      fieldRenderType: 'status'
     },
   ];
 
   return (
     <DashboardLayout heading="Jobs">
       {/* <Container> */}
-      <AddNewButton title="Add new job" redirectPath={"/jobs/new"} />
-      <MuiDataTable
-        headers={columns}
-        data={rows}
-        setData={setRows}
-        isDownload={false}
-        isPrint={false}
+      <DataTable
+        columns={columns}
+        rows={jobs}
+        setRows={setRows}
         toolBar={toolBar}
+        isLoading={isLoading}
+        btnTitle={'Add new job'}
+        redirectPath={"/jobs/new"}
+        filterUrl='/job'
+        fn={fetchFilterJobs}
       />
       {/* </Container> */}
     </DashboardLayout>

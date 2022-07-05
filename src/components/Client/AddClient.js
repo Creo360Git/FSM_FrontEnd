@@ -14,7 +14,8 @@ import {
     MenuItem,
     Switch,
     Stack,
-    FormGroup
+    FormGroup,
+    CircularProgress
 } from '@mui/material'
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,47 +24,62 @@ import { useTheme } from '@emotion/react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
 
+import { useDispatch, useSelector } from 'src/redux/Store';
+import { fetchTypes } from 'src/redux/Slices/Type';
+import { CreateClient } from "src/redux/Slices/Client";
+import { createClientSuccess } from 'src/redux/Slices/Client';
+
 
 const AddClient = ({open, setOpen, setClientValue}) => {
     const theme = useTheme()
     const {t} = useTranslation()
-    const [type, setType] = useState([
-        {TypeId: 1, Module: 'phone', Type: 'main'},
-        {TypeId: 2, Module: 'phone', Type: 'personel'},
-        {TypeId: 3, Module: 'email', Type: 'personel'},
-        {TypeId: 4, Module: 'email', Type: 'main'},
-    ])
-    const [emailType, setEmailType] = useState((type.filter((t)=>t.Module==='email')).map((val)=>({value: val.TypeId, label: val.Type})))
-    const [phoneType, setPhoneType] = useState(type.filter((t)=>t.Module==='phone').map((val)=>({value: val.TypeId, label: val.Type})))
+
+    const dispatch = useDispatch()
+    const {types, isLoading, error} = useSelector(state=>state.type)
+    useEffect(()=>{dispatch(fetchTypes('phone'))},[dispatch])
+
+    const [phoneType, setPhoneType] = useState([])
+
+    useEffect(()=>{
+        setPhoneType(types.map((val)=>({value: val.TypeId, label: val.TypeName})))
+    },[types])
+    console.log(phoneType)
+
+
 
     const [client, setClient] = useState({})
 
     const defaultValues = {
-        ClientId: '',
+        ClientId: 1,
         FirstName: '',
         LastName: '',
         CompanyName: '',
         IsPrimaryName: false,
         IsBillingAddress: true,
-        EmailList: [{Email: '', EmailType: emailType[0].value}],
+        email: '',
+        // EmailList: [{Email: '', EmailType: emailType[0].value}],
         CreatedBy: '',
         IsActive: true,
-        PhoneNumbersList: [{PhoneNumber: '', NumberType: phoneType[0].value}],
-        Address: {
+        PhoneNumbersList: [{phoneNumber: '', numberType: ''}],
+        CustomerAddress: {
             AddressLine1: '',
             AddressLine2: '',
-            CountryId: countries[0]?.value,
+            countryId: countries[0]?.value,
             ZipCode: '',
-            State: '',
-            City: ''
+            StateId: 1,
+            City: '',
+            CreatedBy: '',
+            AddressType: 12
         },
         BillingAddress: {
             AddressLine1: '',
             AddressLine2: '',
-            CountryId: countries[0]?.value,
+            AddressType: '',
+            countryId: countries[0]?.value,
             ZipCode: '',
-            State: '',
-            City: ''
+            StateId: 1,
+            City: '',
+            CreatedBy: ''
         },
         Notification: {
             Appointment: false,
@@ -81,30 +97,31 @@ const AddClient = ({open, setOpen, setClientValue}) => {
         CompanyName: yup.string(),
         IsPrimaryName: yup.boolean(),
         IsBillingAddress:  yup.boolean(),
-        EmailList: yup.array()
-            .of(
-                yup.object().shape({
-                    Email: yup.string().email('Not a valid number').required('required'),
-                    EmailType: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required')
-                })
-            )
-            .min(1, 'Atleast one'),
+        email: yup.string().email('Not a valid email').required('required'),
+        // EmailList: yup.array()
+        //     .of(
+        //         yup.object().shape({
+        //             Email: yup.string().email('Not a valid number').required('required'),
+        //             EmailType: yup.number().typeError('must be a email').positive().integer().nullable(false).required('required')
+        //         })
+        //     )
+        //     .min(1, 'Atleast one'),
         CreatedBy: yup.string(),
         IsActive: yup.boolean(),
         PhoneNumbersList: yup.array()
             .of(
                 yup.object().shape({
-                    PhoneNumber: yup.string().matches(phoneReg, 'Not a valid number'),
-                    NumberType: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required')
+                    phoneNumber: yup.string().matches(phoneReg, 'Not a valid number'),
+                    numberType: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required')
                 })
             )
             .min(1, 'Atleast one'),
-        Address:  yup.object().shape({
+        CustomerAddress:  yup.object().shape({
             AddressLine1: yup.string().required('required 1'),
             AddressLine2: yup.string().notRequired(),
-            CountryId: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
-            ZipCode: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
-            State: yup.string().required('required'),
+            countryId: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
+            ZipCode: yup.string().required('required'),
+            StateId: yup.number().required('required'),
             City: yup.string().required('required')
         }),
         BillingAddress: yup.object()
@@ -113,9 +130,9 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                 then: yup.object().shape({
                         AddressLine1: yup.string().required('required 1'),
                         AddressLine2: yup.string().notRequired(),
-                        CountryId: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
-                        ZipCode: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
-                        State: yup.string().required('required'),
+                        countryId: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required'),
+                        ZipCode: yup.string().required('required'),
+                        StateId: yup.number().required('required'),
                         City: yup.string().required('required')
                     }),
                 otherwise: yup.object().notRequired()
@@ -137,17 +154,34 @@ const AddClient = ({open, setOpen, setClientValue}) => {
     const { fields, append, remove } = useFieldArray({control, name: 'PhoneNumbersList'});
     const { fields: emailFields, append: emailAppend, remove: emailRemove } = useFieldArray({control, name: 'EmailList'});
 
+    // const [data, setData] = useState([])
+    // useEffect(()=>{
+    //     dispatch(CreateClient(data))
+    // },[dispatch, data])
+
     const onSubmit = (values) => {
-        const data = {...values, CustomerName: values.FirstName+ ' ' + values.LastName, name:  values.FirstName+ ' ' + values.LastName}
+        const data = ({...values, CustomerName: values.FirstName+ ' ' + values.LastName})
         delete(data['FirstName'])
         delete(data['LastName'])
-        handleClose()
-        if(typeof setClientValue === 'function') {
-            setClientValue(data)
-        }
+        console.log('in')
+        fetch(process.env.REACT_APP_API+`/customer`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(()=>{
+            dispatch(createClientSuccess(data))
+            handleClose()
+            if(typeof setClientValue === 'function') {
+                setClientValue(data)
+            }
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
     }
     const checkboxForBilling = watch("IsBillingAddress");
-
+    
     return(
         <Dialog
             onClose={handleClose}
@@ -224,6 +258,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             return (
                                 <React.Fragment key={index}> 
                                     <Grid item sx={{mb: 1}} xs={4}>
+                                        { isLoading ? <CircularProgress /> :
                                         <TextField
                                             // label= 'Type'
                                             fullWidth
@@ -231,7 +266,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                             type="text"
                                             variant="outlined"
                                             size="small"
-                                            {...register(`PhoneNumbersList[${index}].NumberType`)}
+                                            {...register(`PhoneNumbersList[${index}].numberType`)}
                                             defaultValue={phoneType[0]?.value}
                                         >
                                             {phoneType?.map((option) => (
@@ -240,6 +275,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                                 </MenuItem>
                                             ))}
                                         </TextField>
+                                        }
                                     </Grid>
                                     <Grid item xs={index == 0 ? 8 : 7} >
                                         <TextField
@@ -248,9 +284,9 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                             type="text"
                                             variant="outlined"
                                             size="small"
-                                            {...register(`PhoneNumbersList[${index}].PhoneNumber`)}
-                                            error={!!errors.PhoneNumbersList?.[index] ? !!errors.PhoneNumbersList?.[index].PhoneNumber: false}
-                                            helperText={!!errors.PhoneNumbersList?.[index] ? errors.PhoneNumbersList?.[index].PhoneNumber?.message : ''}
+                                            {...register(`PhoneNumbersList[${index}].phoneNumber`)}
+                                            error={!!errors.PhoneNumbersList?.[index] ? !!errors.PhoneNumbersList?.[index].phoneNumber: false}
+                                            helperText={!!errors.PhoneNumbersList?.[index] ? errors.PhoneNumbersList?.[index].phoneNumber?.message : ''}
                                         />
                                     </Grid>
                                     {
@@ -268,14 +304,28 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         
                     <Button
                         onClick={() => {
-                            append({ PhoneNumber: "", NumberType: "" }, { shouldFocus: false });
+                            append({ phoneNumber: "", numberType: "" }, { shouldFocus: false });
                         }}
                         sx={{textTransform:'uppercase', mb: 1}}
                     >
                         {t("buttons.addPhoneNumber")} 
                     </Button>
+                    <Grid container >
+                        <Grid item xs={12}>
+                            <TextField
+                                label= {t("labels.email")}
+                                fullWidth
+                                type="text"
+                                variant="outlined"
+                                size="small"
+                                {...register("email")}
+                                error={!!errors.email}
+                                helperText={errors.email?.message}
+                            />
+                        </Grid>
+                    </Grid>
 
-                    <Grid container spacing={0.5}>
+                    {/* <Grid container spacing={0.5}>
                         {emailFields.map((val, index) => {
                             return (
                                 <React.Fragment key={index}> 
@@ -320,16 +370,16 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                 </React.Fragment >
                             );
                         })}
-                    </Grid>
+                    </Grid> */}
                         
-                    <Button
+                    {/* <Button
                         onClick={() => {
                             emailAppend({ Email: "", EmailType: "" });
                         }}
                         sx={{textTransform:'uppercase'}}
                     >
                         {t("buttons.addEmail")}
-                    </Button>
+                    </Button> */}
 
                 </DialogContent>
                 <DialogContent dividers>
@@ -344,9 +394,9 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.AddressLine1")}
-                                error={!!errors?.Address?.AddressLine1}
-                                helperText={errors?.Address?.AddressLine1?.message}
+                                {...register("CustomerAddress.AddressLine1")}
+                                error={!!errors?.CustomerAddress?.AddressLine1}
+                                helperText={errors?.CustomerAddress?.AddressLine1?.message}
                             />
                         </Grid>
                         <Grid item md={12} xs={12} sm={6}>
@@ -356,21 +406,21 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.AddressLine2")}
-                                error={!!errors.Address?.AddressLine2}
-                                helperText={errors.Address?.AddressLine2?.message}
+                                {...register("CustomerAddress.AddressLine2")}
+                                error={!!errors.CustomerAddress?.AddressLine2}
+                                helperText={errors.CustomerAddress?.AddressLine2?.message}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= {t("labels.city")}
+                                label= {t("labels.City")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.City")}
-                                error={!!errors?.Address?.City}
-                                helperText={errors?.Address?.City?.message}
+                                {...register("CustomerAddress.City")}
+                                error={!!errors?.CustomerAddress?.City}
+                                helperText={errors?.CustomerAddress?.City?.message}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -380,21 +430,21 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.State")}
-                                error={!!errors?.Address?.State}
-                                helperText={errors?.Address?.State?.message}
+                                {...register("CustomerAddress.StateId")}
+                                error={!!errors?.CustomerAddress?.StateId}
+                                helperText={errors?.CustomerAddress?.StateId?.message}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= {t("labels.zipCode")}
+                                label= {t("labels.ZipCode")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.ZipCode")}
-                                error={!!errors?.Address?.ZipCode}
-                                helperText={errors?.Address?.ZipCode?.message}
+                                {...register("CustomerAddress.ZipCode")}
+                                error={!!errors?.CustomerAddress?.ZipCode}
+                                helperText={errors?.CustomerAddress?.ZipCode?.message}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -404,9 +454,9 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("Address.CountryId")}
-                                error={!!errors?.Address?.CountryId}
-                                helperText={errors?.Address?.CountryId?.message}
+                                {...register("CustomerAddress.countryId")}
+                                error={!!errors?.CustomerAddress?.countryId}
+                                helperText={errors?.CustomerAddress?.countryId?.message}
                                 defaultValue={countries[0]?.value}
                             >
                                 {countries?.map((option) => (
@@ -463,7 +513,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label= {t("labels.city")}
+                                    label= {t("labels.City")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -480,14 +530,14 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     type="text"
                                     variant="outlined"
                                     size="small"
-                                    {...register("BillingAddress.State")}
-                                    error={!!errors?.BillingAddress?.State}
-                                    helperText={errors?.BillingAddress?.State?.message}
+                                    {...register("BillingAddress.StateId")}
+                                    error={!!errors?.BillingAddress?.StateId}
+                                    helperText={errors?.BillingAddress?.StateId?.message}
                                 />
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label= {t("labels.zipCode")}
+                                    label= {t("labels.ZipCode")}
                                     fullWidth
                                     type="text"
                                     variant="outlined"
@@ -504,9 +554,9 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     type="text"
                                     variant="outlined"
                                     size="small"
-                                    {...register("BillingAddress.CountryId")}
-                                    error={!!errors?.BillingAddress?.CountryId}
-                                    helperText={errors?.BillingAddress?.CountryId?.message}
+                                    {...register("BillingAddress.countryId")}
+                                    error={!!errors?.BillingAddress?.countryId}
+                                    helperText={errors?.BillingAddress?.countryId?.message}
                                     defaultValue={countries[0]?.value}
                                 >
                                     {countries?.map((option) => (

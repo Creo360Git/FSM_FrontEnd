@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {
     TableCell,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from '@mui/material';
 
 
@@ -16,9 +17,9 @@ const TableHeader = ({columns}) => {
                             <TableCell 
                                 padding={disablePadding ? 'none' : 'normal'} 
                                 align={!!headerLabelAlign ? headerLabelAlign : 'left'} 
-                                key={name}
+                                key={index}
                             >
-                                {label}
+                                <Typography sx={{textTransform: 'capitalize'}}>{label}</Typography>
                             </TableCell>
                         )
                     })

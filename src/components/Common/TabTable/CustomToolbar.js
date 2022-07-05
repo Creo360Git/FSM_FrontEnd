@@ -4,8 +4,10 @@ import { useTranslation } from "react-i18next";
 import useFetch from "../../../hooks/useFetch";
 import Search from "@mui/icons-material/Search";
 
+import { useDispatch, useSelector } from "src/redux/Store";
+
 const CustomToolbar = (props) => {
-	const { toolBar, rows, setRows, url } = props;
+	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn } = props;
 	const {t} = useTranslation()
 	const [values, setValues] = useState({});
 	useEffect(() => {
@@ -21,7 +23,13 @@ const CustomToolbar = (props) => {
 			return values;
 		});
 	};
-	console.log((values))
+
+	const dispatch = useDispatch()
+
+	const handleSearchClick = () => {
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`+urlgen()))
+	}
+	
 
 	const urlgen = () => {
 		const urls=[url]
@@ -31,12 +39,6 @@ const CustomToolbar = (props) => {
 		return urls.join('&')
 	} 
 
-	console.log(urlgen())
-
-	const [data, loading] = useFetch(urlgen())
-	useEffect(()=>{
-		setRows(data)
-	},[data])
 
 	return (
 		<Card
@@ -93,6 +95,7 @@ const CustomToolbar = (props) => {
 						variant="contained"
 						size='small'
 						sx={{height: '100%'}}
+						onClick={handleSearchClick}
 					>
 						<Search  />
 					</Button>

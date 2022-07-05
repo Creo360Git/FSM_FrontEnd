@@ -1,18 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import fetchUsers from "src/hooks/useFetch";
-import useFetch from "src/hooks/useFetch";
 import { dispatch } from "../Store";
 
 
-export const fetchClients = createAsyncThunk('posts/fetchPosts', async () => {
-    return fetch('https://localhost:44367/api/v1/Customer?clientId=1')
+export const fetchClients = createAsyncThunk('clients/fetchClients', async (url) => {
+    return fetch(url)
         .then((data)=>{
             return data.json()
         })
         .then(res=>{
-            return res.data
+            return res.DATA
         })
-  })
+})
+
+export const GetClient = createAsyncThunk('client/fetchClient', async (id) => {
+    return fetch(process.env.REACT_APP_API+`/customer/id?clientId=1&customerId=${id}`)
+        .then((data)=>{
+            return data.json()
+        })
+        .then(res=>{
+            return res.DATA
+        })
+})
+
+export const CreateClient = createAsyncThunk('client/createClient', async (body) => {
+    console.log(body)
+    return fetch(process.env.REACT_APP_API+`/customer`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+        .then((data)=>{
+            return data.json()
+        })
+        .then(res=>{
+            return res.DATA
+        })
+})
+
 
 const initialState = {
     isLoading: false,
@@ -38,47 +62,42 @@ const Slice = createSlice({
         [fetchClients.rejected]: (state, action) => {
             state.isLoading = false
             state.error= action.payload
+        },
+        [GetClient.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.client = action.payload
+        },
+        [CreateClient.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.clients = state.clients.push(action.payload)
         }
     },
-    // reducers: {
-    //     startLoading(state) {
-    //         state.isLoading = true;
-    //     },
+    reducers: {
+        // startLoading(state) {
+        //     state.isLoading = true;
+        // },
     
-    //     hasError(state, action) {
-    //         state.isLoading = false;
-    //         state.error = action.payload;
-    //     },
+        // hasError(state, action) {
+        //     state.isLoading = false;
+        //     state.error = action.payload;
+        // },
     
-    //     getClientsSuccess(state, action) {
-    //         state.isLoading = false;
-    //         state.clients = action.payload;
-    //     },
+        // getClientsSuccess(state, action) {
+        //     state.isLoading = false;
+        //     state.clients = action.payload;
+        // },
     
-    //     getClientSuccess(state, action) {
-    //         state.isLoading = false;
-    //         state.client = action.payload;
-    //     },
-    // }
+        createClientSuccess(state, action) {
+            state.isLoading = false;
+            state.clients.push(action.payload);
+        },
+    }
 })
 
 export default Slice.reducer
 
-// export const {
-//     getClientsSuccess
-// } = Slice.actions
+export const {
+    createClientSuccess
+} = Slice.actions
 
 
-// export const GetClients = () => {
-//     return async () => {
-//         dispatch(Slice.actions.startLoading())
-//         try{
-//             const res = fetchClients()
-//             console.log(res)
-//             dispatch(Slice.actions.getClientsSuccess(res));
-//         }
-//         catch (error){
-//             dispatch(Slice.actions.hasError(error));
-//         }
-//     }
-// }
