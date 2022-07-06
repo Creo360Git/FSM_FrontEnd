@@ -83,12 +83,13 @@ const Reports = ({ locations, types }) => {
           marginTop: theme.spacing(3),
         }}
       >
-        <Grid item xs={12}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20 }}>
+        {/* <Grid item xs={12}> */}
+          {/* <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20 }}> */}
             {title?.map((item, index) => {
               return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
                 <div style={{
-                  border: '1px solid #C9C9C9', width: 300, backgroundColor: '#E0E0E0', display: 'table'
+                  border: '1px solid #C9C9C9', backgroundColor: '#E0E0E0', width: '100%', display: 'table'
                 }}>
                   <tr height='50px'>
                     <td style={{ fontSize: 18, fontWeight: 'bold', verticalAlign: 'middle', paddingLeft: '15px' }}
@@ -97,17 +98,18 @@ const Reports = ({ locations, types }) => {
                     </td></tr>
                   {list?.map((item, index) => {
                     return (
-                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: 300, backgroundColor: '#FFFFFF' }}>
+                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: '100%', backgroundColor: '#FFFFFF' }}>
                         <MenuItem style={{ fontSize: 16, fontWeight: 'bold', marginTop: '10px' }} value={item?.value} key={index}>
                           {item?.label || ""}
                         </MenuItem></div>
                     );
                   })}
                 </div>
+                </Grid>
               );
             })}
-          </div>
-        </Grid>
+          {/* </div> */}
+        {/* </Grid> */}
       </Grid>
     </main>
   );
