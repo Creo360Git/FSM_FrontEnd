@@ -3,15 +3,11 @@ import React, {
   //   useEffect,
   // useContext
 } from "react";
-import { makeStyles} from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Grid,
   Typography,
   useTheme,
-  Stack,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -87,24 +83,28 @@ const Reports = ({ locations, types }) => {
           marginTop: theme.spacing(3),
         }}
       >
-        <Grid item xs={8}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20}}>
+        <Grid item xs={12}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20 }}>
             {title?.map((item, index) => {
-                return (
-                  <div style={{border:'1px 1px 1px 0 solid black',height:'50px',width:300,backgroundColor:'#E0E0E0'}}>
-                    <MenuItem value={item?.value} key={index}>
-                    {item?.label || ""}
-                    </MenuItem>
-                    {list?.map((item, index) => {
-                              return (
-                                <div style={{border:'1px 1px 1px 1px solid black',height:'50px',width:300,backgroundColor:'#FFFFFF'}}>
-                                  <MenuItem value={item?.value} key={index}>
-                                    {item?.label || ""}
-                                  </MenuItem></div>
-                                );
-                          })}
-                    </div>
-                  );
+              return (
+                <div style={{
+                  border: '1px solid #C9C9C9', width: 300, backgroundColor: '#E0E0E0', display: 'table'
+                }}>
+                  <tr height='50px'>
+                    <td style={{ fontSize: 18, fontWeight: 'bold', verticalAlign: 'middle', paddingLeft: '15px' }}
+                      value={item?.value} key={index} >
+                      {item?.label || ""}
+                    </td></tr>
+                  {list?.map((item, index) => {
+                    return (
+                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: 300, backgroundColor: '#FFFFFF' }}>
+                        <MenuItem style={{ fontSize: 16, fontWeight: 'bold', marginTop: '10px' }} value={item?.value} key={index}>
+                          {item?.label || ""}
+                        </MenuItem></div>
+                    );
+                  })}
+                </div>
+              );
             })}
           </div>
         </Grid>
