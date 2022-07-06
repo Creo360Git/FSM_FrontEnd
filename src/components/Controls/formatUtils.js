@@ -7,48 +7,54 @@ export function createFullName({ firstName, middleName, lastName }) {
 }
 
 export function buildAddress(
-  Address1,
-  Address2,
-  City,
-  StateName,
-  CountryName,
-  zipCode
+  {
+    AddressLine1=null,
+    AddressLine2=null,
+    City=null,
+    State=null,
+    Country=null,
+    ZipCode=null
+  }
 ) {
-  let address = null;
+  let data = [AddressLine1, AddressLine2, City, State, Country, ZipCode];
+  const address = data.filter((value)=> !!value)
+  return address.join(', ')
+  // if(!!AddressLine1){
+  //   address
+  // }
+  // if (Address1) {
+  //   address = Address1;
 
-  if (Address1) {
-    address = Address1;
+  //   if (Address1 && Address2) {
+  //     address = address + ", " + Address2;
+  //   } else if (!Address1 && Address2) {
+  //     address = Address2;
+  //   }
+  // }
 
-    if (Address1 && Address2) {
-      address = address + ", " + Address2;
-    } else if (!Address1 && Address2) {
-      address = Address2;
-    }
-  }
+  // if (address && City) {
+  //   address = address + ", " + City;
+  // } else if (!address && City) {
+  //   address = City;
+  // }
 
-  if (address && City) {
-    address = address + ", " + City;
-  } else if (!address && City) {
-    address = City;
-  }
+  // if (address && StateName && StateName !== "NA") {
+  //   address = address + ", " + StateName;
+  // } else if (!address && StateName && StateName !== "NA") {
+  //   address = StateName;
+  // }
 
-  if (address && StateName && StateName !== "NA") {
-    address = address + ", " + StateName;
-  } else if (!address && StateName && StateName !== "NA") {
-    address = StateName;
-  }
+  // if (address && CountryName && CountryName !== "NA") {
+  //   address = address + ", " + CountryName;
+  // } else if (!address && CountryName && CountryName !== "NA") {
+  //   address = CountryName;
+  // }
 
-  if (address && CountryName && CountryName !== "NA") {
-    address = address + ", " + CountryName;
-  } else if (!address && CountryName && CountryName !== "NA") {
-    address = CountryName;
-  }
+  // if (address && zipCode && zipCode !== "") {
+  //   address = address + ", " + zipCode;
+  // }
 
-  if (address && zipCode && zipCode !== "") {
-    address = address + ", " + zipCode;
-  }
-
-  return address || "-";
+  // return address || "-";
 }
 
 export function formatText(text) {

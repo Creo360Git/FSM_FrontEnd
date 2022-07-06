@@ -88,12 +88,12 @@ export default function DataTable(
     return (
         <React.Fragment>
             <Stack direction='row' justifyContent='flex-end'>
-                <ButtonGroup size='small' >
+                <ButtonGroup size='medium' >
                     <Button
                         variant="contained"
                         sx={{ mr: 1, textTransform: "capitalize" }}
                         onClick={handleClickExportCsv}
-                        size='small'
+                        size='medium'
                         startIcon={<DocumentScannerIcon  />}
                     >
                         Export as csv
@@ -101,7 +101,7 @@ export default function DataTable(
                     <Button
                         variant="contained"
                         sx={{ textDecoration: "none", mr: 1, textTransform: "capitalize" }}
-                        size='small'
+                        size='medium'
                         startIcon={<AddCircle  />}
                         onClick={handleBtnClick}
                         component={Link}
@@ -112,7 +112,7 @@ export default function DataTable(
                     <Button
                         variant="contained"
                         onClick={handleClick}
-                        size='small'
+                        size='medium'
                     >
                         <VerticalSplitIcon  />
                     </Button>

@@ -56,11 +56,16 @@ const AddClient = ({open, setOpen, setClientValue}) => {
         CompanyName: '',
         IsPrimaryName: false,
         IsBillingAddress: true,
-        email: '',
+        Email: '',
         // EmailList: [{Email: '', EmailType: emailType[0].value}],
         CreatedBy: '',
         IsActive: true,
-        PhoneNumbersList: [{phoneNumber: '', numberType: ''}],
+        PhoneNumbersList: [
+            {
+                PhoneNumber: '', 
+                NumberType: ''
+            }
+        ],
         CustomerAddress: {
             AddressLine1: '',
             AddressLine2: '',
@@ -97,12 +102,12 @@ const AddClient = ({open, setOpen, setClientValue}) => {
         CompanyName: yup.string(),
         IsPrimaryName: yup.boolean(),
         IsBillingAddress:  yup.boolean(),
-        email: yup.string().email('Not a valid email').required('required'),
+        Email: yup.string().email('Not a valid Email').required('required'),
         // EmailList: yup.array()
         //     .of(
         //         yup.object().shape({
-        //             Email: yup.string().email('Not a valid number').required('required'),
-        //             EmailType: yup.number().typeError('must be a email').positive().integer().nullable(false).required('required')
+        //             Email: yup.string().Email('Not a valid number').required('required'),
+        //             EmailType: yup.number().typeError('must be a Email').positive().integer().nullable(false).required('required')
         //         })
         //     )
         //     .min(1, 'Atleast one'),
@@ -111,8 +116,8 @@ const AddClient = ({open, setOpen, setClientValue}) => {
         PhoneNumbersList: yup.array()
             .of(
                 yup.object().shape({
-                    phoneNumber: yup.string().matches(phoneReg, 'Not a valid number'),
-                    numberType: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required')
+                    PhoneNumber: yup.string().matches(phoneReg, 'Not a valid number'),
+                    NumberType: yup.number().typeError('must be a number').positive().integer().nullable(false).required('required')
                 })
             )
             .min(1, 'Atleast one'),
@@ -158,20 +163,30 @@ const AddClient = ({open, setOpen, setClientValue}) => {
     // useEffect(()=>{
     //     dispatch(CreateClient(data))
     // },[dispatch, data])
-
+    console.log(errors)
     const onSubmit = (values) => {
-        const data = ({...values, CustomerName: values.FirstName+ ' ' + values.LastName})
+        const data = ({...values, CustomerName: values.FirstName+ ' ' + values.LastName, Address: values.CustomerAddress})
         delete(data['FirstName'])
         delete(data['LastName'])
+        delete(data['CustomerAddress'])
+        delete(data['BillingAddress'])
+        delete(data['CompanyName'])
+        delete(data['IsBillingAddress'])
+        delete(data['Notification'])
+        delete(data['IsPrimaryName'])
         console.log('in')
         fetch(process.env.REACT_APP_API+`/customer`, {
+            mode: 'no-cors',
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:3000' 
+            },
             body: JSON.stringify(data)
         })
-        .then(()=>{
+        .then((res)=>{
             dispatch(createClientSuccess(data))
-            handleClose()
+            // handleClose()
             if(typeof setClientValue === 'function') {
                 setClientValue(data)
             }
@@ -266,7 +281,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                             type="text"
                                             variant="outlined"
                                             size="small"
-                                            {...register(`PhoneNumbersList[${index}].numberType`)}
+                                            {...register(`PhoneNumbersList[${index}].NumberType`)}
                                             defaultValue={phoneType[0]?.value}
                                         >
                                             {phoneType?.map((option) => (
@@ -279,14 +294,14 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     </Grid>
                                     <Grid item xs={index == 0 ? 8 : 7} >
                                         <TextField
-                                            label= {t("labels.phoneNumber")}
+                                            label= {t("labels.PhoneNumber")}
                                             fullWidth
                                             type="text"
                                             variant="outlined"
                                             size="small"
-                                            {...register(`PhoneNumbersList[${index}].phoneNumber`)}
-                                            error={!!errors.PhoneNumbersList?.[index] ? !!errors.PhoneNumbersList?.[index].phoneNumber: false}
-                                            helperText={!!errors.PhoneNumbersList?.[index] ? errors.PhoneNumbersList?.[index].phoneNumber?.message : ''}
+                                            {...register(`PhoneNumbersList[${index}].PhoneNumber`)}
+                                            error={!!errors.PhoneNumbersList?.[index] ? !!errors.PhoneNumbersList?.[index].PhoneNumber: false}
+                                            helperText={!!errors.PhoneNumbersList?.[index] ? errors.PhoneNumbersList?.[index].PhoneNumber?.message : ''}
                                         />
                                     </Grid>
                                     {
@@ -304,7 +319,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         
                     <Button
                         onClick={() => {
-                            append({ phoneNumber: "", numberType: "" }, { shouldFocus: false });
+                            append({ PhoneNumber: "", NumberType: "" }, { shouldFocus: false });
                         }}
                         sx={{textTransform:'uppercase', mb: 1}}
                     >
@@ -313,14 +328,14 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                     <Grid container >
                         <Grid item xs={12}>
                             <TextField
-                                label= {t("labels.email")}
+                                label= {t("labels.Email")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
                                 size="small"
-                                {...register("email")}
-                                error={!!errors.email}
-                                helperText={errors.email?.message}
+                                {...register("Email")}
+                                error={!!errors.Email}
+                                helperText={errors.Email?.message}
                             />
                         </Grid>
                     </Grid>
@@ -349,7 +364,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                                     </Grid>
                                     <Grid item xs={index == 0 ? 8 : 7}  >
                                         <TextField
-                                            label= {t("labels.email")}
+                                            label= {t("labels.Email")}
                                             fullWidth
                                             type="text"
                                             variant="outlined"
@@ -413,7 +428,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= {t("labels.City")}
+                                label= {t("labels.city")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"
@@ -437,7 +452,7 @@ const AddClient = ({open, setOpen, setClientValue}) => {
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label= {t("labels.ZipCode")}
+                                label= {t("labels.zipCode")}
                                 fullWidth
                                 type="text"
                                 variant="outlined"

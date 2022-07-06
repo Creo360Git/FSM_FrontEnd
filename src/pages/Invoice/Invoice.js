@@ -90,6 +90,16 @@ const toolBar = [
     placeholder: "filter",
     options: filterOptions,
   },
+  {
+    field: 'Start',
+    type: 'date',
+    placeholder: 'Start Date'
+  },
+  {
+    field: 'End',
+    type: 'date',
+    placeholder: 'End Date'
+  }
 ];
 
 const Invoice = ({ locations, types }) => {
@@ -116,7 +126,7 @@ const Invoice = ({ locations, types }) => {
 
   const [rows, setRows] = useState(invoices)
   useEffect(()=>{setRows(invoices)},[invoices])
-  console.log(rows)
+
 
   const columns = [
     {
@@ -132,40 +142,6 @@ const Invoice = ({ locations, types }) => {
           </div>
         )
       }
-    },
-    {
-      name: "DueDate",
-      label: 'Date',
-      fieldRenderType: 'date'
-    },
-    {
-      name: "Title",
-      label: 'Subject',
-    },
-    {
-      name: "Total",
-      label: 'Total'
-    },
-    {
-      name: "Balance",
-      label: 'Balance'
-    },
-    {
-      name: "DueDate",
-      label: 'Date',
-      fieldRenderType: 'date'
-    },
-    {
-      name: "Title",
-      label: 'Subject',
-    },
-    {
-      name: "Total",
-      label: 'Total'
-    },
-    {
-      name: "Balance",
-      label: 'Balance'
     },
     {
       name: "DueDate",
@@ -231,7 +207,7 @@ const Invoice = ({ locations, types }) => {
         isLoading={isLoading}
         btnTitle={t("buttons.newInvoice")}
         fn={fetchFilterInvoices}
-        redirectPath={"/invoice/new"}
+        redirectPath={"/invoices/new"}
         filterUrl='/invoice'
       />
       {/* </Container> */}

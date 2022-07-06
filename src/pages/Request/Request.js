@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Typography, Container } from "@mui/material";
-import MuiDataTable from "../../components/Common/TabTable/MuiDataTable";
-import AddNewButton from "../../components/Controls/AddNewButton";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
+import { fetchFilterRequests, fetchRequests } from "src/redux/Slices/Request";
+import { useDispatch, useSelector } from "src/redux/Store";
+import DataTable from "src/components/Common/DataTable";
+import { buildAddress } from "src/components/Controls/formatUtils";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -41,123 +42,21 @@ const toolBar = [
 
 const Request = () => {
   
+  const {t} = useTranslation()
+  const dispatch = useDispatch()
+  const { requests,  isLoading } = useSelector((state) => state.request);
 
-  const [rows, setRows] = useState([
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "34",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "9",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "10",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "11",
-    },
-    {
-      CustomerName: "e",
-      Title: " f",
-      Phone: "4534",
-      Email: "f",
-      Requested: "12",
-    },
-  ]);
+  useEffect(() => {
+    dispatch(fetchRequests());
+  }, [dispatch]);
+
+  const [rows, setRows] = useState(requests)
+  useEffect(()=>{setRows(requests)},[requests])
 
   const columns = [
     {
       name: "CustomerName",
       label: "lead",
-      options: {
-        customHeadLabelRender: (columnMeta) => {
-          return (
-            <span>
-              <Typography
-                align={
-                  "left"
-                }
-              >
-                {columnMeta.label}
-              </Typography>
-            </span>
-          );
-        },
-        customBodyRender: (value, tableMeta) => {
-          return (
-            <div key={tableMeta.rowIndex}>
-              <Typography sx={{ color: "black" }}>
-                {"#" + (tableMeta.rowIndex + 1).toString()}
-              </Typography>
-              {value}
-            </div>
-          );
-        },
-      },
     },
     {
       name: "Title",
@@ -166,54 +65,83 @@ const Request = () => {
     {
       name: "Phone",
       label: "contact",
-      options: {
-        customHeadLabelRender: (columnMeta) => {
-          return (
-            <span>
-              <Typography
-                align={
-                  "left"
-                }
-              >
-                {columnMeta.label}
-              </Typography>
-            </span>
-          );
-        },
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <div>
-              {value} <br />
-              {rows[tableMeta.rowIndex].Email}
-            </div>
-          );
-        },
-      },
     },
     {
-      name: "Requested",
+      name: "CreatedDate",
       label: "requested",
+      fieldRenderType: 'date'
+    },
+    {
+      name: "Email",
+      label: "Email",
+      isView: false
+    },
+    {
+      name: "PhoneNumber",
+      label: "PhoneNumber",
+      isView: false
+    },
+    {
+      name: "Type",
+      label: "Type",
+      isView: false
+    },
+    {
+      name: "AppointmentDate",
+      label: "Appointment Date",
+      isView: false,
+      fieldRenderType: 'date'
+    },
+    {
+      name: 'Address',
+      label: 'Customer Address',
+      isView: false,
+      render: (row, index) => {
+        return(
+          <div key={index}>
+            {buildAddress({
+              AddressLine1: row?.AddressLine1, 
+              AddressLine2: row?.AddressLine2, 
+              City: row?.City,
+              State: row?.State,
+              Country: row?.Country,
+              ZipCode: row?.ZipCode
+            })}
+          </div>
+        )
+      }
+    },
+    {
+      name: "Description",
+      label: "Description",
+      isView: false
+    },
+    {
+      name: "CreatedBy",
+      label: 'Created By',
+      isView: false
+    },
+    {
+      name: "IsActive",
+      label: t("tableHeadings.status"),
+      fieldRenderType: 'status',
+      isView: false
     },
   ];
 
   return (
-    <DashboardLayout heading="Request">
+    <DashboardLayout heading="Requests">
       {/* <Container> */}
-      <AddNewButton title="Add new request" redirectPath={"/request/new"} />
-      <MuiDataTable
-        headers={columns}
-        data={rows}
-        setData={setRows}
-        // count={rows?.length || 0}
-        // rowsPerPage={rowsPerPage}
-        // page={page}
-        // setPage={setPage}
-        // setRowsPerPage={setRowsPerPage}
-        // onPageChange={handleChangePageWithoutPagination}
-        // onRowsPerPageChange={handleChangeRowsPerPageWithoutPagination}
-        isDownload={false}
-        isPrint={false}
+      <DataTable
+        columns={columns}
+        rows={requests}
+        setRows={setRows}
         toolBar={toolBar}
+        isLoading={isLoading}
+        btnTitle={t("buttons.newRequest")}
+        fn={fetchFilterRequests}
+        redirectPath={"/requests/new"}
+        filterUrl='/request'
       />
       {/* </Container> */}
     </DashboardLayout>

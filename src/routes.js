@@ -33,14 +33,14 @@ const Router = () => (
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/clients" element={<Client />} />
     <Route path="/quotes" element={<Quote />} />
-    <Route path="/quotes/newQuotes" element={<NewQuote />} />
-    <Route path="/request" element={<Request />} />
-    <Route path="/request/new" element={<NewRequest />} />
+    <Route path="/quotes/new" element={<NewQuote />} />
+    <Route path="/requests" element={<Request />} />
+    <Route path="/requests/new" element={<NewRequest />} />
     <Route path="/schedule" element={<Schedule />} />
     <Route path="/jobs" element={<Job />} />
     <Route path="/jobs/new" element={<NewJob />} />
-    <Route path="/invoice" element={<Invoice />} />
-    <Route path="/invoice/new" element={<NewInvoice />} />
+    <Route path="/invoices" element={<Invoice />} />
+    <Route path="/invoices/new" element={<NewInvoice />} />
     <Route path="/reports" element={<Reports />} />
     <Route path="/login" element={<Login />} />
     <Route path="/track" element={<Track />} />

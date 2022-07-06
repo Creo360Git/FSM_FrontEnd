@@ -6,7 +6,7 @@ import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import { useTranslation } from "react-i18next";
 
-import { fetchClients, GetClient } from "src/redux/Slices/Client";
+import { fetchClients, GetClient, fetchFilterClients } from "src/redux/Slices/Client";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { Link } from "react-router-dom";
@@ -21,8 +21,9 @@ const filterOptions = [
 ];
 
 const sortByOptions = [
-  { label: "First Name", value: "CLIENTNAME" },
-  { label: "Last Name", value: "Last" },
+  { label: "Client Name", value: "CLIENTNAME" },
+  { label: "Phone", value: "PHONE" },
+  { label: "Email", value: "EMAIL" },
   { label: "Recent Active", value: "recent" },
 ];
 
@@ -54,7 +55,7 @@ const Clients = () => {
   const { client } = useSelector((state) => state.client);
 
   useEffect(() => {
-    dispatch(fetchClients('https://localhost:44367/api/v1/Customer?clientId=1'));
+    dispatch(fetchClients('/Customer'));
     // dispatch(GetClient(5))
   }, [dispatch]);
 
@@ -83,7 +84,7 @@ const Clients = () => {
       render: (row, index) => {
         return(
           <div key={index}>
-             {buildAddress(row.CustomerAddress)}
+             {row.CustomerAddress ? buildAddress(row.CustomerAddress) : '-'}
           </div>
         )
       }
@@ -143,7 +144,7 @@ const Clients = () => {
             isLoading={isLoading}
             btnTitle={t("buttons.addNewClient")}
             handleBtnClick={handleOpen}
-            fn={fetchClients}
+            fn={fetchFilterClients}
         />
         {/* </Container> */}
     </DashboardLayout>

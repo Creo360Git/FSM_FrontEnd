@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -22,7 +22,7 @@ const DashboardLayout = ({children, heading}) => {
     const classes = useStyles();
 
     return (
-        <main className={classes.content}>
+        <Box sx={{overflowX: 'auto'}} className={classes.content}>
             <div className={classes.toolbar} />
             <Grid container spacing={3}>
                 <Grid item md={5} sm={12} xs={12}>
@@ -32,7 +32,7 @@ const DashboardLayout = ({children, heading}) => {
                 </Grid>
             </Grid>
             {children}
-        </main>
+        </Box>
     );
 };
 

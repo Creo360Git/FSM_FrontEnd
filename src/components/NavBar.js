@@ -264,8 +264,8 @@ function Navbar({ user, children }) {
       icon: <ConstructionIcon />,
     },
     {
-      link: "/invoice",
-      name: "Invoice",
+      link: "/invoices",
+      name: "Invoices",
       displayName: t("menu.invoice"),
       onClick: closeMobileDrawer,
       icon: <ArticleIcon />,
@@ -278,8 +278,8 @@ function Navbar({ user, children }) {
       icon: <AssessmentIcon />,
     },
     {
-      link: "/request",
-      name: "Request",
+      link: "/requests",
+      name: "Requests",
       displayName: t("menu.request"),
       onClick: closeMobileDrawer,
       icon: <FileDownloadIcon />,

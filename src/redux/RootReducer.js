@@ -4,6 +4,8 @@ import clientReducer from "./Slices/Client";
 import typeReducer from "./Slices/Type"
 import jobReducer from './Slices/Job'
 import invoiceReducer from './Slices/Invoice'
+import requestReducer from './Slices/Request'
+import QuoteReducer from './Slices/Quote'
 
 
 const rootPersistConfig = {
@@ -17,7 +19,9 @@ const rootReducer = combineReducers({
     client: clientReducer,
     type: typeReducer,
     job: jobReducer,
-    invoice: invoiceReducer
+    invoice: invoiceReducer,
+    request: requestReducer,
+    quote: QuoteReducer
 });
   
 export { rootPersistConfig, rootReducer };

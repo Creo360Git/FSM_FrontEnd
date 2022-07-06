@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
 import { Toolbar, Grid, MenuItem, TextField, alpha, Card, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import useFetch from "../../../hooks/useFetch";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import Search from "@mui/icons-material/Search";
+import { fDateShort } from "src/components/Controls/formatUtils";
 
 import { useDispatch, useSelector } from "src/redux/Store";
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import LoopIcon from '@mui/icons-material/Loop';
+
+import { useSearchParams } from 'react-router-dom';
 
 const CustomToolbar = (props) => {
-	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn } = props;
+	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn, page= 1, limit= 10 } = props;
 	const {t} = useTranslation()
 	const [values, setValues] = useState({});
 	useEffect(() => {
@@ -30,6 +36,11 @@ const CustomToolbar = (props) => {
 		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`+urlgen()))
 	}
 	
+	const handleResetClick = () => {
+		setValues({})
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`))
+	}
+	//&page=${page}&limit=${limit}
 
 	const urlgen = () => {
 		const urls=[url]
@@ -39,6 +50,9 @@ const CustomToolbar = (props) => {
 		return urls.join('&')
 	} 
 
+
+	// const tryUrl = new URL(process.env.REACT_APP_API+filterUrl)
+	// console.log(tryUrl.searchParams.append('page', page))
 
 	return (
 		<Card
@@ -59,13 +73,15 @@ const CustomToolbar = (props) => {
 				return (
 					<Grid
 						item
-						lg={toolBar.length > 4 ? 3 : 11 / toolBar.length}
-						md={toolBar.length > 3 ? 4 : 11 / toolBar.length}
-						sm={toolBar.length > 2 ? 6 : 11 / toolBar.length}
+						lg={toolBar.length > 4 ? 3 : 10 / toolBar.length}
+						md={toolBar.length > 3 ? 4 : 10 / toolBar.length}
+						sm={toolBar.length > 2 ? 6 : 10 / toolBar.length}
 						xs={12}
 						// sx={{ mt: { lg: 2, md: 1, xs: 1 }, mb: { lg: 2, md: 1, xs: 1 } }}
 						key={index}
 					>
+						{
+						val.type != 'date' ?
 						<TextField
 							fullWidth
 							id="outlined-select-currency"
@@ -87,17 +103,55 @@ const CustomToolbar = (props) => {
 								</MenuItem>
 							))}
 						</TextField>
+						:
+						<LocalizationProvider dateAdapter={AdapterMoment}>
+							<DesktopDatePicker
+                                inputFormat="yyyy-MM-DD"
+                                value={values[val.field] || new Date()}
+                                name={val.field}
+                                onChange={
+                                    (e)=>{
+                                        setValues(
+                                            ({...values})=>{
+                                                values[val.field]=fDateShort(e)
+                                                return values
+                                            }
+                                        )
+                                    }
+                                }
+                                renderInput={(params) => 
+                                    <TextField 
+                                        size="small" 
+                                        fullWidth 
+                                        {...params} 
+                                    />
+                                }
+                            />
+						</LocalizationProvider>
+						}
 					</Grid>
 				);
 				})}
-				<Grid xs='auto' item>
+				<Grid xs={toolBar.length % 2 == 0 ? 6 : 3}  sm={'auto'}  item>
 					<Button
 						variant="contained"
 						size='small'
-						sx={{height: '100%'}}
+						sx={{height: '100%', width: '100%'}}
+						endIcon={<Search  />}
 						onClick={handleSearchClick}
 					>
-						<Search  />
+						Search
+					</Button>
+				</Grid>
+				<Grid xs={toolBar.length % 2 == 0 ? 6 : 3}  sm={'auto'}  item>
+					<Button
+						variant="contained"
+						size='small'
+						sx={{height: '100%', width: '100%'}}
+						endIcon={<LoopIcon  />}
+						onClick={handleResetClick}
+					>
+						Reset
 					</Button>
 				</Grid>
 			</Grid>

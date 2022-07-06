@@ -3,6 +3,16 @@ import { dispatch } from "../Store";
 
 
 export const fetchClients = createAsyncThunk('clients/fetchClients', async (url) => {
+    return fetch(process.env.REACT_APP_API+url+'?clientId=1')
+        .then((data)=>{
+            return data.json()
+        })
+        .then(res=>{
+            return res.DATA
+        })
+})
+
+export const fetchFilterClients = createAsyncThunk('jobs/fetchFilterClients', async (url) => {
     return fetch(url)
         .then((data)=>{
             return data.json()
@@ -70,6 +80,17 @@ const Slice = createSlice({
         [CreateClient.fulfilled]: (state, action) => {
             state.isLoading = false
             state.clients = state.clients.push(action.payload)
+        },
+        [fetchFilterClients.pending]: (state, action) => {
+            state.isLoading = true
+        },
+        [fetchFilterClients.fulfilled]: (state, action) => {
+            state.isLoading = false
+            state.clients = action.payload
+        },
+        [fetchFilterClients.rejected]: (state, action) => {
+            state.isLoading = false
+            state.error= action.payload
         }
     },
     reducers: {
