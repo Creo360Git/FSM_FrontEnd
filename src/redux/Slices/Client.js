@@ -33,7 +33,6 @@ export const GetClient = createAsyncThunk('client/fetchClient', async (id) => {
 })
 
 export const CreateClient = createAsyncThunk('client/createClient', async (body) => {
-    console.log(body)
     return fetch(process.env.REACT_APP_API+`/customer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,14 +47,17 @@ export const CreateClient = createAsyncThunk('client/createClient', async (body)
 })
 
 
+
 const initialState = {
     isLoading: false,
     error: null,
     clients: [],
     client: null,
-    sortBy: null,
-    filter: null,
-    parameter: null
+    filters: {
+        SortBy: '',
+        Filter: '',
+        Parameter: ''
+    }
 }
 
 const Slice = createSlice({
@@ -112,13 +114,19 @@ const Slice = createSlice({
             state.isLoading = false;
             state.clients.push(action.payload);
         },
+        filtersToolBar(state, action) {
+            state.filters.SortBy = action.payload.SortBy
+            state.filters.Filter = action.payload.Filter
+            state.filters.Parameter = action.payload.Parameter
+        }
     }
 })
 
 export default Slice.reducer
 
 export const {
-    createClientSuccess
+    createClientSuccess,
+    filtersToolBar
 } = Slice.actions
 
 

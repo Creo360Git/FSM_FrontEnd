@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
-import { fetchFilterRequests, fetchRequests } from "src/redux/Slices/Request";
+import { fetchFilterRequests, fetchRequests, filtersToolBar } from "src/redux/Slices/Request";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { buildAddress } from "src/components/Controls/formatUtils";
@@ -15,6 +15,7 @@ const filterOptions = [
 ];
 
 const sortByOptions = [
+  {label: 'Id', value: 'RequestNum'},
   { label: "First Name", value: "first" },
   { label: "Last Name", value: "Last" },
   { label: "Recent Active", value: "recent" },
@@ -31,12 +32,14 @@ const toolBar = [
     type: "select",
     placeholder: "sort",
     options: sortByOptions,
+    initValue: 'RequestNum'
   },
   {
     field: "Filter",
     type: "select",
     placeholder: "filter",
     options: filterOptions,
+    initValue: 'All'
   },
 ];
 
@@ -44,11 +47,11 @@ const Request = () => {
   
   const {t} = useTranslation()
   const dispatch = useDispatch()
-  const { requests,  isLoading } = useSelector((state) => state.request);
+  const { requests,  isLoading, filters } = useSelector((state) => state.request);
 
-  useEffect(() => {
-    dispatch(fetchRequests());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchRequests());
+  // }, [dispatch]);
 
   const [rows, setRows] = useState(requests)
   useEffect(()=>{setRows(requests)},[requests])
@@ -142,6 +145,8 @@ const Request = () => {
         fn={fetchFilterRequests}
         redirectPath={"/requests/new"}
         filterUrl='/request'
+        filtersToolBar={filtersToolBar}
+        filters={filters}
       />
       {/* </Container> */}
     </DashboardLayout>

@@ -6,7 +6,7 @@ import AddClient from "../components/Client/AddClient";
 import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import { useTranslation } from "react-i18next";
 
-import { fetchClients, GetClient, fetchFilterClients } from "src/redux/Slices/Client";
+import { fetchClients, GetClient, fetchFilterClients, filtersToolBar } from "src/redux/Slices/Client";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { Link } from "react-router-dom";
@@ -38,12 +38,14 @@ const toolBar = [
     type: "select",
     placeholder: "sort",
     options: sortByOptions,
+    initValue: 'CLIENTNAME'
   },
   {
     field: "Filter",
     type: "select",
     placeholder: "filter",
     options: filterOptions,
+    initValue: 'All'
   },
 ];
 
@@ -51,13 +53,12 @@ const Clients = () => {
   const {t} = useTranslation()
 
   const dispatch = useDispatch()
-  const { clients,  isLoading } = useSelector((state) => state.client);
+  const { clients,  isLoading, filters } = useSelector((state) => state.client);
   const { client } = useSelector((state) => state.client);
 
-  useEffect(() => {
-    dispatch(fetchClients('/Customer'));
-    // dispatch(GetClient(5))
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchClients('/Customer'));
+  // }, [dispatch]);
 
   const [rows, setRows] = useState(clients)
   useEffect(()=>{setRows(clients)},[clients])
@@ -145,6 +146,8 @@ const Clients = () => {
             btnTitle={t("buttons.addNewClient")}
             handleBtnClick={handleOpen}
             fn={fetchFilterClients}
+            filters={filters}
+            filtersToolBar={filtersToolBar}
         />
         {/* </Container> */}
     </DashboardLayout>

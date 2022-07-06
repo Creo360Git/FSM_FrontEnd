@@ -7,7 +7,7 @@ import { makeStyles } from "@mui/styles";
 import { Grid, Typography, useTheme, Container } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-import { fetchFilterInvoices, fetchInvoices } from "src/redux/Slices/Invoice";
+import { fetchFilterInvoices, fetchInvoices, filtersToolBar } from "src/redux/Slices/Invoice";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { buildAddress } from "src/components/Controls/formatUtils";
@@ -53,13 +53,14 @@ const filterOptions = [
 ];
 
 const sortByOptions = [
-  { label: "First Name", value: "INVOICENUM" },
+  { label: "Id", value: "INVOICENUM" },
   { label: "Customer Name", value: "NAME" },
   { label: "Due Date", value: "DUEDATE" },
   { label: "Status", value: "STATUS" },
 ];
 
 const dueOptions = [
+  {label: 'All', value: 'All'},
   {label: 'Last 30 Days', value: 'LAST30'},
   {label: 'Current Month', value: 'CURMONTH'},
   {label: 'Previous Month', value: 'PREMONTH'},
@@ -77,18 +78,21 @@ const toolBar = [
     type: "select",
     placeholder: "due",
     options: dueOptions,
+    initValue: 'All'
   },
   {
     field: "SortBy",
     type: "select",
     placeholder: "sort",
     options: sortByOptions,
+    initValue: 'INVOICENUM'
   },
   {
     field: "Filter",
     type: "select",
     placeholder: "filter",
     options: filterOptions,
+    initValue: 'All'
   },
   {
     field: 'Start',
@@ -118,11 +122,11 @@ const Invoice = ({ locations, types }) => {
   };
 
   const dispatch = useDispatch()
-  const { invoices,  isLoading } = useSelector((state) => state.invoice);
+  const { invoices,  isLoading, filters } = useSelector((state) => state.invoice);
 
-  useEffect(() => {
-    dispatch(fetchInvoices());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchInvoices());
+  // }, [dispatch]);
 
   const [rows, setRows] = useState(invoices)
   useEffect(()=>{setRows(invoices)},[invoices])
@@ -209,6 +213,8 @@ const Invoice = ({ locations, types }) => {
         fn={fetchFilterInvoices}
         redirectPath={"/invoices/new"}
         filterUrl='/invoice'
+        filtersToolBar={filtersToolBar}
+        filters={filters}
       />
       {/* </Container> */}
     </DashboardLayout>

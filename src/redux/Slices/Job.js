@@ -25,24 +25,25 @@ export const fetchFilterJobs = createAsyncThunk('jobs/fetchFilterJobs', async (u
 const initialState = {
     isLoading: false,
     error: null,
-    jobs: []
+    jobs: [],
+    filters: {
+        SortBy: '',
+        Type: '',
+        Parameter: '',
+        Due: ''
+    }
 }
 
 const Slice = createSlice({
     name: 'jobs',
     initialState,
     reducers: {
-        // jobsLoaded(state, action) {
-        //     const newEntities = []
-        //     action.payload.map((job) => {
-        //       newEntities.push(job)
-        //     })
-        //     state.jobs = newEntities
-        // },
-        // createClientSuccess(state, action) {
-        //     state.isLoading = false;
-        //     state.clients.push(action.payload);
-        // },
+        filtersToolBar(state, action) {
+            state.filters.SortBy = action.payload.SortBy
+            state.filters.Type = action.payload.Type
+            state.filters.Parameter = action.payload.Parameter
+            state.filters.Due = action.payload.Due
+        }
     },
     extraReducers: {
         [fetchJobs.pending]: (state, action) => {
@@ -70,9 +71,9 @@ const Slice = createSlice({
     },
 })
 
-// export const {
-//     jobsLoaded
-// } = Slice.actions
+export const {
+    filtersToolBar
+} = Slice.actions
 
 export default Slice.reducer
 

@@ -60,7 +60,9 @@ export default function DataTable(
         btnTitle,
         redirectPath='#',
         filterUrl,
-        fn
+        fn,
+        filters,
+        filtersToolBar
     }
 ) {
     const classes = useStyles()
@@ -120,7 +122,7 @@ export default function DataTable(
             </Stack>
             <ColumnViewer anchorEl={anchorEl} setAnchorEl={setAnchorEl} columns={columns} setRenderColumns={setRenderColumns} />
             {toolBar?.length > 0 && (
-                <CustomToolbar filterUrl={filterUrl} toolBar={toolBar} rows={rows} setRows={setRows} fn={fn} />
+                <CustomToolbar filters={filters} filtersToolBar={filtersToolBar} filterUrl={filterUrl} toolBar={toolBar} rows={rows} setRows={setRows} fn={fn} />
             )}
             <TableContainer component={Card} sx={{boxShadow: 2}}>
                 <Table sx={{ minWidth: isUpMd ? 650 : '' }} aria-label="simple table">

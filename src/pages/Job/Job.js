@@ -6,7 +6,7 @@ import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
 
 import DataTable from "src/components/Common/DataTable";
-import { fetchJobs, fetchFilterJobs } from "src/redux/Slices/Job";
+import { fetchJobs, fetchFilterJobs, filtersToolBar } from "src/redux/Slices/Job";
 import { useDispatch, useSelector } from "src/redux/Store";
 
 const filterOptions = [
@@ -18,12 +18,13 @@ const filterOptions = [
 ];
 
 const sortByOptions = [
-  { label: "First Name", value: "NAME" },
   { label: "Job Id", value: "JOBNUM" },
+  { label: "First Name", value: "NAME" },
   { label: "Recent Active", value: "recent" },
 ];
 
 const dueOptions = [
+  {label: 'All', value: 'All'},
   {label: 'Last 30 Days', value: 'LAST30'},
   {label: 'Current Month', value: 'CURMONTH'},
   {label: 'Previous Month', value: 'PREMONTH'},
@@ -40,29 +41,32 @@ const toolBar = [
     type: "select",
     placeholder: "due",
     options: dueOptions,
+    initValue: 'All'
   },
   {
     field: "SortBy",
     type: "select",
     placeholder: "sort",
     options: sortByOptions,
+    initValue: 'JOBNUM'
   },
   {
     field: "Type",
     type: "select",
     placeholder: "type",
     options: filterOptions,
+    initValue: 'All'
   }
 ];
 
 const Job = () => {
 
   const dispatch = useDispatch()
-  const { jobs,  isLoading } = useSelector((state) => state.job);
+  const { jobs,  isLoading, filters } = useSelector((state) => state.job);
 
-  useEffect(() => {
-    dispatch(fetchJobs());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchJobs());
+  // }, [dispatch]);
 
   const [rows, setRows] = useState(jobs)
   useEffect(()=>{setRows(jobs)},[jobs])
@@ -147,6 +151,8 @@ const Job = () => {
         redirectPath={"/jobs/new"}
         filterUrl='/job'
         fn={fetchFilterJobs}
+        filtersToolBar={filtersToolBar}
+        filters={filters}
       />
       {/* </Container> */}
     </DashboardLayout>

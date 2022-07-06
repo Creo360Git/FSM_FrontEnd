@@ -48,7 +48,8 @@
       "addNewRequest": "Add new request",
       "saveRequest": "Save request",
       "add": "Add",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "newRequest": "New Request"
     },
     "messages": {
       "noRecordsFound": "No records found !",
@@ -156,7 +157,9 @@
       "searchJobs": "Search jobs",
       "due": "Due",
       "type": "Type",
-      "searchRequest": "Search request"
+      "searchRequest": "Search requests",
+      "searchInvoices": "Search invoices",
+      "searchQuotes": "Search quotes"
     },
     "adminToolTips": {
       

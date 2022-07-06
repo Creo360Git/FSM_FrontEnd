@@ -13,12 +13,12 @@ import LoopIcon from '@mui/icons-material/Loop';
 import { useSearchParams } from 'react-router-dom';
 
 const CustomToolbar = (props) => {
-	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn, page= 1, limit= 10 } = props;
+	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn, page= 1, limit= 10, filters={}, filtersToolBar } = props;
 	const {t} = useTranslation()
-	const [values, setValues] = useState({});
+	const [values, setValues] = useState(filters);
 	useEffect(() => {
 		const obj = toolBar.reduce((accumulator, value) => {
-			return { ...accumulator, [value.field]: "" };
+			return { ...accumulator, [value.field]: !!filters[value.field] ? filters[value.field] : value.initValue || '' };
 		}, {});
 		setValues(obj);
 	}, [toolBar]);
@@ -37,7 +37,10 @@ const CustomToolbar = (props) => {
 	}
 	
 	const handleResetClick = () => {
-		setValues({})
+		const obj = toolBar.reduce((accumulator, value) => {
+			return { ...accumulator, [value.field]: value.initValue || '' };
+		}, {});
+		setValues(obj);
 		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`))
 	}
 	//&page=${page}&limit=${limit}
@@ -45,12 +48,20 @@ const CustomToolbar = (props) => {
 	const urlgen = () => {
 		const urls=[url]
 		const l = toolBar.map(({field})=>{
-			 urls.push(field+'='+values[field])
+			if(values[field] !== ''){
+				urls.push(field+'='+values[field])
+			}
 		})
 		return urls.join('&')
 	} 
 
+	useEffect(()=>{
+		dispatch(filtersToolBar(values))
+	},[dispatch, values])
 
+	useEffect(()=>{
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`+urlgen()))
+	},[dispatch])
 	// const tryUrl = new URL(process.env.REACT_APP_API+filterUrl)
 	// console.log(tryUrl.searchParams.append('page', page))
 
@@ -136,9 +147,10 @@ const CustomToolbar = (props) => {
 					<Button
 						variant="contained"
 						size='small'
-						sx={{height: '100%', width: '100%'}}
+						sx={{height: '100%', width: '100%', minHeight: 40}}
 						endIcon={<Search  />}
 						onClick={handleSearchClick}
+						disabled={Object.keys(values).length === 0}
 					>
 						Search
 					</Button>
@@ -147,9 +159,10 @@ const CustomToolbar = (props) => {
 					<Button
 						variant="contained"
 						size='small'
-						sx={{height: '100%', width: '100%'}}
+						sx={{height: '100%', width: '100%', minHeight: 40}}
 						endIcon={<LoopIcon  />}
 						onClick={handleResetClick}
+						disabled={Object.keys(values).length === 0}
 					>
 						Reset
 					</Button>

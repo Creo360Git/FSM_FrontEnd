@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
-import { fetchFilterQuotes, fetchQuotes } from "src/redux/Slices/Quote";
+import { fetchFilterQuotes, fetchQuotes, filtersToolBar } from "src/redux/Slices/Quote";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { buildAddress } from "src/components/Controls/formatUtils";
@@ -22,6 +22,7 @@ const sortByOptions = [
 ];
 
 const dueOptions = [
+  {label: 'All', value: 'All'},
   {label: 'Last 30 Days', value: 'LAST30'},
   {label: 'Current Month', value: 'CURMONTH'},
   {label: 'Previous Month', value: 'PREMONTH'},
@@ -39,18 +40,21 @@ const toolBar = [
     type: "select",
     placeholder: "due",
     options: dueOptions,
+    initValue: 'All'
   },
   {
     field: "SortBy",
     type: "select",
     placeholder: "sort",
     options: sortByOptions,
+    initValue: 'QUOTENUM'
   },
   {
     field: "Filter",
     type: "select",
     placeholder: "filter",
     options: filterOptions,
+    initValue: 'All'
   },
   {
     field: 'Start',
@@ -67,11 +71,11 @@ const Request = () => {
   
   const {t} = useTranslation()
   const dispatch = useDispatch()
-  const { quotes,  isLoading } = useSelector((state) => state.quote);
+  const { quotes,  isLoading, filters } = useSelector((state) => state.quote);
 
-  useEffect(() => {
-    dispatch(fetchQuotes());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchQuotes());
+  // }, [dispatch]);
 
   const [rows, setRows] = useState(quotes)
   useEffect(()=>{setRows(quotes)},[quotes])
@@ -154,6 +158,8 @@ const Request = () => {
         fn={fetchFilterQuotes}
         redirectPath={"/quotes/new"}
         filterUrl='/quote'
+        filtersToolBar={filtersToolBar}
+        filters={filters}
       />
       {/* </Container> */}
     </DashboardLayout>
