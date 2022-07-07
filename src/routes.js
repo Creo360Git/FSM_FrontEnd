@@ -63,6 +63,7 @@ const Router = () => {
 			path: '/',
 			element: <DashboardLayout />,
 			children: [
+				{path: '', element: <Navigate to='dashboard' replace />},
 				{path: 'dashboard', element: <Dashboard />},
 				{path: 'clients', element: <Client />},
 				{path: 'quotes', element: <Quote />},
