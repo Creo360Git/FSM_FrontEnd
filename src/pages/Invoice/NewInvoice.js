@@ -1,6 +1,7 @@
 import React, {
   useState,
-  // useEffect, useContext
+  useEffect, 
+  // useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
 import { Grid, Typography, useTheme, IconButton, Box } from "@mui/material";
@@ -8,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Link } from "react-router-dom";
 import InvoiceForm from "../../components/Invoice/InvoiceForm";
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -49,9 +52,13 @@ const NewInvoice = () => {
 
   const { t } = useTranslation();
 
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(changePageHeading('New invoice'))
+  }, [dispatch])
+
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
+    <React.Fragment>
       <Grid container spacing={3}>
         <Grid item container lg={6} xs={12}>
           <Grid container alignItems="center">
@@ -95,7 +102,7 @@ const NewInvoice = () => {
       </Grid>
 
       <InvoiceForm />
-    </main>
+    </React.Fragment>
   );
 };
 

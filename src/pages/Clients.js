@@ -7,6 +7,7 @@ import MuiDataTable from "../components/Common/TabTable/MuiDataTable";
 import { useTranslation } from "react-i18next";
 
 import { fetchClients, GetClient, fetchFilterClients, filtersToolBar } from "src/redux/Slices/Client";
+import { changePageHeading } from "src/redux/Slices/Common";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { Link } from "react-router-dom";
@@ -56,6 +57,9 @@ const Clients = () => {
   const { clients,  isLoading, filters } = useSelector((state) => state.client);
   const { client } = useSelector((state) => state.client);
 
+  useEffect(()=>{
+    dispatch(changePageHeading('Clients'))
+  },[dispatch])
   // useEffect(() => {
   //   dispatch(fetchClients('/Customer'));
   // }, [dispatch]);
@@ -134,9 +138,9 @@ const Clients = () => {
   };
 
   return (
-    <DashboardLayout heading="Clients">
+    <React.Fragment >
         {open && <AddClient open={open} setOpen={setOpen} />}
-        {/* <Container> */}
+        {/* <Container> heading="Clients"*/}
         <DataTable
             columns={columns}
             rows={clients}
@@ -150,7 +154,7 @@ const Clients = () => {
             filtersToolBar={filtersToolBar}
         />
         {/* </Container> */}
-    </DashboardLayout>
+    </React.Fragment>
   );
 };
 

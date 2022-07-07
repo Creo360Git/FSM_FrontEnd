@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { fetchFilterInvoices, fetchInvoices, filtersToolBar } from "src/redux/Slices/Invoice";
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
+import { changePageHeading } from "src/redux/Slices/Common";
 import { buildAddress } from "src/components/Controls/formatUtils";
 import DashboardLayout from "src/components/Common/Layouts/DashboardLayout";
 import {Link}  from 'react-router-dom'
@@ -124,6 +125,9 @@ const Invoice = ({ locations, types }) => {
   const dispatch = useDispatch()
   const { invoices,  isLoading, filters } = useSelector((state) => state.invoice);
 
+  useEffect(()=>{
+    dispatch(changePageHeading('Invoices'))
+  },[dispatch])
   // useEffect(() => {
   //   dispatch(fetchInvoices());
   // }, [dispatch]);
@@ -201,23 +205,19 @@ const Invoice = ({ locations, types }) => {
 
 
   return (
-    <DashboardLayout heading="Invoices">
-      {/* <Container> */}
-      <DataTable
-        columns={columns}
-        rows={invoices}
-        setRows={setRows}
-        toolBar={toolBar}
-        isLoading={isLoading}
-        btnTitle={t("buttons.newInvoice")}
-        fn={fetchFilterInvoices}
-        redirectPath={"/invoices/new"}
-        filterUrl='/invoice'
-        filtersToolBar={filtersToolBar}
-        filters={filters}
-      />
-      {/* </Container> */}
-    </DashboardLayout>
+    <DataTable
+      columns={columns}
+      rows={invoices}
+      setRows={setRows}
+      toolBar={toolBar}
+      isLoading={isLoading}
+      btnTitle={t("buttons.newInvoice")}
+      fn={fetchFilterInvoices}
+      redirectPath={"/invoices/new"}
+      filterUrl='/invoice'
+      filtersToolBar={filtersToolBar}
+      filters={filters}
+    />
   );
 };
 

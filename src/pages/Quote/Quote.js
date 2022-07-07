@@ -5,6 +5,7 @@ import { fetchFilterQuotes, fetchQuotes, filtersToolBar } from "src/redux/Slices
 import { useDispatch, useSelector } from "src/redux/Store";
 import DataTable from "src/components/Common/DataTable";
 import { buildAddress } from "src/components/Controls/formatUtils";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -73,6 +74,9 @@ const Request = () => {
   const dispatch = useDispatch()
   const { quotes,  isLoading, filters } = useSelector((state) => state.quote);
 
+  useEffect(()=>{
+    dispatch(changePageHeading('Quotes'))
+  },[dispatch])
   // useEffect(() => {
   //   dispatch(fetchQuotes());
   // }, [dispatch]);
@@ -146,23 +150,19 @@ const Request = () => {
   ];
 
   return (
-    <DashboardLayout heading="Quotes">
-      {/* <Container> */}
-      <DataTable
-        columns={columns}
-        rows={quotes}
-        setRows={setRows}
-        toolBar={toolBar}
-        isLoading={isLoading}
-        btnTitle={t("buttons.newQuote")}
-        fn={fetchFilterQuotes}
-        redirectPath={"/quotes/new"}
-        filterUrl='/quote'
-        filtersToolBar={filtersToolBar}
-        filters={filters}
-      />
-      {/* </Container> */}
-    </DashboardLayout>
+    <DataTable
+      columns={columns}
+      rows={quotes}
+      setRows={setRows}
+      toolBar={toolBar}
+      isLoading={isLoading}
+      btnTitle={t("buttons.newQuote")}
+      fn={fetchFilterQuotes}
+      redirectPath={"/quotes/new"}
+      filterUrl='/quote'
+      filtersToolBar={filtersToolBar}
+      filters={filters}
+    />
   );
 };
 

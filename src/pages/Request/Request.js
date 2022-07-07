@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/Common/Layouts/DashboardLayout";
 import { useTranslation } from "react-i18next";
 import { fetchFilterRequests, fetchRequests, filtersToolBar } from "src/redux/Slices/Request";
 import { useDispatch, useSelector } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 import DataTable from "src/components/Common/DataTable";
 import { buildAddress } from "src/components/Controls/formatUtils";
 
@@ -49,6 +50,9 @@ const Request = () => {
   const dispatch = useDispatch()
   const { requests,  isLoading, filters } = useSelector((state) => state.request);
 
+  useEffect(()=>{
+    dispatch(changePageHeading('Requests'))
+  },[dispatch])
   // useEffect(() => {
   //   dispatch(fetchRequests());
   // }, [dispatch]);
@@ -133,23 +137,19 @@ const Request = () => {
   ];
 
   return (
-    <DashboardLayout heading="Requests">
-      {/* <Container> */}
-      <DataTable
-        columns={columns}
-        rows={requests}
-        setRows={setRows}
-        toolBar={toolBar}
-        isLoading={isLoading}
-        btnTitle={t("buttons.newRequest")}
-        fn={fetchFilterRequests}
-        redirectPath={"/requests/new"}
-        filterUrl='/request'
-        filtersToolBar={filtersToolBar}
-        filters={filters}
-      />
-      {/* </Container> */}
-    </DashboardLayout>
+    <DataTable
+      columns={columns}
+      rows={requests}
+      setRows={setRows}
+      toolBar={toolBar}
+      isLoading={isLoading}
+      btnTitle={t("buttons.newRequest")}
+      fn={fetchFilterRequests}
+      redirectPath={"/requests/new"}
+      filterUrl='/request'
+      filtersToolBar={filtersToolBar}
+      filters={filters}
+    />
   );
 };
 

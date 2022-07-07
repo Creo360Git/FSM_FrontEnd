@@ -1,6 +1,6 @@
 import React, {
   useState,
-  //   useEffect,
+  useEffect,
   // useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
@@ -11,6 +11,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -52,6 +54,11 @@ const Reports = ({ locations, types }) => {
 
   const [reports, setReports] = useState(null);
 
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(changePageHeading('Reports'))
+  },[dispatch])
+
   const list = [
     { label: "Upon Receipt", value: "uponReceipt" },
     { label: "Net 15", value: "net15" },
@@ -66,15 +73,15 @@ const Reports = ({ locations, types }) => {
     { label: "EXPENSE REPORT", value: "expensereport" },
   ];
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <Grid container spacing={3}>
-        <Grid item md={5} xs={7}>
-          <Typography variant="h2" align="left" gutterBottom>
-            {t("headings.reports").toUpperCase()}
-          </Typography>
-        </Grid>
-      </Grid>
+    // <main className={classes.content}>
+    //   <div className={classes.toolbar} />
+    //   <Grid container spacing={3}>
+    //     <Grid item md={5} xs={7}>
+    //       <Typography variant="h2" align="left" gutterBottom>
+    //         {t("headings.reports").toUpperCase()}
+    //       </Typography>
+    //     </Grid>
+    //   </Grid>
 
       <Grid
         container
@@ -98,7 +105,7 @@ const Reports = ({ locations, types }) => {
                     </td></tr>
                   {list?.map((item, index) => {
                     return (
-                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: '100%', backgroundColor: '#FFFFFF' }}>
+                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: '100%', backgroundColor: '#FFFFFF' }} key={index}>
                         <MenuItem style={{ fontSize: 16, fontWeight: 'bold', marginTop: '10px' }} value={item?.value} key={index}>
                           {item?.label || ""}
                         </MenuItem></div>
@@ -111,7 +118,7 @@ const Reports = ({ locations, types }) => {
           {/* </div> */}
         {/* </Grid> */}
       </Grid>
-    </main>
+    // </main>
   );
 };
 

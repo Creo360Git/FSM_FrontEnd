@@ -6,6 +6,7 @@ import jobReducer from './Slices/Job'
 import invoiceReducer from './Slices/Invoice'
 import requestReducer from './Slices/Request'
 import QuoteReducer from './Slices/Quote'
+import commonReducer from './Slices/Common'
 
 
 const rootPersistConfig = {
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     job: jobReducer,
     invoice: invoiceReducer,
     request: requestReducer,
-    quote: QuoteReducer
+    quote: QuoteReducer,
+    common: commonReducer
 });
   
 export { rootPersistConfig, rootReducer };

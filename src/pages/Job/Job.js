@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import DataTable from "src/components/Common/DataTable";
 import { fetchJobs, fetchFilterJobs, filtersToolBar } from "src/redux/Slices/Job";
 import { useDispatch, useSelector } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const filterOptions = [
   { label: "All", value: "All" },
@@ -64,6 +65,9 @@ const Job = () => {
   const dispatch = useDispatch()
   const { jobs,  isLoading, filters } = useSelector((state) => state.job);
 
+  useEffect(()=>{
+    dispatch(changePageHeading('Jobs'))
+  },[dispatch])
   // useEffect(() => {
   //   dispatch(fetchJobs());
   // }, [dispatch]);
@@ -139,23 +143,19 @@ const Job = () => {
   ];
 
   return (
-    <DashboardLayout heading="Jobs">
-      {/* <Container> */}
-      <DataTable
-        columns={columns}
-        rows={jobs}
-        setRows={setRows}
-        toolBar={toolBar}
-        isLoading={isLoading}
-        btnTitle={'Add new job'}
-        redirectPath={"/jobs/new"}
-        filterUrl='/job'
-        fn={fetchFilterJobs}
-        filtersToolBar={filtersToolBar}
-        filters={filters}
-      />
-      {/* </Container> */}
-    </DashboardLayout>
+    <DataTable
+      columns={columns}
+      rows={jobs}
+      setRows={setRows}
+      toolBar={toolBar}
+      isLoading={isLoading}
+      btnTitle={'Add new job'}
+      redirectPath={"/jobs/new"}
+      filterUrl='/job'
+      fn={fetchFilterJobs}
+      filtersToolBar={filtersToolBar}
+      filters={filters}
+    />
   );
 };
 

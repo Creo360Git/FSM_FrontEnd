@@ -7,7 +7,7 @@ import GlobalStyles from "./GlobalStyles";
 import { BrowserRouter } from "react-router-dom";
 import CacheBuster from "react-cache-buster";
 import * as packageInfo from "../package.json";
-import Router from "./routes";
+import {AuthRouter, Router} from "./routes";
 import NavBar from "./components/NavBar";
 
 
@@ -31,6 +31,12 @@ const App = () => {
   const isProduction = process.env.NODE_ENV === "production";
 
   let pkgInfo = packageInfo;
+
+  const isAuthenticated = true
+  const ChooseRouter = () => {
+    return isAuthenticated ? <Router/> : <AuthRouter />
+  }
+
   return (
     <CacheBuster
       currentVersion={pkgInfo.version}
@@ -43,6 +49,7 @@ const App = () => {
         <CssBaseline />
         <GlobalStyles />
         <BrowserRouter>
+        <div className={classes.root}>
           <Suspense
             fallback={
               <Backdrop open={true}>
@@ -50,13 +57,28 @@ const App = () => {
               </Backdrop>
             }
           >
-            <div className={classes.root}>
+            {/* <div className={classes.root}> */}
               {/* {auth.isAuthenticated() && <NavBar user={user} />} */}
-              <NavBar user={{ displayName: "Steve" }} />
-              <Router />
+              {isAuthenticated&&<NavBar user={{ displayName: "Steve" }} />}
+
               {/* <Toast /> */}
-            </div>
+            {/* </div> */}
           </Suspense>
+          <Suspense
+            fallback={
+              <Backdrop open={true}>
+                <CircularProgress color="primary" size={60} />
+              </Backdrop>
+            }
+          >
+            {/* <div className={classes.root}> */}
+              {/* {auth.isAuthenticated() && <NavBar user={user} />} */}
+              
+              {ChooseRouter()}
+              {/* <Toast /> */}
+            {/* </div> */}
+          </Suspense>
+          </div>
         </BrowserRouter>
       </ThemeProvider>
       </PersistGate>

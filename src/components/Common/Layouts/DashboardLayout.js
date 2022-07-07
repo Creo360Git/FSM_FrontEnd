@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@mui/styles";
 import { Box, Grid, Typography } from "@mui/material";
+import { Outlet } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.dark,
         padding: theme.spacing(3),
+        minHeight: '100vh'
     },
     toolbar: theme.mixins.toolbar,
     margin: {
@@ -18,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DashboardLayout = ({children, heading}) => {
+const DashboardLayout = ({children}) => {
     const classes = useStyles();
-
+    const {heading} = useSelector((state)=>state.common)
+    
     return (
         <Box sx={{overflowX: 'auto'}} className={classes.content}>
             <div className={classes.toolbar} />
@@ -31,7 +36,9 @@ const DashboardLayout = ({children, heading}) => {
                     </Typography>
                 </Grid>
             </Grid>
-            {children}
+            <Outlet>
+                {children}
+            </Outlet>
         </Box>
     );
 };

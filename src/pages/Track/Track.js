@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState,useEffect} from 'react';
 import { useParams } from "react-router-dom";
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -22,6 +22,9 @@ import { fontWeight } from '@mui/system';
 import TrackTab from '../../components/Track/TrackTab';
 import { useTheme } from '@emotion/react';
 
+import { useDispatch } from 'src/redux/Store';
+import { changePageHeading } from 'src/redux/Slices/Common';
+
 
 const tabs = [
     {label:'Time Sheet', id:0, description:'Time Sheet',component:<TimeSheet/> },
@@ -33,6 +36,11 @@ const Track = () => {
 
     const theme = useTheme();
     const breakpoint = useMediaQuery(theme.breakpoints.up('sm'));
+
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(changePageHeading('Track'))
+    },[dispatch])
     
     return ( 
         <TrackTab

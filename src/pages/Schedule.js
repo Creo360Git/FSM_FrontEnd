@@ -33,6 +33,7 @@ import { dispatch } from 'src/redux/Store';
 import { useSelector } from 'src/redux/Store';
 import { fetchJobs } from 'src/redux/Slices/Job';
 // import { jobsLoaded } from 'src/redux/Slices/Job';
+import { changePageHeading } from 'src/redux/Slices/Common';
 
 const colorOptions = {
     calendarEvent: '#00AB55', // theme.palette.primary.main,
@@ -80,7 +81,9 @@ const Schedule = () => {
     const [color, setColor] = useState(colorOptions.calendarEvent)
     const [open, setOpen] = useState(false)
 
+
     useEffect(()=>{
+        dispatch(changePageHeading('Schedule'))
         dispatch(fetchJobs())
     },[dispatch])
     const {jobs} = useSelector((state)=>state.job)
@@ -184,7 +187,8 @@ const Schedule = () => {
 
     
     return(
-        <DashboardLayout heading="schedule">
+        <React.Fragment >
+            {/* //heading="schedule" */}
             <Dialog open={unscheduleOpen} onClose={()=>setUnscheduleOpen(false)} maxWidth='xs' sx={{width:'100%'}} scroll='body'>
                 <UnscheduledItems maxWidth='100%' initialOpen={true} />
             </Dialog>
@@ -270,7 +274,7 @@ const Schedule = () => {
                 </Grid>
             </Card>
             {open && <CalendarEventForm open={open} setOpen={setOpen} onCancel={handleClose} range={range} events={events} setEvents={setEvents} color={color} event={value} />}
-        </DashboardLayout>
+        </React.Fragment>
     )
 }
 export default Schedule
