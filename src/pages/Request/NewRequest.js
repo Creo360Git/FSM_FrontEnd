@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { 
     Typography, 
     Container, 
@@ -27,7 +27,8 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { fDateShort } from "../../components/Controls/formatUtils";
 import FileUploadArea from "../../components/Common/FileUpload";
-
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 
 
@@ -73,8 +74,14 @@ const NewRequest = () => {
     const endTime=watch('endTime')
     const scheduleLater=watch('scheduleLater')
     const appointmentDate = watch('appointmentDate')
+
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(changePageHeading('New request'))
+    }, [dispatch])
+
     return (
-        <DashboardLayout heading="new Request">
+        <React.Fragment>
             <SelectClientDialog show={show} setShow={setShow} theme={theme} setClient={setClient} />
             <Container>
                 <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -398,7 +405,7 @@ const NewRequest = () => {
                     </Card>
                 </LocalizationProvider>
             </Container>
-        </DashboardLayout>
+        </React.Fragment>
     );
 };
 

@@ -1,6 +1,6 @@
 import React, {
   useState,
-  //   useEffect,
+  useEffect,
   // useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
@@ -8,13 +8,11 @@ import {
   Grid,
   Typography,
   useTheme,
-  Stack,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -56,6 +54,11 @@ const Reports = ({ locations, types }) => {
 
   const [reports, setReports] = useState(null);
 
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(changePageHeading('Reports'))
+  },[dispatch])
+
   const list = [
     { label: "Upon Receipt", value: "uponReceipt" },
     { label: "Net 15", value: "net15" },
@@ -63,17 +66,22 @@ const Reports = ({ locations, types }) => {
     { label: "Net 45", value: "net45" },
     { label: "Customize", value: "customize" },
   ];
-
+  const title = [
+    { label: "FINANCIAL REPORT", value: "financereport" },
+    { label: "WORK REPORT", value: "workreport" },
+    { label: "CLIENT REPORT", value: "clientreport" },
+    { label: "EXPENSE REPORT", value: "expensereport" },
+  ];
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <Grid container spacing={3}>
-        <Grid item md={5} xs={7}>
-          <Typography variant="h2" align="left" gutterBottom>
-            {t("headings.reports")}
-          </Typography>
-        </Grid>
-      </Grid>
+    // <main className={classes.content}>
+    //   <div className={classes.toolbar} />
+    //   <Grid container spacing={3}>
+    //     <Grid item md={5} xs={7}>
+    //       <Typography variant="h2" align="left" gutterBottom>
+    //         {t("headings.reports").toUpperCase()}
+    //       </Typography>
+    //     </Grid>
+    //   </Grid>
 
       <Grid
         container
@@ -82,96 +90,35 @@ const Reports = ({ locations, types }) => {
           marginTop: theme.spacing(3),
         }}
       >
-        <Grid item xs={12}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"space-between"}
-            spacing={2}
-          >
-            <FormControl fullWidth>
-              <InputLabel id="selectOne">Financial Report</InputLabel>
-              <Select
-                labelId="selectOne"
-                name="financialReport"
-                label="Financial Report"
-                // value={values?.financialReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
+        {/* <Grid item xs={12}> */}
+          {/* <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridGap: 20 }}> */}
+            {title?.map((item, index) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={index}>
+                <div style={{
+                  border: '1px solid #C9C9C9', backgroundColor: '#E0E0E0', width: '100%', display: 'table'
+                }}>
+                  <tr height='50px'>
+                    <td style={{ fontSize: 18, fontWeight: 'bold', verticalAlign: 'middle', paddingLeft: '15px' }}
+                      value={item?.value} key={index} >
                       {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectTwo">Work Report</InputLabel>
-              <Select
-                labelId="selectTwo"
-                name="workReport"
-                label="Work Report"
-                // value={values?.workReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectThree">Client Report</InputLabel>
-              <Select
-                labelId="selectThree"
-                name="clientReport"
-                label="Client Report"
-                // value={values?.clientReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth>
-              <InputLabel id="selectFour">Expense Report</InputLabel>
-              <Select
-                labelId="selectFour"
-                name="expenseReport"
-                label="Expense Report"
-                // value={values?.expenseReport || ""}
-                // onChange={onChangeValueData}
-                color="primary"
-              >
-                {list?.map((item, index) => {
-                  return (
-                    <MenuItem value={item?.value} key={index}>
-                      {item?.label || ""}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </Stack>
-        </Grid>
+                    </td></tr>
+                  {list?.map((item, index) => {
+                    return (
+                      <div style={{ borderTop: '1px solid #C9C9C9', height: '50px', width: '100%', backgroundColor: '#FFFFFF' }} key={index}>
+                        <MenuItem style={{ fontSize: 16, fontWeight: 'bold', marginTop: '10px' }} value={item?.value} key={index}>
+                          {item?.label || ""}
+                        </MenuItem></div>
+                    );
+                  })}
+                </div>
+                </Grid>
+              );
+            })}
+          {/* </div> */}
+        {/* </Grid> */}
       </Grid>
-    </main>
+    // </main>
   );
 };
 

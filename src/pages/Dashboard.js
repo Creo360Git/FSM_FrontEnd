@@ -154,15 +154,15 @@ const Dashboard = ({ locations, types }) => {
   ];
 
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <Grid container spacing={3}>
-        <Grid item md={5} xs={10}>
-          <Typography variant="h2" align="left" gutterBottom>
-            {t("headings.dashboard")}
-          </Typography>
-        </Grid>
-
+    // <main className={classes.content}>
+    //   <div className={classes.toolbar} />
+    //   <Grid container spacing={3}>
+    //     <Grid item md={5} xs={10}>
+    //       <Typography variant="h2" align="left" gutterBottom>
+    //         {t("headings.dashboard")}
+    //       </Typography>
+    //     </Grid>
+    <React.Fragment>
         <Grid item md={7} xs={2}>
           <Box display="flex" justifyContent="flex-end" alignItems="center">
             <Grid
@@ -183,7 +183,7 @@ const Dashboard = ({ locations, types }) => {
             </Grid>
           </Box>
         </Grid>
-      </Grid>
+      {/* </Grid> */}
 
       <Statistics />
 
@@ -196,7 +196,8 @@ const Dashboard = ({ locations, types }) => {
       </Grid>
 
       <InfoCards />
-    </main>
+      </React.Fragment>
+    // </main>
   );
 };
 

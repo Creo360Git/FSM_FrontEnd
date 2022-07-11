@@ -131,7 +131,6 @@ const TrackTab = ({tabs=[],initialTabId,heading,title}) => {
     }
 
     return ( 
-    <DashboardLayout heading={heading}>
         <Box sx={{display:{sm:'flex',xs:'block'}}}>
             <Box sx={{ flexGrow: 1 }}>
                 <Box sx={{display:{xs:'none',sm:'block'}}}>
@@ -205,7 +204,6 @@ const TrackTab = ({tabs=[],initialTabId,heading,title}) => {
                 }
             </Box>
         </Box>
-    </DashboardLayout>
      );
 }
  

@@ -1,6 +1,6 @@
 import React, {
   useState,
-  //   useEffect,
+  useEffect,
   // useContext
 } from "react";
 import { makeStyles } from "@mui/styles";
@@ -9,6 +9,9 @@ import { useTranslation } from "react-i18next";
 import ScheduleItems from "../components/Map/ScheduleItems";
 import GoogleMapReact from "google-map-react";
 import MyMarker from "../components/Map/MyMarker";
+
+import { useDispatch } from "react-redux";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -40,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Map = ({ locations, types }) => {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(changePageHeading('Map'))
+  },[dispatch])
   const classes = useStyles();
 
   const theme = useTheme();
@@ -62,15 +69,15 @@ const Map = ({ locations, types }) => {
   ];
 
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <Grid container spacing={3}>
-        <Grid item md={5} xs={7}>
-          <Typography variant="h2" align="left" gutterBottom>
-            {t("headings.map")}
-          </Typography>
-        </Grid>
-      </Grid>
+    // <main className={classes.content}>
+    //   <div className={classes.toolbar} />
+    //   <Grid container spacing={3}>
+    //     <Grid item md={5} xs={7}>
+    //       <Typography variant="h2" align="left" gutterBottom>
+    //         {t("headings.map")}
+    //       </Typography>
+    //     </Grid>
+    //   </Grid>
 
       <Grid
         container
@@ -113,7 +120,7 @@ const Map = ({ locations, types }) => {
           </div>
         </Grid>
       </Grid>
-    </main>
+    // </main>
   );
 };
 

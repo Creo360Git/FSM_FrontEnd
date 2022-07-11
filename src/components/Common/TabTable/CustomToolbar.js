@@ -1,14 +1,24 @@
 import { useState, useEffect } from "react";
-import { Toolbar, Grid, MenuItem, TextField, alpha } from "@mui/material";
+import { Toolbar, Grid, MenuItem, TextField, alpha, Card, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker, LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
+import Search from "@mui/icons-material/Search";
+import { fDateShort } from "src/components/Controls/formatUtils";
+
+import { useDispatch, useSelector } from "src/redux/Store";
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+import LoopIcon from '@mui/icons-material/Loop';
+
+import { useSearchParams } from 'react-router-dom';
 
 const CustomToolbar = (props) => {
-	const { toolBar } = props;
+	const { toolBar, rows, setRows, url, filterUrl = '/Customer', fn, page= 1, limit= 10, filters={}, filtersToolBar } = props;
 	const {t} = useTranslation()
-	const [values, setValues] = useState({});
+	const [values, setValues] = useState(filters);
 	useEffect(() => {
 		const obj = toolBar.reduce((accumulator, value) => {
-			return { ...accumulator, [value.field]: "" };
+			return { ...accumulator, [value.field]: !!filters[value.field] ? filters[value.field] : value.initValue || '' };
 		}, {});
 		setValues(obj);
 	}, [toolBar]);
@@ -20,29 +30,69 @@ const CustomToolbar = (props) => {
 		});
 	};
 
+	const dispatch = useDispatch()
+
+	const handleSearchClick = () => {
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`+urlgen()))
+	}
+	
+	const handleResetClick = () => {
+		const obj = toolBar.reduce((accumulator, value) => {
+			return { ...accumulator, [value.field]: value.initValue || '' };
+		}, {});
+		setValues(obj);
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`))
+	}
+	//&page=${page}&limit=${limit}
+
+	const urlgen = () => {
+		const urls=[url]
+		const l = toolBar.map(({field})=>{
+			if(values[field] !== ''){
+				urls.push(field+'='+values[field])
+			}
+		})
+		return urls.join('&')
+	} 
+
+	useEffect(()=>{
+		dispatch(filtersToolBar(values))
+	},[dispatch, values])
+
+	useEffect(()=>{
+		dispatch(fn(process.env.REACT_APP_API+`${filterUrl}?clientId=1`+urlgen()))
+	},[dispatch])
+	// const tryUrl = new URL(process.env.REACT_APP_API+filterUrl)
+	// console.log(tryUrl.searchParams.append('page', page))
+
 	return (
-		<Toolbar
+		<Card
 			sx={{
 				mb: 2,
-				pl: { sm: 2 },
-				pr: { xs: 1, sm: 1 },
-				bgcolor: (theme) =>
-				alpha(
-					theme.palette.primary.main,
-					theme.palette.action.activatedOpacity
-				),
+				// pl: { sm: 2 },
+				// pr: { xs: 1, sm: 1 },
+				p: 2
+				// bgcolor: (theme) =>
+				// alpha(
+				// 	theme.palette.primary.main,
+				// 	theme.palette.action.activatedOpacity
+				// ),
 			}}
 		>
-			<Grid container spacing={2}>
+			<Grid container spacing={2} >
 				{toolBar.map((val, index) => {
 				return (
 					<Grid
 						item
-						lg={12 / toolBar.length}
-						xs={toolBar.length > 3 ? 4 : 12 / toolBar.length}
-						sx={{ mt: { lg: 2, md: 1, xs: 1 }, mb: { lg: 2, md: 1, xs: 1 } }}
+						lg={toolBar.length > 4 ? 3 : 10 / toolBar.length}
+						md={toolBar.length > 3 ? 4 : 10 / toolBar.length}
+						sm={toolBar.length > 2 ? 6 : 10 / toolBar.length}
+						xs={12}
+						// sx={{ mt: { lg: 2, md: 1, xs: 1 }, mb: { lg: 2, md: 1, xs: 1 } }}
 						key={index}
 					>
+						{
+						val.type != 'date' ?
 						<TextField
 							fullWidth
 							id="outlined-select-currency"
@@ -53,6 +103,9 @@ const CustomToolbar = (props) => {
 							onChange={(e) => {
 								handleChange(e);
 							}}
+							size='small'
+							// variant='standard'
+							
 						>
 							{val.type === "select" &&
 							val.options.map((option) => (
@@ -61,11 +114,61 @@ const CustomToolbar = (props) => {
 								</MenuItem>
 							))}
 						</TextField>
+						:
+						<LocalizationProvider dateAdapter={AdapterMoment}>
+							<DesktopDatePicker
+                                inputFormat="yyyy-MM-DD"
+                                value={values[val.field] || new Date()}
+                                name={val.field}
+                                onChange={
+                                    (e)=>{
+                                        setValues(
+                                            ({...values})=>{
+                                                values[val.field]=fDateShort(e)
+                                                return values
+                                            }
+                                        )
+                                    }
+                                }
+                                renderInput={(params) => 
+                                    <TextField 
+                                        size="small" 
+                                        fullWidth 
+                                        {...params} 
+                                    />
+                                }
+                            />
+						</LocalizationProvider>
+						}
 					</Grid>
 				);
 				})}
+				<Grid xs={toolBar.length % 2 == 0 ? 6 : 3}  sm={'auto'}  item>
+					<Button
+						variant="contained"
+						size='small'
+						sx={{height: '100%', width: '100%', minHeight: 40}}
+						endIcon={<Search  />}
+						onClick={handleSearchClick}
+						disabled={Object.keys(values).length === 0}
+					>
+						Search
+					</Button>
+				</Grid>
+				<Grid xs={toolBar.length % 2 == 0 ? 6 : 3}  sm={'auto'}  item>
+					<Button
+						variant="contained"
+						size='small'
+						sx={{height: '100%', width: '100%', minHeight: 40}}
+						endIcon={<LoopIcon  />}
+						onClick={handleResetClick}
+						disabled={Object.keys(values).length === 0}
+					>
+						Reset
+					</Button>
+				</Grid>
 			</Grid>
-		</Toolbar>
+		</Card>
   	);
 };
 export default CustomToolbar;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { 
     Typography, 
     Container, 
@@ -37,6 +37,8 @@ import LineItems from "../../components/Job/LineItems";
 import Add from "@mui/icons-material/Add";
 import MoreOptionsMenu from "../../components/Controls/MoreOptionsMenu";
 import FileUploadArea from "../../components/Common/FileUpload";
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 
 const NewJob = () => {
@@ -168,8 +170,13 @@ const NewJob = () => {
         },
     ];
 
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(changePageHeading('New job'))
+    }, [dispatch])
+
     return (
-        <DashboardLayout heading="new job">
+        <React.Fragment >
             <SelectClientDialog show={show} setShow={setShow} theme={theme} setClient={setClient} />
             <Container>
                 <Card>
@@ -492,7 +499,7 @@ const NewJob = () => {
                     </form>
                 </Card>
             </Container>
-        </DashboardLayout>
+        </React.Fragment>
     );
 };
 

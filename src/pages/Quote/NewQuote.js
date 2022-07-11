@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useState,
   // useEffect, useContext
 } from "react";
@@ -8,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Link } from "react-router-dom";
 import QuoteForm from "../../components/Quote/QuoteForm";
+import { useDispatch } from "src/redux/Store";
+import { changePageHeading } from "src/redux/Slices/Common";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -49,9 +52,13 @@ const NewQuote = () => {
 
   const { t } = useTranslation();
 
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(changePageHeading('New quote'))
+  }, [dispatch])
+
   return (
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
+    <React.Fragment>
       <Grid container spacing={3}>
         <Grid item container lg={6} xs={12}>
           <Grid container alignItems="center">
@@ -95,7 +102,7 @@ const NewQuote = () => {
       </Grid>
 
       <QuoteForm />
-    </main>
+    </React.Fragment>
   );
 };
 
