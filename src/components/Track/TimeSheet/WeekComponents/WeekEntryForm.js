@@ -1,10 +1,11 @@
 import { Box, Typography,TextField,Divider } from "@mui/material";
 import makeStyles from "@mui/styles/makeStyles";
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useFieldArray } from "react-hook-form";
 
 const useStyles = makeStyles((theme)=>({
     content:{
@@ -45,29 +46,79 @@ const WeekEntryForm = ({type,id,week=[],weekDays=[],isEdit=false}) => {
     const classes = useStyles();
     
     
-    var temp = {}
-    weekDays.map((weekDay)=>{
-        temp[moment(weekDay).format('YYYY-MM-DD')] = ''
-        week.map((props) => {
-            if(moment(props.date).format('YYYY-MM-DD') == moment(weekDay).format('YYYY-MM-DD')){
-                temp[moment(weekDay).format('YYYY-MM-DD')]=props.duration 
-                console.log(moment(props.duration).format('HH:mm'))
-            }
-        })        
-    })
+    
+    // var temp = {}
+    // weekDays.map((weekDay)=>{
+    //     temp[moment(weekDay).format('YYYY-MM-DD')] = ''
+    //     week.map((props) => {
+    //         if(moment(props.date).format('YYYY-MM-DD') == moment(weekDay).format('YYYY-MM-DD')){
+    //             temp[moment(weekDay).format('YYYY-MM-DD')]=props.duration 
+    //             console.log(moment(props.duration).format('HH:mm'))
+    //         }
+    //     })        
+    // })
 
     const schema = yup.object().shape({
 
     })
+
+    // useEffect(()=>{
+    //     initFunction()
+    // },[]);
+
+    
+
+    // const [weeks,setWeeks] = React.useState([])
+
+    // useEffect(()=>{
+
+    // },[weeks])
+
+    // const initFunction = ()=>{
+    //     var weeks = []
+    //     if (week.length <7){
+    //         var temp = []
+    //         var dates = weekDays
+    //         var index = 0
+    //         weekDays.map((weekDay)=>{
+    //             if(moment(dates[index]).format('YYYY-MM-DD') == moment(weekDay).format('YYYY-MM-DD')){
+    //                 temp.push(dates[index])
+    //                 dates.pop(0)
+    //             }else{
+    //                 temp.push({
+    //                     date:moment(weekDay).format('YYYY-MM-DD'),
+    //                     duration: ''
+    //                 })
+    //             }
+    //         })
+    //         console.log(temp)
+    //         setWeeks(temp)
+    //     }else{
+    //         console.log(week)
+    //         setWeeks(week)
+    //     }
+    // }
+   
     
     const {
         register, formState: { errors }, handleSubmit,  getValues, setValue, reset, control, watch
     } = useForm({
-        defaultValues: temp,
+        defaultValues: {
+            type:type,
+            week:week
+        },
         mode:'onBlur',
         reValidateMode:'onBlur',
         resolver: yupResolver(schema)
     })
+
+    const {
+        fields, append, prepend, swap, move, insert, remove
+    } = useFieldArray({
+        control,
+        name:"week"
+    })
+
 
     return ( 
         <Box>
@@ -78,33 +129,34 @@ const WeekEntryForm = ({type,id,week=[],weekDays=[],isEdit=false}) => {
                     </Typography>
                     
                 </Box>
-                    {weekDays?.map((weekDay)=>{
-
-                        var name = moment(weekDay).format('YYYY-MM-DD')
-                         
-                            return (
-                                <Box className={classes.contentBox} key={name}>
-                                    <Typography sx={{display:{md:'block',lg:'none',width:'20%',margin:'auto'}}}>
-                                    {
-                                        moment(weekDay).format('DD MMM')  
-                                    }
-                                    </Typography>
+                    
+                {
+                    
+                    fields.map((item,index)=>{
+                        console.log(item)
+                        return(
+                            <Box className={classes.contentBox} key={index}>
+                                <Typography sx={{display:{md:'block',lg:'none',width:'20%',margin:'auto'}}}>
+                                {
+                                    moment(item.date).format('DD MMM')  
+                                }
+                                </Typography>
+                            
+                                <TextField
                                     
-                                    <TextField
-                                        name = {name}
-                                        value = { moment(getValues(name)).format('HH:mm')}
-                                        size='small'
-                                        className = {classes.input}
-                                        onChange={(e)=>{
-                                                    
-                                        }}
-                                        readOnly = {!isEdit}
-                                    />
+                                    value = { moment(item.duration).format('HH:mm')}
+                                    size='small'
+                                    className = {classes.input}
+                                    onChange={(e)=>{
+                                                
+                                    }}
+                                    readOnly = {!isEdit}
+                                />
 
-                                </Box>
-                            )
-                        })} 
-                
+                            </Box>
+                        )
+                    })
+                }
             </Box>
             <Divider/>
         </Box>

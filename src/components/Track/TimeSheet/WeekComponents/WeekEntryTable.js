@@ -123,6 +123,7 @@ const WeekEntryTable = ({data=[],date}) => {
                             id= {id}
                             key = {id}
                             week={week}
+                           
                             weekDays = {weekDays}
                         />
                         // <Box>
